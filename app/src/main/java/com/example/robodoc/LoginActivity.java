@@ -19,19 +19,22 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class LoginActivity extends AppCompatActivity {
+import java.util.HashMap;
+
+public class LoginActivity extends AppCompatActivity implements CheckUserExists.checkInterface, FetchUserInfo.FetchedUserInfoCallback {
 
     Button btnLogin;
     FirebaseAuth auth;
     private final int RC_SIGN_IN=1001;
     GoogleSignInClient mGoogleSignInClient;
-    ProgressDialog progressDialog;
+    ProgressIndicatorFragment progressIndicatorFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +60,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signIn(){
-        progressDialog=new ProgressDialog(this);
-        progressDialog.setTitle("Authenticating");
-        progressDialog.setMessage("Opening Google Accounts");
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
+        progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Authenticating","Loading Google Accounts");
+        progressIndicatorFragment.show(getSupportFragmentManager(),"Authenticating");
         Intent signInIntent=mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent,RC_SIGN_IN);
     }
@@ -71,14 +71,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode==RC_SIGN_IN){
-            progressDialog.dismiss();
+            progressIndicatorFragment.dismiss();
             Task<GoogleSignInAccount> task=GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                progressDialog=new ProgressDialog(LoginActivity.this);
-                progressDialog.setTitle("Logging In");
-                progressDialog.setMessage("Authenticating User with the Server");
-                progressDialog.setCanceledOnTouchOutside(false);
-                progressDialog.show();
                 GoogleSignInAccount account=task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account.getIdToken());
             }
@@ -89,22 +84,40 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void firebaseAuthWithGoogle(String idToken){
+        progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Authenticating","Signing in with Google");
+        progressIndicatorFragment.show(getSupportFragmentManager(),"Authenticating");
         AuthCredential credential= GoogleAuthProvider.getCredential(idToken,null);
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressIndicatorFragment.dismiss();
                         if(task.isSuccessful()){
-                            progressDialog.dismiss();
                             FirebaseUser user=auth.getCurrentUser();
-                            Toast.makeText(LoginActivity.this,"Google Sign In Successful for "+user.getDisplayName(),Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                            LoginActivity.this.finish();
+                            Toast.makeText(LoginActivity.this,"Sign In Successful for "+user.getDisplayName(),Toast.LENGTH_LONG).show();
+                            new CheckUserExists(user.getUid(),getSupportFragmentManager(),LoginActivity.this);
                         }
                         else {
-                            Toast.makeText(LoginActivity.this,"Google Sign In Failed",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this,"Sign In Failed",Toast.LENGTH_LONG).show();
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onEventCallback(boolean result) {
+        if(result){
+            new FetchUserInfo(getSupportFragmentManager(),FirebaseAuth.getInstance().getCurrentUser().getUid(),LoginActivity.this);
+        }
+        else {
+            startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
+            LoginActivity.this.finish();
+        }
+    }
+
+    @Override
+    public void onUserDataFetched(HashMap<String, Object> UserData) {
+        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+        LoginActivity.this.finish();
     }
 }

@@ -44,9 +44,12 @@ public class User implements FetchUserInfo.FetchedUserInfoCallback {
     private boolean isDoctor;
     private boolean isAdmin;
 
-    public User(Context context, String UID) {
-        this.UID = UID;
-        new FetchUserInfo(context,UID,this);
+    User(){
+
+    }
+
+    public User(HashMap<String ,Object> hashMap){
+
     }
 
     public void setUID(String UID) {

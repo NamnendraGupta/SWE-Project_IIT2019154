@@ -6,4 +6,6 @@ public class ApplicationClass extends android.app.Application {
     public void onCreate() {
         super.onCreate();
     }
+
+
 }

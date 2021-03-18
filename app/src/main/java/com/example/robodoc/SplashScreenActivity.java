@@ -7,12 +7,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.HashMap;
 
-public class SplashScreenActivity extends AppCompatActivity {
+public class SplashScreenActivity extends AppCompatActivity  implements FetchUserInfo.FetchedUserInfoCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,17 +23,19 @@ public class SplashScreenActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent;
                 if(FirebaseAuth.getInstance().getCurrentUser()!=null){
-                    intent=new Intent(SplashScreenActivity.this,MainActivity.class);
-                    intent.putExtra("User", (Parcelable) new User(SplashScreenActivity.this,FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                    new FetchUserInfo(getSupportFragmentManager(),FirebaseAuth.getInstance().getCurrentUser().getUid(),SplashScreenActivity.this);
                 }
                 else {
-                    intent=new Intent(SplashScreenActivity.this,LoginActivity.class);
+                    startActivity(new Intent(SplashScreenActivity.this,LoginActivity.class));
+                    SplashScreenActivity.this.finish();
                 }
-                startActivity(intent);
-                SplashScreenActivity.this.finish();
             }
         },1500);
+    }
+
+    @Override
+    public void onUserDataFetched(HashMap<String, Object> UserData) {
+
     }
 }
