@@ -1,1 +1,3 @@
-# SWE-Project_IIT2019154
+# RoboDoc
+
+Semester Project of the Course - Software Engineering
