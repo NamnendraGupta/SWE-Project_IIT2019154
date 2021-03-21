@@ -1,4 +1,4 @@
-package com.example.robodoc;
+package com.example.robodoc.fragments;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -6,23 +6,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
+import com.example.robodoc.R;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 public class ProgressIndicatorFragment extends DialogFragment {
 
-    TextView tvTitle, tvMessage;
-    LinearProgressIndicator progressIndicator;
-
-    ProgressIndicatorFragment(){
-
-    }
+    private TextView tvTitle, tvMessage;
+    private LinearProgressIndicator progressIndicator;
 
     public static ProgressIndicatorFragment newInstance(String title, String message){
         Bundle args=new Bundle();

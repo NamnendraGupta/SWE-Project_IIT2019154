@@ -1,38 +1,10 @@
-package com.example.robodoc;
+package com.example.robodoc.classes;
 
-import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 
-import java.security.Key;
-import java.security.KeyStore;
-import java.util.Date;
-import java.util.HashMap;
+import com.example.robodoc.enums.Gender;
 
-public class User implements FetchUserInfo.FetchedUserInfoCallback {
-
-    @Override
-    public void onUserDataFetched(HashMap<String, Object> UserData) {
-        this.EmailID=UserData.get(Keys.EMAIL).toString();
-        this.Name=UserData.get(Keys.NAME).toString();
-        if(UserData.get(Keys.PHOTO_URL).toString()==null)
-            this.PhotoURL=null;
-        else
-            this.PhotoURL=Uri.parse(UserData.get(Keys.PHOTO_URL).toString());
-        this.DOB=Long.parseLong(UserData.get(Keys.DOB).toString());
-        this.DateRegistered=Long.parseLong(UserData.get(Keys.DATE_REGISTERED).toString());
-        this.gender=(Gender) UserData.get(Keys.GENDER);
-        this.isAdmin=(Boolean) UserData.get(Keys.IS_ADMIN);
-        this.isDoctor=(Boolean) UserData.get(Keys.IS_DOCTOR);
-    }
-
-    public enum Gender{
-        MALE,FEMALE
-    }
-
-    enum Keys{
-        UID,EMAIL,NAME,PHOTO_URL,DOB,DATE_REGISTERED,GENDER,IS_DOCTOR,IS_ADMIN
-    }
+public class User {
 
     private String UID;
     private String EmailID;
@@ -44,12 +16,8 @@ public class User implements FetchUserInfo.FetchedUserInfoCallback {
     private boolean isDoctor;
     private boolean isAdmin;
 
-    User(){
-
-    }
-
-    public User(HashMap<String ,Object> hashMap){
-
+    public User(String UID){
+        this.UID=UID;
     }
 
     public void setUID(String UID) {
