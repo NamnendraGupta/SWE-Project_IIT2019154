@@ -37,6 +37,7 @@ public class SignInWithGoogle implements CheckUserExists.checkUserExistsInterfac
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressIndicatorFragment.dismiss();
                         if(task.isSuccessful()){
+                            Globals.updateCurrentUser();
                             Log.d(TAG,"Sign in with Google Successful");
                             new CheckUserExists(Globals.getCurrentUserUid(),fragmentManager,SignInWithGoogle.this);
                         }

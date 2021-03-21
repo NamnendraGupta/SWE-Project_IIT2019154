@@ -20,16 +20,13 @@ public class SplashScreenActivity extends AppCompatActivity implements FetchCurr
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent;
                 if(Globals.isUserLoggedIn()){
                     new FetchCurrentUserInfo(getSupportFragmentManager(),SplashScreenActivity.this);
-                    intent=new Intent(SplashScreenActivity.this,MainActivity.class);
                 }
                 else{
-                    intent=new Intent(SplashScreenActivity.this,LoginActivity.class);
+                    startActivity(new Intent(SplashScreenActivity.this,LoginActivity.class));
+                    SplashScreenActivity.this.finish();
                 }
-                startActivity(intent);
-                SplashScreenActivity.this.finish();
             }
         },2000);
     }

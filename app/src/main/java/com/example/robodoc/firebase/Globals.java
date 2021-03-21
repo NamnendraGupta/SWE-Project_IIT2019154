@@ -14,6 +14,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+
 public class Globals {
 
     private static FirebaseAuth firebaseAuth;
@@ -81,9 +83,24 @@ public class Globals {
         currentUser.setEmailID(snapshot.getString(UserKey.EMAIL.toString()));
         currentUser.setDOB(snapshot.getLong(UserKey.DOB.toString()));
         currentUser.setDateRegistered(snapshot.getLong(UserKey.DATE_REGISTERED.toString()));
-        currentUser.setGender((Gender) snapshot.get(UserKey.GENDER.toString()));
+
+        if(snapshot.getString(UserKey.GENDER.toString()).equals(Gender.MALE.toString()))
+            currentUser.setGender(Gender.MALE);
+        else
+            currentUser.setGender(Gender.FEMALE);
+
         currentUser.setPhotoURL(Uri.parse(snapshot.getString(UserKey.PHOTO_URL.toString())));
         currentUser.setDoctor(snapshot.getBoolean(UserKey.IS_DOCTOR.toString()));
         currentUser.setAdmin(snapshot.getBoolean(UserKey.IS_ADMIN.toString()));
+    }
+
+    public static HashMap<String,Object> getFirebaseUserInfo(){
+        HashMap<String ,Object> hashMap=new HashMap<>();
+
+        hashMap.put(UserKey.UID.toString(),firebaseUser.getUid());
+        hashMap.put(UserKey.EMAIL.toString(),firebaseUser.getEmail());
+        hashMap.put(UserKey.PHOTO_URL.toString(),firebaseUser.getPhotoUrl().toString());
+
+        return hashMap;
     }
 }
