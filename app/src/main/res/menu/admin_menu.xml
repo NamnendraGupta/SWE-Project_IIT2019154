@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/aMenuUser"
+        android:title="User Dashboard"/>
+    <item
+        android:id="@+id/aMenuDoctor"
+        android:title="Admin Dashboard"
+        android:visible="false" />
+    <item
+        android:id="@+id/aMenuLogout"
+        android:title="Logout" />
+
+</menu>

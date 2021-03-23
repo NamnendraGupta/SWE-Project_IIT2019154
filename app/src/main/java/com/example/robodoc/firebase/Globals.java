@@ -99,8 +99,22 @@ public class Globals {
 
         hashMap.put(UserKey.UID.toString(),firebaseUser.getUid());
         hashMap.put(UserKey.EMAIL.toString(),firebaseUser.getEmail());
-        hashMap.put(UserKey.PHOTO_URL.toString(),firebaseUser.getPhotoUrl().toString());
 
+        String photoUrl=firebaseUser.getPhotoUrl().toString();
+        photoUrl=photoUrl.replace("s96-c","s-320-c");
+        hashMap.put(UserKey.PHOTO_URL.toString(),photoUrl);
         return hashMap;
+    }
+
+    public static boolean isUserDoctor(){
+        return currentUser.isDoctor();
+    }
+
+    public static boolean isUserAdmin(){
+        return currentUser.isAdmin();
+    }
+
+    public static User getCurrentUser(){
+        return currentUser;
     }
 }
