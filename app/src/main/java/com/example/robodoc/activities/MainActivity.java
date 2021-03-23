@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
 
         toolbar=findViewById(R.id.toolbar);
         tvName=findViewById(R.id.tvUserName);
+        imgUser=findViewById(R.id.imgUser);
 
         updateInterface();
 
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
             toolbar.getMenu().findItem(R.id.menuDoctor).setVisible(true);
 
         tvName.setText("Hello "+currentUser.getName());
-//        Picasso.get().load(currentUser.getPhotoURL()).into(imgUser);
+        Picasso.get().load(currentUser.getPhotoURL()).into(imgUser);
     }
 
     private void startAdminActivity(){

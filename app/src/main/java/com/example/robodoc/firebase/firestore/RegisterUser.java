@@ -36,6 +36,7 @@ public class RegisterUser {
                         progressIndicatorFragment.dismiss();
                         if(task.isSuccessful()){
                             Log.d(TAG,"User Registration Successful");
+                            Globals.updateUserWithHashMap(userData);
                             registerUserInterface.onUserRegister(true);
                         }
                         else {

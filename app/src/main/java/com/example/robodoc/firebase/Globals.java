@@ -94,6 +94,23 @@ public class Globals {
         currentUser.setAdmin(snapshot.getBoolean(UserKey.IS_ADMIN.toString()));
     }
 
+    public static void updateUserWithHashMap(HashMap<String,Object> hashMap){
+        updateCurrentUser();
+        currentUser.setName((String)hashMap.get(UserKey.NAME.toString()));
+        currentUser.setEmailID((String) hashMap.get(UserKey.EMAIL.toString()));
+        currentUser.setDOB((Long) hashMap.get(UserKey.DOB.toString()));
+        currentUser.setDateRegistered((Long)hashMap.get(UserKey.DATE_REGISTERED.toString()));
+
+        if(hashMap.get(UserKey.GENDER.toString()).equals(Gender.MALE.toString()))
+            currentUser.setGender(Gender.MALE);
+        else
+            currentUser.setGender(Gender.FEMALE);
+
+        currentUser.setPhotoURL(Uri.parse((String) hashMap.get(UserKey.PHOTO_URL.toString())));
+        currentUser.setDoctor((Boolean)hashMap.get(UserKey.IS_DOCTOR.toString()));
+        currentUser.setAdmin((Boolean) hashMap.get(UserKey.IS_ADMIN.toString()));
+    }
+
     public static HashMap<String,Object> getFirebaseUserInfo(){
         HashMap<String ,Object> hashMap=new HashMap<>();
 
@@ -101,7 +118,7 @@ public class Globals {
         hashMap.put(UserKey.EMAIL.toString(),firebaseUser.getEmail());
 
         String photoUrl=firebaseUser.getPhotoUrl().toString();
-        photoUrl=photoUrl.replace("s96-c","s-320-c");
+        photoUrl=photoUrl.replace("s96-c","s320-c");
         hashMap.put(UserKey.PHOTO_URL.toString(),photoUrl);
         return hashMap;
     }

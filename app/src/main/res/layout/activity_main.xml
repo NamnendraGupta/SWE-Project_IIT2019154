@@ -35,11 +35,20 @@
 
             <TextView
                 android:id="@+id/tvUserName"
-                android:textSize="18sp"
+                android:layout_margin="8dp"
+                android:textSize="24sp"
                 android:textColor="@color/black"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:id="@+id/imgUser"
+                android:layout_margin="16dp"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_gravity="center_horizontal"
+                app:srcCompat="@color/black" />
 
         </LinearLayout>
 
