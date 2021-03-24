@@ -51,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterUser.
         isRegistering=false;
 
         dob=new Date();
-        tvDOB.setText(dob.toString());
+        tvDOB.setText(getDisplayDate(dob));
 
         datePicker=MaterialDatePicker
                 .Builder.datePicker()
@@ -61,7 +61,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterUser.
 
         datePicker.addOnPositiveButtonClickListener(selection -> {
             dob=new Date((Long)selection);
-            tvDOB.setText(dob.toString());
+            tvDOB.setText(getDisplayDate(dob));
         });
 
         btnSelectDOB.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +105,14 @@ public class RegisterActivity extends AppCompatActivity implements RegisterUser.
                 new RegisterUser(getSupportFragmentManager(),RegisterActivity.this,userData);
             }
         });
+    }
+
+    private String getDisplayDate(Date date){
+        String result;
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTime(date);
+        result=calendar.get(Calendar.DAY_OF_MONTH)+"/"+(calendar.get(Calendar.MONTH)+1)+"/"+calendar.get(Calendar.YEAR);
+        return result;
     }
 
     @Override

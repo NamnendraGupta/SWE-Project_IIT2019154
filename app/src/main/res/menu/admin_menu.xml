@@ -6,7 +6,7 @@
         android:title="User Dashboard"/>
     <item
         android:id="@+id/aMenuDoctor"
-        android:title="Admin Dashboard"
+        android:title="Doctor Dashboard"
         android:visible="false" />
     <item
         android:id="@+id/aMenuLogout"
