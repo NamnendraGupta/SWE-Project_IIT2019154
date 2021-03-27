@@ -2,7 +2,7 @@ package com.example.robodoc.utils;
 import java.util.Random;
 
 public class GetRandomBodyTemperature {
-    public static Float get1() {
+    public static Float get() {
         Random rand = new Random();
         int test=rand.nextInt(100);
         if(test>=0 && test<=49)
