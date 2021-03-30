@@ -58,7 +58,7 @@ public class UserListFragment extends Fragment implements GetUsersList.GetUsersL
         rcvUsers.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         userList=new ArrayList<>();
-        adapter=new UserListAdapter(getActivity(),userList,getFragmentManager());
+        adapter=new UserListAdapter(userList,getFragmentManager());
         rcvUsers.setAdapter(adapter);
 
         new GetUsersList(getFragmentManager(),UserListFragment.this);
@@ -70,7 +70,7 @@ public class UserListFragment extends Fragment implements GetUsersList.GetUsersL
             Log.d("USERS LIST FRAGMENT","List Size is "+UserList.size());
             if(UserList.size()>0){
                 userList=UserList;
-                adapter=new UserListAdapter(getActivity(),userList,getFragmentManager());
+                adapter=new UserListAdapter(userList,getFragmentManager());
                 rcvUsers.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }

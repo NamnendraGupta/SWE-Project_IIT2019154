@@ -35,20 +35,37 @@
 
             <TextView
                 android:id="@+id/tvUserName"
-                android:layout_margin="8dp"
-                android:textSize="24sp"
-                android:textColor="@color/black"
-                android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
 
             <ImageView
                 android:id="@+id/imgUser"
-                android:layout_margin="16dp"
-                android:layout_width="180dp"
-                android:layout_height="180dp"
+                android:layout_width="135dp"
+                android:layout_height="135dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_margin="16dp"
                 app:srcCompat="@color/black" />
+
+            <Button
+                android:id="@+id/btnTakeInput"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                android:text="Generate Input" />
+
+            <fragment
+                android:id="@+id/fragmentUserDashboard"
+                android:name="com.example.robodoc.fragments.user.ChooseInputMethod"
+                android:layout_margin="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_choose_input_method" />
 
         </LinearLayout>
 

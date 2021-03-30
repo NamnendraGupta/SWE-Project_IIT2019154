@@ -64,6 +64,6 @@ public class GetRandomBodyTemperature {
 
             return rand.nextFloat() * (111 - 109) + 109;
         }
-        return rand.nextFloat() * (1 - 0) + 0;
+        return rand.nextFloat() * (1) + 0;
     }
 }

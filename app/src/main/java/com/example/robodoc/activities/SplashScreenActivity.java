@@ -17,16 +17,13 @@ public class SplashScreenActivity extends AppCompatActivity implements FetchCurr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(Globals.isUserLoggedIn()){
-                    new FetchCurrentUserInfo(getSupportFragmentManager(),SplashScreenActivity.this);
-                }
-                else{
-                    startActivity(new Intent(SplashScreenActivity.this,LoginActivity.class));
-                    SplashScreenActivity.this.finish();
-                }
+        new Handler().postDelayed(() -> {
+            if(Globals.isUserLoggedIn()){
+                new FetchCurrentUserInfo(getSupportFragmentManager(),SplashScreenActivity.this);
+            }
+            else{
+                startActivity(new Intent(SplashScreenActivity.this,LoginActivity.class));
+                SplashScreenActivity.this.finish();
             }
         },2000);
     }

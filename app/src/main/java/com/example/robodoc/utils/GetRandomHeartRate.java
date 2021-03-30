@@ -1,4 +1,5 @@
 package com.example.robodoc.utils;
+
 import java.util.Random;
 
 public class GetRandomHeartRate {

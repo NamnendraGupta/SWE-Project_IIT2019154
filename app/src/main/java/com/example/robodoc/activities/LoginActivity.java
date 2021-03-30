@@ -1,13 +1,11 @@
 package com.example.robodoc.activities;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -19,10 +17,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity implements SignInWithGoogle.SignInInterface {
 
@@ -39,20 +35,14 @@ public class LoginActivity extends AppCompatActivity implements SignInWithGoogle
 
         isAuthenticating=false;
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Authenticating","Loading Google Accounts");
-                progressIndicatorFragment.show(getSupportFragmentManager(),"Authenticating");
-                GoogleSignInClient googleSignInClient=Globals.getGoogleSignInClient(LoginActivity.this);
-                googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Intent signInIntent=googleSignInClient.getSignInIntent();
-                        startActivityForResult(signInIntent,RC_SIGN_IN);
-                    }
-                });
-            }
+        btnLogin.setOnClickListener(v -> {
+            progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Authenticating","Loading Google Accounts");
+            progressIndicatorFragment.show(getSupportFragmentManager(),"Authenticating");
+            GoogleSignInClient googleSignInClient=Globals.getGoogleSignInClient(LoginActivity.this);
+            googleSignInClient.signOut().addOnCompleteListener(task -> {
+                Intent signInIntent=googleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent,RC_SIGN_IN);
+            });
         });
     }
 
@@ -65,6 +55,7 @@ public class LoginActivity extends AppCompatActivity implements SignInWithGoogle
             try {
                 isAuthenticating=true;
                 GoogleSignInAccount account=task.getResult(ApiException.class);
+                assert account != null;
                 new SignInWithGoogle(account.getIdToken(),getSupportFragmentManager(),LoginActivity.this);
             }
             catch (ApiException e){

@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -21,6 +22,7 @@ public class Globals {
     private static FirebaseAuth firebaseAuth;
     private static FirebaseUser firebaseUser;
     private static FirebaseFirestore firestore;
+    private static FirebaseDatabase firebaseDatabase;
 
     public static GoogleSignInOptions googleSignInOptions;
     public static User currentUser;
@@ -33,6 +35,7 @@ public class Globals {
                 .build();
 
         firestore=FirebaseFirestore.getInstance();
+        firebaseDatabase=FirebaseDatabase.getInstance();
 
         if(isUserLoggedIn()){
             currentUser=new User(firebaseUser.getUid());
@@ -75,6 +78,11 @@ public class Globals {
     public static FirebaseFirestore getFirestore(){
         firestore=FirebaseFirestore.getInstance();
         return firestore;
+    }
+
+    public static FirebaseDatabase getFirebaseDatabase(){
+        firebaseDatabase=FirebaseDatabase.getInstance();
+        return firebaseDatabase;
     }
 
     public static void updateUserWithSnapshot(DocumentSnapshot snapshot){

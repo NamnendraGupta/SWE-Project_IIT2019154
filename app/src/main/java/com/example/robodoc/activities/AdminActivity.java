@@ -1,12 +1,10 @@
 package com.example.robodoc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.Menu;
 import android.widget.Toast;
 
 import com.example.robodoc.R;
@@ -28,24 +26,15 @@ public class AdminActivity extends AppCompatActivity implements SignOut.SignOutI
 
         updateInterface();
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.aMenuDoctor:{
-                        startDoctorActivity();
-                        break;
-                    }
-                    case R.id.aMenuUser:{
-                        startMainActivity();
-                        break;
-                    }
-                    case R.id.aMenuLogout:{
-                        signOut();
-                    }
-                }
-                return false;
-            }
+        toolbar.setOnMenuItemClickListener(item -> {
+            Menu menu=toolbar.getMenu();
+            if(item==menu.findItem(R.id.aMenuDoctor))
+                startDoctorActivity();
+            else if(item==menu.findItem(R.id.aMenuUser))
+                startMainActivity();
+            else if(item==menu.findItem(R.id.aMenuLogout))
+                signOut();
+            return false;
         });
     }
 

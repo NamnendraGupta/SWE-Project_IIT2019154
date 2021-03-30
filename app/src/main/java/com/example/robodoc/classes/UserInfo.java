@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class UserInfo {
 
-    private String UID;
+    private final String UID;
     private String Name;
     private String Email;
     private Uri photoUrl;
@@ -23,10 +23,6 @@ public class UserInfo {
 
     public String getUID() {
         return UID;
-    }
-
-    public void setUID(String UID) {
-        this.UID = UID;
     }
 
     public String getName() {

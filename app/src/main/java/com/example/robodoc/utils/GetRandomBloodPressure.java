@@ -12,14 +12,11 @@ public class GetRandomBloodPressure {
         sy = sy + 70;
         di = di + 40;
         if (sy <= 90 && di <= 60)
-            return new Pair<Integer, Integer>(sy, di);
+            return new Pair<>(sy, di);
         if (sy >= 90 && sy <= 120 && di >= 60 && di <= 80)
-            return new Pair<Integer, Integer>(sy, di);
+            return new Pair<>(sy, di);
         if (sy > 120 && di > 70)
-            return new Pair<Integer, Integer>(sy, di);
-        if (sy - di < 20)
-            return get();
-        else
-            return get();
+            return new Pair<>(sy, di);
+        return get();
     }
 }

@@ -1,6 +1,5 @@
 package com.example.robodoc.adapters;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,22 +13,18 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.robodoc.R;
-import com.example.robodoc.classes.User;
 import com.example.robodoc.classes.UserInfo;
 import com.example.robodoc.fragments.admin.UserInfoFragment;
-import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> implements UserInfoFragment.UserInfoFragmentInterface {
 
-    private Context context;
     private ArrayList<UserInfo> userList;
     private FragmentManager manager;
 
-    public UserListAdapter(Context context, ArrayList<UserInfo> userList, FragmentManager manager){
-        this.context=context;
+    public UserListAdapter(ArrayList<UserInfo> userList, FragmentManager manager){
         this.userList=userList;
         this.manager=manager;
         Log.d("ADAPTER","Adapter Initialized");
@@ -70,13 +65,10 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         holder.tvName.setText(info.getName());
         holder.tvEmail.setText(info.getEmail());
         Picasso.get().load(info.getPhotoUrl()).into(holder.imgUser);
-        holder.btnShowDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UserInfoFragment userInfoFragment=UserInfoFragment.newInstance(userList.get(position));
-                userInfoFragment.setUserInterface(position,UserListAdapter.this);
-                userInfoFragment.show(manager,"USER INFO");
-            }
+        holder.btnShowDetails.setOnClickListener(v -> {
+            UserInfoFragment userInfoFragment=UserInfoFragment.newInstance(userList.get(position));
+            userInfoFragment.setUserInterface(position,UserListAdapter.this);
+            userInfoFragment.show(manager,"USER INFO");
         });
     }
 

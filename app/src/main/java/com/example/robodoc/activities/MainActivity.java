@@ -1,12 +1,13 @@
 package com.example.robodoc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentContainer;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,9 +18,19 @@ import com.example.robodoc.R;
 import com.example.robodoc.classes.User;
 import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.auth.SignOut;
+import com.example.robodoc.fragments.user.ChooseInputMethod;
+import com.example.robodoc.utils.GetRandomBloodPressure;
+import com.example.robodoc.utils.GetRandomBodyTemperature;
+import com.example.robodoc.utils.GetRandomGlucoseLevel;
+import com.example.robodoc.utils.GetRandomHeartRate;
+import com.example.robodoc.utils.GetRandomOxygenLevel;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity implements SignOut.SignOutInterface {
 
@@ -27,39 +38,42 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
     User currentUser;
     TextView tvName;
     ImageView imgUser;
+    Button btnTakeInput;
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getSupportFragmentManager().beginTransaction().hide(getSupportFragmentManager().findFragmentById(R.id.fragmentUserDashboard)).commit();
+
         toolbar=findViewById(R.id.toolbar);
         tvName=findViewById(R.id.tvUserName);
         imgUser=findViewById(R.id.imgUser);
+        btnTakeInput=findViewById(R.id.btnTakeInput);
 
         updateInterface();
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
+        toolbar.setOnMenuItemClickListener(item -> {
+            Menu menu=toolbar.getMenu();
+            if(item==menu.findItem(R.id.menuLogout))
+                signOut();
+            else if(item==menu.findItem(R.id.menuAdmin))
+                startAdminActivity();
+            else if(item==menu.findItem(R.id.menuDoctor))
+                startDoctorActivity();
+            return false;
+        });
 
-                switch (item.getItemId()){
-                    case R.id.menuLogout:{
-                        signOut();
-                        break;
-                    }
-                    case R.id.menuAdmin:{
-                        startAdminActivity();
-                        break;
-                    }
-                    case R.id.menuDoctor:{
-                        startDoctorActivity();
-                        break;
-                    }
-                }
-
-                return false;
-            }
+        btnTakeInput.setOnClickListener(v -> {
+            FragmentManager manager=getSupportFragmentManager();
+            ChooseInputMethod chooseInputMethod=ChooseInputMethod.newInstance();
+            manager
+                    .beginTransaction()
+                    .replace(R.id.fragmentUserDashboard,chooseInputMethod,"CHOOSE_INPUT_METHOD")
+                    .show(manager.findFragmentById(R.id.fragmentUserDashboard))
+                    .commit();
         });
     }
 
@@ -70,7 +84,8 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
         if(currentUser.isDoctor())
             toolbar.getMenu().findItem(R.id.menuDoctor).setVisible(true);
 
-        tvName.setText("Hello "+currentUser.getName());
+        String name="Hello "+currentUser.getName();
+        tvName.setText(name);
         Picasso.get().load(currentUser.getPhotoURL()).into(imgUser);
     }
 
@@ -82,10 +97,6 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
     private void startDoctorActivity(){
         startActivity(new Intent(this, DoctorActivity.class));
         this.finish();
-    }
-
-    private void ShowSnackbar(String data){
-        Snackbar.make(getWindow().getDecorView().getRootView(),data,3000).show();
     }
 
     private void signOut(){

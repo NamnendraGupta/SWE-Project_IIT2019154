@@ -1,15 +1,13 @@
 package com.example.robodoc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.Menu;
 import android.widget.Toast;
 
 import com.example.robodoc.R;
-import com.example.robodoc.classes.User;
 import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.auth.SignOut;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -28,24 +26,15 @@ public class DoctorActivity extends AppCompatActivity implements SignOut.SignOut
 
         updateInterface();
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.dMenuAdmin:{
-                        startAdminActivity();
-                        break;
-                    }
-                    case R.id.dMenuUser:{
-                        startMainActivity();
-                        break;
-                    }
-                    case R.id.dMenuLogout:{
-                        signOut();
-                    }
-                }
-                return false;
-            }
+        toolbar.setOnMenuItemClickListener(item -> {
+            Menu menu=toolbar.getMenu();
+            if(item==menu.findItem(R.id.dMenuAdmin))
+                startAdminActivity();
+            else if(item==menu.findItem(R.id.dMenuUser))
+                startMainActivity();
+            else if(item==menu.findItem(R.id.dMenuLogout))
+                signOut();
+            return false;
         });
     }
 

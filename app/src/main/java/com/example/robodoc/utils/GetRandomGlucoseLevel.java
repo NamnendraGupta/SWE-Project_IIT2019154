@@ -1,5 +1,7 @@
 package com.example.robodoc.utils;
+
 import java.util.Random;
+
 public class GetRandomGlucoseLevel {
     public static Integer get() {
         Random rand = new Random();
