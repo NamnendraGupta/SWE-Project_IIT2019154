@@ -86,7 +86,7 @@ public class RandomInput extends DialogFragment implements UploadVitalInput.Uplo
     }
 
     private void generateRandomInput(){
-        vitalInput=new VitalInput();
+        vitalInput=new VitalInput(VitalInput.VitalInputType.AUTOMATIC);
         Pair<Integer, Integer> bp= GetRandomBloodPressure.get();
         vitalInput.setHighBP(bp.first);
         vitalInput.setLowBP(bp.second);

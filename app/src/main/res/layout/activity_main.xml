@@ -59,13 +59,18 @@
                 android:layout_margin="4dp"
                 android:text="Generate Input" />
 
-            <fragment
-                android:id="@+id/fragmentUserDashboard"
-                android:name="com.example.robodoc.fragments.user.ChooseInputMethod"
-                android:layout_margin="4dp"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/btnShowRecords"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:layout="@layout/fragment_choose_input_method" />
+                android:layout_gravity="center_horizontal"
+                android:text="Show Records" />
+
+            <FrameLayout
+                android:id="@+id/fragmentContainerDashboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 

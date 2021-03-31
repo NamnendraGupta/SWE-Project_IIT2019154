@@ -1,8 +1,8 @@
 package com.example.robodoc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentContainer;
-import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,44 +16,62 @@ import android.widget.Toast;
 
 import com.example.robodoc.R;
 import com.example.robodoc.classes.User;
+import com.example.robodoc.classes.VitalInput;
 import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.auth.SignOut;
+import com.example.robodoc.firebase.realtimeDb.GetVitalRecord;
 import com.example.robodoc.fragments.user.ChooseInputMethod;
-import com.example.robodoc.utils.GetRandomBloodPressure;
-import com.example.robodoc.utils.GetRandomBodyTemperature;
-import com.example.robodoc.utils.GetRandomGlucoseLevel;
-import com.example.robodoc.utils.GetRandomHeartRate;
-import com.example.robodoc.utils.GetRandomOxygenLevel;
+import com.example.robodoc.fragments.user.RecordsFragment;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements SignOut.SignOutInterface {
+public class MainActivity extends AppCompatActivity implements SignOut.SignOutInterface, GetVitalRecord.GetVitalRecordInterface {
 
     MaterialToolbar toolbar;
     User currentUser;
-    TextView tvName;
+    TextView tvName,tvNoRecordsDisplay;
     ImageView imgUser;
-    Button btnTakeInput;
-    FragmentManager fragmentManager;
+    Button btnTakeInput, btnShowRecords;
+    ChooseInputMethod chooseInputMethod;
+    RecordsFragment recordsFragment;
+
+    RecyclerView rcvRecords;
+
+    ArrayList<VitalInput> vitalInputsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportFragmentManager().beginTransaction().hide(getSupportFragmentManager().findFragmentById(R.id.fragmentUserDashboard)).commit();
+        chooseInputMethod=ChooseInputMethod.newInstance();
+        recordsFragment=RecordsFragment.newInstance();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragmentContainerDashboard,chooseInputMethod,"ChooseInputFragment")
+                .add(R.id.fragmentContainerDashboard,recordsFragment,"RecordsFragment")
+                .hide(chooseInputMethod)
+                .hide(recordsFragment)
+                .commit();
 
         toolbar=findViewById(R.id.toolbar);
         tvName=findViewById(R.id.tvUserName);
         imgUser=findViewById(R.id.imgUser);
         btnTakeInput=findViewById(R.id.btnTakeInput);
+        btnShowRecords=findViewById(R.id.btnShowRecords);
+
+        rcvRecords=findViewById(R.id.rcvRecords);
+        tvNoRecordsDisplay=findViewById(R.id.tvNoRecordDisplay);
+
+        vitalInputsList=new ArrayList<>();
 
         updateInterface();
+
+        new GetVitalRecord(MainActivity.this);
 
         toolbar.setOnMenuItemClickListener(item -> {
             Menu menu=toolbar.getMenu();
@@ -67,13 +85,36 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
         });
 
         btnTakeInput.setOnClickListener(v -> {
-            FragmentManager manager=getSupportFragmentManager();
-            ChooseInputMethod chooseInputMethod=ChooseInputMethod.newInstance();
-            manager
-                    .beginTransaction()
-                    .replace(R.id.fragmentUserDashboard,chooseInputMethod,"CHOOSE_INPUT_METHOD")
-                    .show(manager.findFragmentById(R.id.fragmentUserDashboard))
-                    .commit();
+            FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            if(chooseInputMethod.isHidden()){
+                fragmentTransaction.show(chooseInputMethod);
+                btnTakeInput.setText("Hide");
+                btnShowRecords.setVisibility(View.GONE);
+            }
+            else {
+                fragmentTransaction.hide(chooseInputMethod);
+                btnTakeInput.setText("Generate Input");
+                btnShowRecords.setVisibility(View.VISIBLE);
+            }
+            fragmentTransaction.commit();
+        });
+
+        btnShowRecords.setOnClickListener(v -> {
+            FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            if(recordsFragment.isHidden()){
+                fragmentTransaction.show(recordsFragment);
+                recordsFragment.ShowList(vitalInputsList);
+                Log.d("SIZE",vitalInputsList.size()+"");
+                btnShowRecords.setText("Hide");
+                btnTakeInput.setVisibility(View.GONE);
+            }
+            else {
+                fragmentTransaction.hide(recordsFragment);
+                recordsFragment.HideList();
+                btnShowRecords.setText("Show Records");
+                btnTakeInput.setVisibility(View.VISIBLE);
+            }
+            fragmentTransaction.commit();
         });
     }
 
@@ -112,6 +153,14 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
         }
         else {
             Snackbar.make(getWindow().getDecorView().getRootView(),"Sign Out Failed, Please try Again",2000).show();
+        }
+    }
+
+    @Override
+    public void onNewRecordObtained(VitalInput newRecord) {
+        vitalInputsList.add(newRecord);
+        if(!recordsFragment.isHidden()){
+            recordsFragment.addRecord(newRecord);
         }
     }
 }

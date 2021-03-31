@@ -27,7 +27,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     public UserListAdapter(ArrayList<UserInfo> userList, FragmentManager manager){
         this.userList=userList;
         this.manager=manager;
-        Log.d("ADAPTER","Adapter Initialized");
     }
 
     @Override

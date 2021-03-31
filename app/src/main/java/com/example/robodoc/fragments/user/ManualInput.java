@@ -155,7 +155,7 @@ public class ManualInput extends DialogFragment implements UploadVitalInput.Uplo
 
         btnSubmit.setOnClickListener(v -> {
             if(isInputValid()){
-                VitalInput vitalInput=new VitalInput();
+                VitalInput vitalInput=new VitalInput(VitalInput.VitalInputType.MANUAL);
                 vitalInput.setHighBP(Integer.parseInt(inputBpSys.getEditText().getText().toString()));
                 vitalInput.setLowBP(Integer.parseInt(inputBpDias.getEditText().getText().toString()));
                 vitalInput.setBodyTemperature(Float.parseFloat(inputBodyTemp.getEditText().getText().toString()));
