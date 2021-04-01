@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.robodoc.R;
 import com.example.robodoc.classes.VitalInput;
+import com.example.robodoc.fragments.user.RecordDetailFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,7 +63,8 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
         holder.btnViewDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                RecordDetailFragment recordFragment=RecordDetailFragment.newInstance(record);
+                recordFragment.show(manager,"RECORD DETAILS");
             }
         });
     }
@@ -80,9 +82,13 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
         int hour=calendar.get(Calendar.HOUR);
         int minute=calendar.get(Calendar.MINUTE);
 
-        if(hour<10)
-            stringTime+="0";
-        stringTime+=hour+":";
+        if(hour==0)
+            stringTime+="12:";
+        else{
+            if(hour<10)
+                stringTime+="0";
+            stringTime+=hour+":";
+        }
 
         if(minute<10)
             stringTime+="0";
