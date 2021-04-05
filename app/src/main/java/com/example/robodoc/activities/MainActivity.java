@@ -34,13 +34,13 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
     User currentUser;
     TextView tvName,tvNoRecordsDisplay;
     ImageView imgUser;
-    Button btnTakeInput, btnShowRecords;
+    Button btnTakeInput, btnShowRecords, btnViewStats;
     ChooseInputMethod chooseInputMethod;
     RecordsFragment recordsFragment;
 
     RecyclerView rcvRecords;
 
-    ArrayList<VitalInput> vitalInputsList;
+    public static ArrayList<VitalInput> vitalInputsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
         imgUser=findViewById(R.id.imgUser);
         btnTakeInput=findViewById(R.id.btnTakeInput);
         btnShowRecords=findViewById(R.id.btnShowRecords);
+        btnViewStats=findViewById(R.id.btnViewStats);
 
         rcvRecords=findViewById(R.id.rcvRecords);
         tvNoRecordsDisplay=findViewById(R.id.tvNoRecordDisplay);
@@ -90,11 +91,13 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
                 fragmentTransaction.show(chooseInputMethod);
                 btnTakeInput.setText("Hide");
                 btnShowRecords.setVisibility(View.GONE);
+                btnViewStats.setVisibility(View.GONE);
             }
             else {
                 fragmentTransaction.hide(chooseInputMethod);
                 btnTakeInput.setText("Generate Input");
                 btnShowRecords.setVisibility(View.VISIBLE);
+                btnViewStats.setVisibility(View.VISIBLE);
             }
             fragmentTransaction.commit();
         });
@@ -107,14 +110,20 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
                 Log.d("SIZE",vitalInputsList.size()+"");
                 btnShowRecords.setText("Hide");
                 btnTakeInput.setVisibility(View.GONE);
+                btnViewStats.setVisibility(View.GONE);
             }
             else {
                 fragmentTransaction.hide(recordsFragment);
                 recordsFragment.HideList();
                 btnShowRecords.setText("Show Records");
                 btnTakeInput.setVisibility(View.VISIBLE);
+                btnViewStats.setVisibility(View.VISIBLE);
             }
             fragmentTransaction.commit();
+        });
+
+        btnViewStats.setOnClickListener(v -> {
+            startActivity(new Intent(this,UserStatsActivity.class));
         });
     }
 
@@ -159,8 +168,5 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
     @Override
     public void onNewRecordObtained(VitalInput newRecord) {
         vitalInputsList.add(newRecord);
-        if(!recordsFragment.isHidden()){
-            recordsFragment.addRecord(newRecord);
-        }
     }
 }

@@ -83,13 +83,6 @@ public class RecordsFragment extends Fragment {
         }
     }
 
-    public void addRecord(VitalInput newRecord){
-        vitalInputsList.add(newRecord);
-        recordListAdapter=new RecordListAdapter(getFragmentManager(),vitalInputsList);
-        rcvRecords.setAdapter(recordListAdapter);
-        recordListAdapter.notifyDataSetChanged();
-    }
-
     public void HideList(){
         vitalInputsList=new ArrayList<>();
         recordListAdapter.notifyDataSetChanged();

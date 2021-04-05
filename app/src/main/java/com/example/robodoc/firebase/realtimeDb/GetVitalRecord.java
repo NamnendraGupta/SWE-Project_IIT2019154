@@ -53,6 +53,5 @@ public class GetVitalRecord {
                         Log.e(TAG, error.getMessage());
                     }
                 });
-
     }
 }
