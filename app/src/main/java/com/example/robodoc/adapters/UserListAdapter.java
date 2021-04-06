@@ -65,9 +65,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         holder.tvEmail.setText(info.getEmail());
         Picasso.get().load(info.getPhotoUrl()).into(holder.imgUser);
         holder.btnShowDetails.setOnClickListener(v -> {
-            UserInfoFragment userInfoFragment=UserInfoFragment.newInstance(userList.get(position));
-            userInfoFragment.setUserInterface(position,UserListAdapter.this);
-            userInfoFragment.show(manager,"USER INFO");
+            onButtonClicked(info,position);
         });
     }
 
@@ -75,5 +73,11 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     public int getItemCount() {
         Log.d("LIST SIZE","Size is "+userList.size());
         return userList.size();
+    }
+
+    protected void onButtonClicked(UserInfo userInfo, int position){
+        UserInfoFragment userInfoFragment=UserInfoFragment.newInstance(userInfo);
+        userInfoFragment.setUserInterface(position,UserListAdapter.this);
+        userInfoFragment.show(manager,"USER INFO");
     }
 }

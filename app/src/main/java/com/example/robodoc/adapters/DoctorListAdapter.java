@@ -16,14 +16,8 @@ public class DoctorListAdapter extends UserListAdapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        UserInfo doctorInfo=userList.get(position);
-        holder.tvName.setText(doctorInfo.getName());
-        holder.tvEmail.setText(doctorInfo.getEmail());
-        Picasso.get().load(doctorInfo.getPhotoUrl()).into(holder.imgUser);
-        holder.btnShowDetails.setOnClickListener(v -> {
-            DoctorInfoFragment doctorInfoFragment=new DoctorInfoFragment(doctorInfo);
-            doctorInfoFragment.show(manager,"Doctor Info");
-        });
+    protected void onButtonClicked(UserInfo userInfo, int position) {
+        DoctorInfoFragment doctorInfoFragment=new DoctorInfoFragment(userInfo);
+        doctorInfoFragment.show(manager,"Doctor Info");
     }
 }

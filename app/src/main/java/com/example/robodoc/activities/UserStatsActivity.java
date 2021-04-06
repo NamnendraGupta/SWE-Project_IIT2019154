@@ -10,6 +10,7 @@ import com.example.robodoc.R;
 import com.example.robodoc.adapters.ViewPagerAdapter;
 import com.example.robodoc.classes.VitalInput;
 import com.example.robodoc.firebase.Globals;
+import com.example.robodoc.fragments.doctor.AssignedUserListInfoFragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -42,6 +43,10 @@ public class UserStatsActivity extends AppCompatActivity {
         if(source.equals("USER")){
             vitalInputList=MainActivity.vitalInputsList;
             UserDisplayName=Globals.getCurrentUserDisplayName();
+        }
+        else if (source.equals("DOCTOR")){
+            vitalInputList= AssignedUserListInfoFragment.vitalInputList;
+            UserDisplayName=getIntent().getStringExtra("NAME");
         }
 
         toolbar.setTitle("USER STATISTICS - " + UserDisplayName);

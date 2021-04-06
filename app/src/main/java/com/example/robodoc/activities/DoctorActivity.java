@@ -1,6 +1,7 @@
 package com.example.robodoc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,12 +11,14 @@ import android.widget.Toast;
 import com.example.robodoc.R;
 import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.auth.SignOut;
+import com.example.robodoc.fragments.doctor.AssignedUserListFragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 
 public class DoctorActivity extends AppCompatActivity implements SignOut.SignOutInterface {
 
     MaterialToolbar toolbar;
+    AssignedUserListFragment assignedUserListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,14 @@ public class DoctorActivity extends AppCompatActivity implements SignOut.SignOut
         toolbar=findViewById(R.id.doctorToolbar);
 
         updateInterface();
+
+        assignedUserListFragment=AssignedUserListFragment.newInstance();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.frameLayoutDoctor,assignedUserListFragment,"AssignedUserList")
+                .show(assignedUserListFragment)
+                .commit();
 
         toolbar.setOnMenuItemClickListener(item -> {
             Menu menu=toolbar.getMenu();
