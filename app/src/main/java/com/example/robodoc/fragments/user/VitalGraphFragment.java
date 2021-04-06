@@ -17,12 +17,15 @@ import android.widget.TextView;
 
 import com.example.robodoc.R;
 import com.example.robodoc.activities.MainActivity;
+import com.example.robodoc.activities.UserStatsActivity;
 import com.example.robodoc.classes.VitalInput;
 import com.example.robodoc.enums.VitalInputType;
+import com.example.robodoc.utils.CustomXAxisRenderer;
 import com.example.robodoc.utils.GetRandomHeartRate;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -60,6 +63,9 @@ public class VitalGraphFragment extends Fragment {
     ArrayList<VitalInput> arrayList;
     LineChart chart;
 
+    TextView tvAverage, tvMaximum, tvMinimum, tvInRange, tvAboveRange, tvBelowRange, tvNormalRange;
+    Button btnClose;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,8 +85,30 @@ public class VitalGraphFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        arrayList = MainActivity.vitalInputsList;
+        arrayList = ((UserStatsActivity)getActivity()).getVitalInputList();
         chart =  view.findViewById(R.id.chart);
+
+        tvNormalRange=view.findViewById(R.id.tvGraphNormalRange);
+        tvAverage=view.findViewById(R.id.tvGraphAverage);
+        tvMaximum=view.findViewById(R.id.tvGraphMaximum);
+        tvMinimum=view.findViewById(R.id.tvGraphMinimum);
+        tvInRange=view.findViewById(R.id.tvGraphNormal);
+        tvAboveRange=view.findViewById(R.id.tvGraphAbove);
+        tvBelowRange=view.findViewById(R.id.tvGraphBelow);
+        btnClose=view.findViewById(R.id.btnCloseGraphActivity);
+
+        int a=5,b=6;
+        String dataStr="("+a+","+b+")";
+        tvNormalRange.setText(dataStr);
+
+        btnClose.setOnClickListener(v -> {
+            getActivity().onBackPressed();
+        });
+
+        chart.setXAxisRenderer(new CustomXAxisRenderer(chart.getViewPortHandler(),chart.getXAxis(),chart.getTransformer(YAxis.AxisDependency.LEFT)));
+        chart.getXAxis().setYOffset(10);
+        chart.getDescription().setEnabled(false);
+        chart.setExtraTopOffset(5);
 
         List<Entry> entries = new ArrayList<Entry>();
         final String[] quarters;
@@ -88,7 +116,7 @@ public class VitalGraphFragment extends Fragment {
         for(int i=0;i<arrayList.size();i++)
         {
             long t=arrayList.get(i).getTimeOfInput();
-            DateFormat simple = new SimpleDateFormat("dd/MMM HH:mm");
+            DateFormat simple = new SimpleDateFormat("dd/MMM\nHH:mm");
             Date result = new Date(t);
             quarters[i]=simple.format(result);
         }

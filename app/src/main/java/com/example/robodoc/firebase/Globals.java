@@ -142,4 +142,8 @@ public class Globals {
     public static User getCurrentUser(){
         return currentUser;
     }
+
+    public static String getCurrentUserDisplayName(){
+        return currentUser.getName();
+    }
 }

@@ -20,6 +20,7 @@ import com.example.robodoc.classes.VitalInput;
 import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.auth.SignOut;
 import com.example.robodoc.firebase.realtimeDb.GetVitalRecord;
+import com.example.robodoc.fragments.ProgressIndicatorFragment;
 import com.example.robodoc.fragments.user.ChooseInputMethod;
 import com.example.robodoc.fragments.user.DoctorListFragment;
 import com.example.robodoc.fragments.user.RecordsFragment;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
     RecyclerView rcvRecords;
 
     public static ArrayList<VitalInput> vitalInputsList;
+    ProgressIndicatorFragment progressIndicatorFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
         updateInterface();
 
         new GetVitalRecord(MainActivity.this);
+        progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Syncing with Server","Loading Records");
+        progressIndicatorFragment.show(getSupportFragmentManager(),"Syncing Data");
 
         toolbar.setOnMenuItemClickListener(item -> {
             Menu menu=toolbar.getMenu();
@@ -133,7 +137,9 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
         });
 
         btnViewStats.setOnClickListener(v -> {
-            startActivity(new Intent(this,UserStatsActivity.class));
+            Intent intent=new Intent(this,UserStatsActivity.class);
+            intent.putExtra("SOURCE","USER");
+            startActivity(intent);
         });
 
         btnViewDoctorList.setOnClickListener(v -> {
@@ -196,6 +202,8 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
 
     @Override
     public void onNewRecordObtained(VitalInput newRecord) {
+        if(vitalInputsList.size()==0)
+            progressIndicatorFragment.dismiss();
         vitalInputsList.add(newRecord);
     }
 }
