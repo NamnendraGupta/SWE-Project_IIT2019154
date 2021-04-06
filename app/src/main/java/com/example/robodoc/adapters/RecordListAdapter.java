@@ -46,7 +46,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
 
     }
 
-        @NonNull
+    @NonNull
     @Override
     public RecordListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.record_list_item,parent,false);

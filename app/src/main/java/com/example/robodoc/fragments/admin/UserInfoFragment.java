@@ -1,5 +1,7 @@
 package com.example.robodoc.fragments.admin;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -121,6 +123,9 @@ public class UserInfoFragment extends DialogFragment implements UpdateUserRole.U
 
         isAdmin=userInfo.isAdmin();
         isDoctor=userInfo.isDoctor();
+
+        getDialog().setCanceledOnTouchOutside(false);
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         tvName.setText(userInfo.getName());
         tvEmail.setText(userInfo.getEmail());

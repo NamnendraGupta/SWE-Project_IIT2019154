@@ -20,7 +20,9 @@ import com.example.robodoc.classes.VitalInput;
 import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.auth.SignOut;
 import com.example.robodoc.firebase.realtimeDb.GetVitalRecord;
+import com.example.robodoc.fragments.ProgressIndicatorFragment;
 import com.example.robodoc.fragments.user.ChooseInputMethod;
+import com.example.robodoc.fragments.user.DoctorListFragment;
 import com.example.robodoc.fragments.user.RecordsFragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
@@ -34,13 +36,15 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
     User currentUser;
     TextView tvName,tvNoRecordsDisplay;
     ImageView imgUser;
-    Button btnTakeInput, btnShowRecords, btnViewStats;
+    Button btnTakeInput, btnShowRecords, btnViewStats, btnViewDoctorList;
     ChooseInputMethod chooseInputMethod;
     RecordsFragment recordsFragment;
+    DoctorListFragment doctorListFragment;
 
     RecyclerView rcvRecords;
 
     public static ArrayList<VitalInput> vitalInputsList;
+    ProgressIndicatorFragment progressIndicatorFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +53,16 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
 
         chooseInputMethod=ChooseInputMethod.newInstance();
         recordsFragment=RecordsFragment.newInstance();
+        doctorListFragment=DoctorListFragment.newInstance();
 
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragmentContainerDashboard,chooseInputMethod,"ChooseInputFragment")
                 .add(R.id.fragmentContainerDashboard,recordsFragment,"RecordsFragment")
+                .add(R.id.fragmentContainerDashboard,doctorListFragment,"DoctorsFragment")
                 .hide(chooseInputMethod)
                 .hide(recordsFragment)
+                .hide(doctorListFragment)
                 .commit();
 
         toolbar=findViewById(R.id.toolbar);
@@ -64,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
         btnTakeInput=findViewById(R.id.btnTakeInput);
         btnShowRecords=findViewById(R.id.btnShowRecords);
         btnViewStats=findViewById(R.id.btnViewStats);
+        btnViewDoctorList=findViewById(R.id.btnViewDoctorList);
 
         rcvRecords=findViewById(R.id.rcvRecords);
         tvNoRecordsDisplay=findViewById(R.id.tvNoRecordDisplay);
@@ -72,7 +80,9 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
 
         updateInterface();
 
-        new GetVitalRecord(MainActivity.this);
+        new GetVitalRecord(MainActivity.this,Globals.getCurrentUserUid());
+        progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Syncing with Server","Loading Records");
+        progressIndicatorFragment.show(getSupportFragmentManager(),"Syncing Data");
 
         toolbar.setOnMenuItemClickListener(item -> {
             Menu menu=toolbar.getMenu();
@@ -85,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
             return false;
         });
 
+        updateButtonsAccordingToList();
+
         btnTakeInput.setOnClickListener(v -> {
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
             if(chooseInputMethod.isHidden()){
@@ -92,12 +104,13 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
                 btnTakeInput.setText("Hide");
                 btnShowRecords.setVisibility(View.GONE);
                 btnViewStats.setVisibility(View.GONE);
+                btnViewDoctorList.setVisibility(View.GONE);
             }
             else {
                 fragmentTransaction.hide(chooseInputMethod);
                 btnTakeInput.setText("Generate Input");
-                btnShowRecords.setVisibility(View.VISIBLE);
-                btnViewStats.setVisibility(View.VISIBLE);
+                btnViewDoctorList.setVisibility(View.VISIBLE);
+                updateButtonsAccordingToList();
             }
             fragmentTransaction.commit();
         });
@@ -111,19 +124,42 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
                 btnShowRecords.setText("Hide");
                 btnTakeInput.setVisibility(View.GONE);
                 btnViewStats.setVisibility(View.GONE);
+                btnViewDoctorList.setVisibility(View.GONE);
             }
             else {
                 fragmentTransaction.hide(recordsFragment);
                 recordsFragment.HideList();
                 btnShowRecords.setText("Show Records");
                 btnTakeInput.setVisibility(View.VISIBLE);
-                btnViewStats.setVisibility(View.VISIBLE);
+                btnViewDoctorList.setVisibility(View.VISIBLE);
+                if(vitalInputsList.size()>1)
+                    btnViewStats.setVisibility(View.VISIBLE);
             }
             fragmentTransaction.commit();
         });
 
         btnViewStats.setOnClickListener(v -> {
-            startActivity(new Intent(this,UserStatsActivity.class));
+            Intent intent=new Intent(this,UserStatsActivity.class);
+            intent.putExtra("SOURCE","USER");
+            startActivity(intent);
+        });
+
+        btnViewDoctorList.setOnClickListener(v -> {
+            FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            if(doctorListFragment.isHidden()){
+                fragmentTransaction.show(doctorListFragment);
+                btnViewDoctorList.setText("Hide");
+                btnShowRecords.setVisibility(View.GONE);
+                btnViewStats.setVisibility(View.GONE);
+                btnTakeInput.setVisibility(View.GONE);
+            }
+            else {
+                fragmentTransaction.hide(doctorListFragment);
+                btnViewDoctorList.setText("View List of Doctors");
+                btnTakeInput.setVisibility(View.VISIBLE);
+                updateButtonsAccordingToList();
+            }
+            fragmentTransaction.commit();
         });
     }
 
@@ -165,8 +201,44 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
         }
     }
 
+    private void updateButtonsAccordingToList(){
+        if(vitalInputsList.size()==0){
+            btnViewStats.setVisibility(View.GONE);
+            btnShowRecords.setVisibility(View.GONE);
+        }
+        else if(vitalInputsList.size()==1) {
+            btnShowRecords.setVisibility(View.VISIBLE);
+            btnViewStats.setVisibility(View.GONE);
+        }
+        else {
+            btnShowRecords.setVisibility(View.VISIBLE);
+            btnViewStats.setVisibility(View.VISIBLE);
+        }
+    }
+
+    boolean isStart=false;
+
     @Override
-    public void onNewRecordObtained(VitalInput newRecord) {
-        vitalInputsList.add(newRecord);
+    public void onNewRecordObtained(boolean hasRecords, VitalInput newRecord) {
+        if(hasRecords){
+            for(int i=0;i<vitalInputsList.size();i++){
+                if(vitalInputsList.get(i).getInputID().equals(newRecord.getInputID()))
+                    return;
+            }
+            vitalInputsList.add(newRecord);
+            if(!isStart){
+                isStart=true;
+                progressIndicatorFragment.dismiss();
+                updateButtonsAccordingToList();
+            }
+            if(chooseInputMethod.isHidden()){
+                if(vitalInputsList.size()==1 || vitalInputsList.size()==2)
+                    updateButtonsAccordingToList();
+            }
+        }
+        else {
+            isStart=true;
+            progressIndicatorFragment.dismiss();
+        }
     }
 }

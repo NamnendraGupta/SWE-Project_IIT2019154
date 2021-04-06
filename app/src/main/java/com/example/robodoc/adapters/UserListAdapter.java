@@ -21,8 +21,8 @@ import java.util.ArrayList;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> implements UserInfoFragment.UserInfoFragmentInterface {
 
-    private ArrayList<UserInfo> userList;
-    private FragmentManager manager;
+    protected ArrayList<UserInfo> userList;
+    protected FragmentManager manager;
 
     public UserListAdapter(ArrayList<UserInfo> userList, FragmentManager manager){
         this.userList=userList;

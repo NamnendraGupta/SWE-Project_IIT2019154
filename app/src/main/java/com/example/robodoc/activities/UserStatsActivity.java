@@ -3,19 +3,31 @@ package com.example.robodoc.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.robodoc.R;
 import com.example.robodoc.adapters.ViewPagerAdapter;
+import com.example.robodoc.classes.VitalInput;
+import com.example.robodoc.firebase.Globals;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+
+import java.util.ArrayList;
 
 public class UserStatsActivity extends AppCompatActivity {
 
     MaterialToolbar toolbar;
     TabLayout tabLayout;
     ViewPager2 viewPager2;
+
+    private ArrayList<VitalInput> vitalInputList;
+    private String UserDisplayName;
+
+    public ArrayList<VitalInput> getVitalInputList() {
+        return vitalInputList;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +37,14 @@ public class UserStatsActivity extends AppCompatActivity {
         toolbar=findViewById(R.id.toolbarUserStats);
         tabLayout=findViewById(R.id.tabLayoutUserStats);
         viewPager2=findViewById(R.id.viewPagerUserStats);
+
+        String source=getIntent().getStringExtra("SOURCE");
+        if(source.equals("USER")){
+            vitalInputList=MainActivity.vitalInputsList;
+            UserDisplayName=Globals.getCurrentUserDisplayName();
+        }
+
+        toolbar.setTitle("USER STATISTICS - " + UserDisplayName);
 
         viewPager2.setAdapter(new ViewPagerAdapter(this));
         viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
