@@ -8,29 +8,54 @@ import androidx.annotation.Nullable;
 import com.example.robodoc.classes.VitalInput;
 import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.fragments.ProgressIndicatorFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 
 public class GetVitalRecord {
 
     public interface GetVitalRecordInterface{
-        void onNewRecordObtained(VitalInput newRecord);
+        void onNewRecordObtained(boolean hasRecords, VitalInput newRecord);
     }
 
     private final String TAG="Getting Vital Record";
 
-    public  GetVitalRecord(GetVitalRecordInterface vitalRecordInterface){
+    public  GetVitalRecord(GetVitalRecordInterface vitalRecordInterface, String uid){
 
-        Globals
+        DatabaseReference dbRef=Globals
                 .getFirebaseDatabase()
                 .getReference()
-                .child("VITAL_INPUTS")
-                .child(Globals.getCurrentUserUid())
+                .child(DatabaseKeys.KEY_USERS)
+                .child(uid);
+
+        dbRef.get()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        DataSnapshot snapshot=task.getResult();
+                        boolean hasRecords=(Boolean) snapshot.child(DatabaseKeys.KEY_USER_VITAL_SIGNS_NUM).getValue();
+                        if(!hasRecords){
+                            vitalRecordInterface.onNewRecordObtained(false,null);
+                        }
+                        else {
+                            for(DataSnapshot snapshot1:snapshot.child(DatabaseKeys.KEY_USER_VITAL_SIGNS_LIST).getChildren()){
+                                vitalRecordInterface.onNewRecordObtained(true,new VitalInput(snapshot1));
+                            }
+                        }
+                    }
+                    else {
+                        vitalRecordInterface.onNewRecordObtained(false,null);
+                    }
+                });
+
+
+        dbRef.child(DatabaseKeys.KEY_USER_VITAL_SIGNS_LIST)
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                        vitalRecordInterface.onNewRecordObtained(new VitalInput(snapshot));
+                        vitalRecordInterface.onNewRecordObtained(true, new VitalInput(snapshot));
                         Log.w(TAG,"Added - "+snapshot.toString());
                     }
 

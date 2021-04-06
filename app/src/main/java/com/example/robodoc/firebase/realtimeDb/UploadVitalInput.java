@@ -9,6 +9,7 @@ import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.fragments.ProgressIndicatorFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.HashMap;
 
@@ -25,20 +26,33 @@ public class UploadVitalInput {
         progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Synchronizing with Server","Uploading Input of Vital-Signs of User");
         progressIndicatorFragment.show(fragmentManager,TAG);
 
-        Globals
+        DatabaseReference dbRef=Globals
                 .getFirebaseDatabase()
                 .getReference()
-                .child("VITAL_INPUTS")
-                .child(Globals.getCurrentUserUid())
-                .push()
-                .setValue(inputData)
+                .child(DatabaseKeys.KEY_USERS)
+                .child(Globals.getCurrentUserUid());
+
+        dbRef.child(DatabaseKeys.KEY_USER_VITAL_SIGNS_NUM).setValue(true)
                 .addOnCompleteListener(task -> {
-                    progressIndicatorFragment.dismiss();
                     if(task.isSuccessful()){
-                        Log.d(TAG,"Upload Successful");
-                        inputInterface.OnUpload(true);
+                        dbRef.child(DatabaseKeys.KEY_USER_VITAL_SIGNS_LIST).push().setValue(inputData)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        progressIndicatorFragment.dismiss();
+                                        if(task.isSuccessful()){
+                                            Log.d(TAG,"Upload Successful");
+                                            inputInterface.OnUpload(true);
+                                        }
+                                        else {
+                                            Log.e(TAG,"Error in Uploading");
+                                            inputInterface.OnUpload(false);
+                                        }
+                                    }
+                                });
                     }
                     else {
+                        progressIndicatorFragment.dismiss();
                         Log.e(TAG,"Error in Uploading");
                         inputInterface.OnUpload(false);
                     }

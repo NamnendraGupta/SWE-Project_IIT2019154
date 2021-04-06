@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.robodoc.firebase.Globals;
+import com.example.robodoc.firebase.realtimeDb.DatabaseKeys;
 import com.example.robodoc.fragments.ProgressIndicatorFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,10 +34,34 @@ public class RegisterUser {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Globals.updateUserWithHashMap(userData);
+                            updateRealtimeDB(registerUserInterface);
+                        }
+                        else {
+                            progressIndicatorFragment.dismiss();
+                            Log.d(TAG,"User Registration Failed");
+                            registerUserInterface.onUserRegister(false);
+                        }
+                    }
+                });
+
+    }
+
+    private void updateRealtimeDB(RegisterUserInterface registerUserInterface){
+        Globals
+                .getFirebaseDatabase()
+                .getReference()
+                .child(DatabaseKeys.KEY_USERS)
+                .child(Globals.getCurrentUserUid())
+                .child(DatabaseKeys.KEY_USER_VITAL_SIGNS_NUM)
+                .setValue(false)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
                         progressIndicatorFragment.dismiss();
                         if(task.isSuccessful()){
                             Log.d(TAG,"User Registration Successful");
-                            Globals.updateUserWithHashMap(userData);
                             registerUserInterface.onUserRegister(true);
                         }
                         else {
@@ -45,7 +70,6 @@ public class RegisterUser {
                         }
                     }
                 });
-
     }
 
 }

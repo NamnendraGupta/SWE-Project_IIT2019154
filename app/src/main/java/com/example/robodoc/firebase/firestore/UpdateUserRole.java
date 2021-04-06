@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.robodoc.enums.UserKey;
 import com.example.robodoc.firebase.Globals;
+import com.example.robodoc.firebase.realtimeDb.DatabaseKeys;
 import com.example.robodoc.fragments.ProgressIndicatorFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -53,27 +54,25 @@ public class UpdateUserRole {
 
     private void updateRealtimeDB(String uid, boolean isDoctor, UpdateUserRoleInterface userRoleInterface){
 
-        DatabaseReference doctorReference=Globals.getFirebaseDatabase().getReference().child("DOCTORS").child(uid);
+        DatabaseReference doctorReference=Globals
+                .getFirebaseDatabase()
+                .getReference()
+                .child(DatabaseKeys.KEY_DOCTORS)
+                .child(uid);
         if(isDoctor){
             HashMap<String,Object> hashMap=new HashMap<>();
-            hashMap.put("USERS-ASSIGNED",0);
-            doctorReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    Log.d(TAG,"Change of User Role Successful");
-                    userRoleInterface.UpdateResult(true);
-                    progressIndicatorFragment.dismiss();
-                }
+            hashMap.put(DatabaseKeys.KEY_DOCTORS_ASSIGNED_NUM,0);
+            doctorReference.setValue(hashMap).addOnCompleteListener(task -> {
+                Log.d(TAG,"Change of User Role Successful");
+                userRoleInterface.UpdateResult(true);
+                progressIndicatorFragment.dismiss();
             });
         }
         else {
-            doctorReference.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    Log.d(TAG,"Change of User Role Successful");
-                    userRoleInterface.UpdateResult(true);
-                    progressIndicatorFragment.dismiss();
-                }
+            doctorReference.removeValue().addOnCompleteListener(task -> {
+                Log.d(TAG,"Change of User Role Successful");
+                userRoleInterface.UpdateResult(true);
+                progressIndicatorFragment.dismiss();
             });
         }
     }

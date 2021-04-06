@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
 
         updateInterface();
 
-        new GetVitalRecord(MainActivity.this);
+        new GetVitalRecord(MainActivity.this,Globals.getCurrentUserUid());
         progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Syncing with Server","Loading Records");
         progressIndicatorFragment.show(getSupportFragmentManager(),"Syncing Data");
 
@@ -95,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
             return false;
         });
 
+        updateButtonsAccordingToList();
+
         btnTakeInput.setOnClickListener(v -> {
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
             if(chooseInputMethod.isHidden()){
@@ -107,9 +109,8 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
             else {
                 fragmentTransaction.hide(chooseInputMethod);
                 btnTakeInput.setText("Generate Input");
-                btnShowRecords.setVisibility(View.VISIBLE);
-                btnViewStats.setVisibility(View.VISIBLE);
                 btnViewDoctorList.setVisibility(View.VISIBLE);
+                updateButtonsAccordingToList();
             }
             fragmentTransaction.commit();
         });
@@ -130,8 +131,9 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
                 recordsFragment.HideList();
                 btnShowRecords.setText("Show Records");
                 btnTakeInput.setVisibility(View.VISIBLE);
-                btnViewStats.setVisibility(View.VISIBLE);
                 btnViewDoctorList.setVisibility(View.VISIBLE);
+                if(vitalInputsList.size()>1)
+                    btnViewStats.setVisibility(View.VISIBLE);
             }
             fragmentTransaction.commit();
         });
@@ -154,9 +156,8 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
             else {
                 fragmentTransaction.hide(doctorListFragment);
                 btnViewDoctorList.setText("View List of Doctors");
-                btnShowRecords.setVisibility(View.VISIBLE);
-                btnViewStats.setVisibility(View.VISIBLE);
                 btnTakeInput.setVisibility(View.VISIBLE);
+                updateButtonsAccordingToList();
             }
             fragmentTransaction.commit();
         });
@@ -200,10 +201,44 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
         }
     }
 
+    private void updateButtonsAccordingToList(){
+        if(vitalInputsList.size()==0){
+            btnViewStats.setVisibility(View.GONE);
+            btnShowRecords.setVisibility(View.GONE);
+        }
+        else if(vitalInputsList.size()==1) {
+            btnShowRecords.setVisibility(View.VISIBLE);
+            btnViewStats.setVisibility(View.GONE);
+        }
+        else {
+            btnShowRecords.setVisibility(View.VISIBLE);
+            btnViewStats.setVisibility(View.VISIBLE);
+        }
+    }
+
+    boolean isStart=false;
+
     @Override
-    public void onNewRecordObtained(VitalInput newRecord) {
-        if(vitalInputsList.size()==0)
+    public void onNewRecordObtained(boolean hasRecords, VitalInput newRecord) {
+        if(hasRecords){
+            for(int i=0;i<vitalInputsList.size();i++){
+                if(vitalInputsList.get(i).getInputID().equals(newRecord.getInputID()))
+                    return;
+            }
+            vitalInputsList.add(newRecord);
+            if(!isStart){
+                isStart=true;
+                progressIndicatorFragment.dismiss();
+                updateButtonsAccordingToList();
+            }
+            if(chooseInputMethod.isHidden()){
+                if(vitalInputsList.size()==1 || vitalInputsList.size()==2)
+                    updateButtonsAccordingToList();
+            }
+        }
+        else {
+            isStart=true;
             progressIndicatorFragment.dismiss();
-        vitalInputsList.add(newRecord);
+        }
     }
 }
