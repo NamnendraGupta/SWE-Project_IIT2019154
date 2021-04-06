@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.example.robodoc.classes.VitalInput;
 import com.example.robodoc.firebase.Globals;
+import com.example.robodoc.fragments.ProgressIndicatorFragment;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
