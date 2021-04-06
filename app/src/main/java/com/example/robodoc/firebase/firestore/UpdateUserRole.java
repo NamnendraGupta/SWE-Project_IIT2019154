@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.util.Date;
 import java.util.HashMap;
 
 public class UpdateUserRole {
@@ -61,7 +62,7 @@ public class UpdateUserRole {
                 .child(uid);
         if(isDoctor){
             HashMap<String,Object> hashMap=new HashMap<>();
-            hashMap.put(DatabaseKeys.KEY_DOCTORS_ASSIGNED_NUM,0);
+            hashMap.put(DatabaseKeys.KEY_DOCTORS_ASSIGNED_TIME,(new Date()).getTime());
             doctorReference.setValue(hashMap).addOnCompleteListener(task -> {
                 Log.d(TAG,"Change of User Role Successful");
                 userRoleInterface.UpdateResult(true);

@@ -22,23 +22,6 @@ public class GetDoctorInteraction {
         progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Syncing with Server","Fetching Doctor's Data with User");
         progressIndicatorFragment.show();
 
-        Globals
-                .getFirebaseDatabase()
-                .getReference()
-                .child("USERS")
-                .child(Globals.getCurrentUserUid())
-                .child("DOCTOR-ASSIGNED")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
     }
 
 }

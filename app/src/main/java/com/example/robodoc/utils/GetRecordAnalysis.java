@@ -6,24 +6,11 @@ import com.example.robodoc.enums.VitalSignsKey;
 import java.util.ArrayList;
 
 public class GetRecordAnalysis {
-    private Arraylist<VitalInput> recordList;
+    private ArrayList<VitalInput> recordList;
+
     public GetRecordAnalysis(ArrayList<VitalInput> recordList) {
         this.recordList = recordList;
-    }
-        float AvgBT=0;
-        int AvgLBP=0;
-        int AvgHBP=0;
-        int AvgOL=0;
-        int AvgHR=0;
-        int AvgGL=0;
-        float maxBT=0,minBT=200;
-        int inNormalBT=0,aboveNormalBT=0,belowNormalBT=0;
-        int maxHBP=0,maxLBP=0,minHBP=300,minLBP=300,inNormalBP=0,aboveNormalBP=0,belowNormalBP=0;
-        int maxOL=0,minOL=400,inNormalOL=0,aboveNormalOL=0,belowNormalOL=0;
-        int maxHR=0,minHR=300,inNormalHR=0,aboveNormalHR=0,belowNormalHR=0;
-        int maxGL=0,minGL=2000,inNormalGL=0,aboveNormalGL=0,belowNormalGL=0;
-
-        int n=recordList.size();
+        n=recordList.size();
         for(int i=0;i<recordList.size();i++)
         {
             VitalInput record = recordList.get(i);
@@ -102,6 +89,22 @@ public class GetRecordAnalysis {
         AvgOL/=n;
         AvgHR/=n;
         AvgGL/=n;
+
+    }
+        float AvgBT=0;
+        int AvgLBP=0;
+        int AvgHBP=0;
+        int AvgOL=0;
+        int AvgHR=0;
+        int AvgGL=0;
+        float maxBT=0,minBT=200;
+        int inNormalBT=0,aboveNormalBT=0,belowNormalBT=0;
+        int maxHBP=0,maxLBP=0,minHBP=300,minLBP=300,inNormalBP=0,aboveNormalBP=0,belowNormalBP=0;
+        int maxOL=0,minOL=400,inNormalOL=0,aboveNormalOL=0,belowNormalOL=0;
+        int maxHR=0,minHR=300,inNormalHR=0,aboveNormalHR=0,belowNormalHR=0;
+        int maxGL=0,minGL=2000,inNormalGL=0,aboveNormalGL=0,belowNormalGL=0;
+
+        int n;
         public String AverageBT()
         {
             return Float.toString(AvgBT);

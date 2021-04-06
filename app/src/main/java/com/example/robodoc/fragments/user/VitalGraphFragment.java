@@ -22,6 +22,7 @@ import com.example.robodoc.classes.VitalInput;
 import com.example.robodoc.enums.VitalInputType;
 import com.example.robodoc.utils.CustomXAxisRenderer;
 import com.example.robodoc.utils.GetRandomHeartRate;
+import com.example.robodoc.utils.GetRecordAnalysis;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -66,6 +67,8 @@ public class VitalGraphFragment extends Fragment {
     TextView tvAverage, tvMaximum, tvMinimum, tvInRange, tvAboveRange, tvBelowRange, tvNormalRange;
     Button btnClose;
 
+    private GetRecordAnalysis getRecordAnalysis;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +89,7 @@ public class VitalGraphFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         arrayList = ((UserStatsActivity)getActivity()).getVitalInputList();
+        getRecordAnalysis=new GetRecordAnalysis(arrayList);
         chart =  view.findViewById(R.id.chart);
 
         tvNormalRange=view.findViewById(R.id.tvGraphNormalRange);
@@ -148,6 +152,14 @@ public class VitalGraphFragment extends Fragment {
                 dataSet1.setCircleColor(Color.YELLOW);
                 dataSet1.setLineWidth(3f);
 
+                tvNormalRange.setText(getRecordAnalysis.NormalHR());
+                tvAverage.setText(getRecordAnalysis.AverageHR());
+                tvMaximum.setText(getRecordAnalysis.MaxHR());
+                tvMinimum.setText(getRecordAnalysis.MinHR());
+                tvInRange.setText(getRecordAnalysis.InNormalHR());
+                tvAboveRange.setText(getRecordAnalysis.AboveNormalHR());
+                tvBelowRange.setText(getRecordAnalysis.BelowNormalHR());
+
                 break;
 
             case OXYGEN_LEVEL:
@@ -167,6 +179,14 @@ public class VitalGraphFragment extends Fragment {
                 dataSet2.setColor(Color.RED);
                 dataSet2.setCircleColor(Color.YELLOW);
                 dataSet2.setLineWidth(3f);
+
+                tvNormalRange.setText(getRecordAnalysis.NormalOL());
+                tvAverage.setText(getRecordAnalysis.AverageOL());
+                tvMaximum.setText(getRecordAnalysis.MaxOL());
+                tvMinimum.setText(getRecordAnalysis.MinOL());
+                tvInRange.setText(getRecordAnalysis.InNormalOL());
+                tvAboveRange.setText(getRecordAnalysis.AboveNormalOL());
+                tvBelowRange.setText(getRecordAnalysis.BelowNormalOL());
 
                 break;
 
@@ -190,6 +210,14 @@ public class VitalGraphFragment extends Fragment {
                 dataSet3.setColor(Color.RED);
                 dataSet3.setCircleColor(Color.YELLOW);
                 dataSet3.setLineWidth(3f);
+
+                tvNormalRange.setText(getRecordAnalysis.NormalGL());
+                tvAverage.setText(getRecordAnalysis.AverageGL());
+                tvMaximum.setText(getRecordAnalysis.MaxGL());
+                tvMinimum.setText(getRecordAnalysis.MinGL());
+                tvInRange.setText(getRecordAnalysis.InNormalGL());
+                tvAboveRange.setText(getRecordAnalysis.AboveNormalGL());
+                tvBelowRange.setText(getRecordAnalysis.BelowNormalGL());
 
                 break;
 
@@ -224,6 +252,14 @@ public class VitalGraphFragment extends Fragment {
                 dataSet7.setCircleColor(Color.RED);
                 dataSet7.setLineWidth(3f);
 
+                tvNormalRange.setText(getRecordAnalysis.NormalBP());
+                tvAverage.setText(getRecordAnalysis.AverageBP());
+                tvMaximum.setText(getRecordAnalysis.MaxBP());
+                tvMinimum.setText(getRecordAnalysis.MinBP());
+                tvInRange.setText(getRecordAnalysis.InNormalBP());
+                tvAboveRange.setText(getRecordAnalysis.AboveNormalBP());
+                tvBelowRange.setText(getRecordAnalysis.BelowNormalBP());
+
                 break;
 
 
@@ -245,6 +281,14 @@ public class VitalGraphFragment extends Fragment {
                 dataSet.setColor(Color.RED);
                 dataSet.setCircleColor(Color.YELLOW);
                 dataSet.setLineWidth(3f);
+
+                tvNormalRange.setText(getRecordAnalysis.NormalBT());
+                tvAverage.setText(getRecordAnalysis.AverageBT());
+                tvMaximum.setText(getRecordAnalysis.MaxBT());
+                tvMinimum.setText(getRecordAnalysis.MinBT());
+                tvInRange.setText(getRecordAnalysis.InNormalBT());
+                tvAboveRange.setText(getRecordAnalysis.AboveNormalBT());
+                tvBelowRange.setText(getRecordAnalysis.BelowNormalBT());
 
                 break;
 
