@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_doctor"
+    app:startDestination="@id/assignedUserListFragment">
+
+
+    <fragment
+        android:id="@+id/assignedUserListFragment"
+        android:name="com.example.robodoc.fragments.doctor.AssignedUserListFragment"
+        android:label="fragment_assigned_user_list"
+        tools:layout="@layout/fragment_assigned_user_list" >
+        <action
+            android:id="@+id/action_assignedUserListFragment_to_assignedUserListInfoFragment"
+            app:destination="@id/assignedUserListInfoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/assignedUserListInfoFragment"
+        android:name="com.example.robodoc.fragments.doctor.AssignedUserListInfoFragment"
+        android:label="fragment_assigned_user_list_info"
+        tools:layout="@layout/fragment_assigned_user_list_info" >
+        <action
+            android:id="@+id/action_assignedUserListInfoFragment_to_recordsFragment"
+            app:destination="@id/recordsFragment" />
+        <action
+            android:id="@+id/action_assignedUserListInfoFragment_to_chatActivity"
+            app:destination="@id/chatActivity" />
+        <action
+            android:id="@+id/action_assignedUserListInfoFragment_to_userStatsActivity"
+            app:destination="@id/userStatsActivity" />
+        <argument
+            android:name="DisplayName"
+            app:argType="string" />
+        <argument
+            android:name="UID"
+            app:argType="string" />
+        <argument
+            android:name="Email"
+            app:argType="string" />
+        <argument
+            android:name="Gender"
+            app:argType="string" />
+        <argument
+            android:name="PhotoURL"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/recordsFragment"
+        android:name="com.example.robodoc.fragments.user.RecordsFragment"
+        android:label="fragment_records"
+        tools:layout="@layout/fragment_records" >
+        <action
+            android:id="@+id/action_recordsFragment_to_recordDetailFragment"
+            app:destination="@id/recordDetailFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/recordDetailFragment"
+        android:name="com.example.robodoc.fragments.user.RecordDetailFragment"
+        android:label="fragment_record_detail"
+        tools:layout="@layout/fragment_record_detail" />
+
+    <activity
+        android:id="@+id/chatActivity"
+        android:name="com.example.robodoc.activities.ChatActivity"
+        android:label="activity_chat"
+        tools:layout="@layout/activity_chat" />
+
+    <activity
+        android:id="@+id/userStatsActivity"
+        android:name="com.example.robodoc.activities.UserStatsActivity"
+        android:label="activity_user_stats"
+        tools:layout="@layout/activity_user_stats" />
+
+</navigation>

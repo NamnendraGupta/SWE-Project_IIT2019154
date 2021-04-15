@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
                 startAdminActivity();
             else if(item==menu.findItem(R.id.menuDoctor))
                 startDoctorActivity();
+            else if(item==menu.findItem(R.id.menuSetAlarm))
+                startAlarmActivity();
             return false;
         });
 
@@ -173,6 +175,10 @@ public class MainActivity extends AppCompatActivity implements SignOut.SignOutIn
         String name="Hello "+currentUser.getName();
         tvName.setText(name);
         Picasso.get().load(currentUser.getPhotoURL()).into(imgUser);
+    }
+
+    private void startAlarmActivity(){
+        startActivity(new Intent(this,AlarmActivity.class));
     }
 
     private void startAdminActivity(){

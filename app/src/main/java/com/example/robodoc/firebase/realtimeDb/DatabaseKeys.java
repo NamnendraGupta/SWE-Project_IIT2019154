@@ -11,4 +11,12 @@ public class DatabaseKeys {
     public static final String KEY_USER_VITAL_SIGNS_LIST="RECORD_LIST";
     public static final String KEY_USER_DOCTOR_ASSIGNED="DOCTOR_ASSIGNED";
 
+    public static final String KEY_USER_MESSAGES="MESSAGES";
+    public static final String KEY_DOCTOR_MESSAGES="MESSAGES";
+
+    public static final String KEY_MESSAGE_SOURCE="SOURCE";
+    public static final String KEY_MESSAGE_DESTINATION="DESTINATION";
+    public static final String KEY_MESSAGE_TIME="TIME";
+    public static final String KEY_MESSAGE_DATA="DATA";
+
 }

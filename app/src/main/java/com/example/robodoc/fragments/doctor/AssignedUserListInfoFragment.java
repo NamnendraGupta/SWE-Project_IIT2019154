@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.robodoc.R;
+import com.example.robodoc.activities.ChatActivity;
 import com.example.robodoc.activities.UserStatsActivity;
 import com.example.robodoc.classes.UserInfo;
 import com.example.robodoc.classes.VitalInput;
@@ -54,7 +55,7 @@ public class AssignedUserListInfoFragment extends Fragment implements GetVitalRe
     }
 
     TextView tvName, tvEmail, tvGender;
-    Button btnClose, btnViewStats;
+    Button btnClose, btnViewStats, btnViewInteraction;
     ImageView imgUser;
 
     RecordsFragment recordsFragment;
@@ -69,6 +70,7 @@ public class AssignedUserListInfoFragment extends Fragment implements GetVitalRe
         tvGender=view.findViewById(R.id.tvAssignedUserGender);
         btnClose=view.findViewById(R.id.btnCloseAssignedUser);
         btnViewStats=view.findViewById(R.id.btnViewAssignStats);
+        btnViewInteraction=view.findViewById(R.id.btnViewUserInteraction);
         imgUser=view.findViewById(R.id.imgAssignedUser);
 
         tvName.setText(userInfo.getName());
@@ -93,6 +95,14 @@ public class AssignedUserListInfoFragment extends Fragment implements GetVitalRe
             startActivity(intent);
         });
 
+        btnViewInteraction.setOnClickListener(v -> {
+            Intent intent=new Intent(getActivity(), ChatActivity.class);
+            intent.putExtra("IsDoctor",true);
+            intent.putExtra("DestinationUID",userInfo.getUID());
+            intent.putExtra("DestinationUserName",userInfo.getName());
+            startActivity(intent);
+        });
+
         new GetVitalRecord(this,userInfo.getUID());
 
         getChildFragmentManager().beginTransaction()
@@ -108,14 +118,14 @@ public class AssignedUserListInfoFragment extends Fragment implements GetVitalRe
                 if(vitalInputList.get(i).getInputID().equals(newRecord.getInputID()))
                     return;
             }
+            vitalInputList.add(newRecord);
+            recordsFragment.ShowList(vitalInputList);
             if(vitalInputList.size()<2){
                 btnViewStats.setVisibility(View.GONE);
             }
             else {
                 btnViewStats.setVisibility(View.VISIBLE);
             }
-            vitalInputList.add(newRecord);
-            recordsFragment.ShowList(vitalInputList);
         }
         else
             recordsFragment.HideList();

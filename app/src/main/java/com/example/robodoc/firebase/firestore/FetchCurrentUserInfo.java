@@ -45,7 +45,6 @@ public class FetchCurrentUserInfo {
                     infoInterface.onUserDataFetched(false);
                     progressIndicatorFragment.dismiss();
                 });
-
     }
 
     private void updateAssignedDoctorInfo(FetchInfoInterface infoInterface){

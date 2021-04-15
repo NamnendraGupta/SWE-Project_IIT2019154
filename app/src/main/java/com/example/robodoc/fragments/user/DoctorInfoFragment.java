@@ -1,6 +1,7 @@
 package com.example.robodoc.fragments.user;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.robodoc.R;
+import com.example.robodoc.activities.ChatActivity;
 import com.example.robodoc.classes.UserInfo;
 import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.realtimeDb.AssignDoctorToUser;
@@ -84,10 +86,16 @@ public class DoctorInfoFragment extends DialogFragment implements AssignDoctorTo
             getDialog().dismiss();
         });
 
-        if(doctorInfo.getUID().equals(Globals.getCurrentUser().getAssignedDoctorUID())){
+        if(Globals.getCurrentUser().isDoctorAssigned()){
             btnRequestForAppointment.setVisibility(View.GONE);
-            btnViewInteraction.setVisibility(View.VISIBLE);
-            btnCancelAppointment.setVisibility(View.VISIBLE);
+            if(doctorInfo.getUID().equals(Globals.getCurrentUser().getAssignedDoctorUID())){
+                btnViewInteraction.setVisibility(View.VISIBLE);
+                btnCancelAppointment.setVisibility(View.VISIBLE);
+            }
+            else {
+                btnViewInteraction.setVisibility(View.GONE);
+                btnCancelAppointment.setVisibility(View.GONE);
+            }
         }
         else {
             btnRequestForAppointment.setVisibility(View.VISIBLE);
@@ -135,7 +143,11 @@ public class DoctorInfoFragment extends DialogFragment implements AssignDoctorTo
         });
 
         btnViewInteraction.setOnClickListener(v -> {
-
+            Intent intent=new Intent(getActivity(), ChatActivity.class);
+            intent.putExtra("IsDoctor",false);
+            intent.putExtra("DestinationUID",doctorInfo.getUID());
+            intent.putExtra("DestinationUserName",doctorInfo.getName());
+            startActivity(intent);
         });
     }
 
