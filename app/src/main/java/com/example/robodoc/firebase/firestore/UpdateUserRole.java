@@ -8,11 +8,10 @@ import androidx.fragment.app.FragmentManager;
 import com.example.robodoc.enums.UserKey;
 import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.realtimeDb.DatabaseKeys;
-import com.example.robodoc.fragments.ProgressIndicatorFragment;
+import com.example.robodoc.fragments.shared.ProgressIndicatorFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.firestore.DocumentReference;
 
 import java.util.Date;
 import java.util.HashMap;

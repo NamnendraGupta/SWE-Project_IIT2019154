@@ -6,7 +6,7 @@ import android.util.Log;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.robodoc.firebase.Globals;
-import com.example.robodoc.fragments.ProgressIndicatorFragment;
+import com.example.robodoc.fragments.shared.ProgressIndicatorFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 
 public class SignOut {

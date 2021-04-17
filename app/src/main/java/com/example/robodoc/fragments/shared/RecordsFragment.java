@@ -1,10 +1,12 @@
-package com.example.robodoc.fragments.user;
+package com.example.robodoc.fragments.shared;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,26 +17,12 @@ import android.widget.TextView;
 
 import com.example.robodoc.R;
 import com.example.robodoc.adapters.RecordListAdapter;
-import com.example.robodoc.classes.VitalInput;
+import com.example.robodoc.viewModels.user.RecordListViewModel;
 
-import java.util.ArrayList;
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RecordsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class RecordsFragment extends Fragment {
 
     public RecordsFragment() {
         // Required empty public constructor
-    }
-
-    public static RecordsFragment newInstance() {
-        RecordsFragment fragment = new RecordsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -52,39 +40,33 @@ public class RecordsFragment extends Fragment {
     private RecyclerView rcvRecords;
     private RecordListAdapter recordListAdapter;
     private TextView tvNoRecordsDisplay;
-    ArrayList<VitalInput> vitalInputsList;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        vitalInputsList=new ArrayList<>();
+
         rcvRecords=view.findViewById(R.id.rcvRecords);
         tvNoRecordsDisplay=view.findViewById(R.id.tvNoRecordDisplay);
-        recordListAdapter=new RecordListAdapter(getFragmentManager(),vitalInputsList);
 
-        LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
-        rcvRecords.setLayoutManager(layoutManager);
-        rcvRecords.setAdapter(recordListAdapter);
-    }
+        rcvRecords.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-    public void ShowList(ArrayList<VitalInput> list){
-        vitalInputsList=list;
-        if(vitalInputsList.size()==0){
-            rcvRecords.setVisibility(View.GONE);
-            tvNoRecordsDisplay.setVisibility(View.VISIBLE);
-        }
-        else {
-            rcvRecords.setVisibility(View.VISIBLE);
-            tvNoRecordsDisplay.setVisibility(View.GONE);
-            recordListAdapter=new RecordListAdapter(getFragmentManager(),vitalInputsList);
+        RecordListViewModel viewModel=new ViewModelProvider(requireActivity()).get(RecordListViewModel.class);
+
+        viewModel.GetRecordList().observe(getViewLifecycleOwner(), vitalInputs -> {
+            recordListAdapter=new RecordListAdapter(vitalInputs, Navigation.findNavController(view));
             rcvRecords.setAdapter(recordListAdapter);
             recordListAdapter.notifyDataSetChanged();
-        }
-    }
+        });
 
-    public void HideList(){
-        vitalInputsList=new ArrayList<>();
-        recordListAdapter.notifyDataSetChanged();
+        viewModel.GetListSize().observe(getViewLifecycleOwner(), integer -> {
+            if(integer==0){
+                rcvRecords.setVisibility(View.GONE);
+                tvNoRecordsDisplay.setVisibility(View.VISIBLE);
+            }
+            else {
+                rcvRecords.setVisibility(View.VISIBLE);
+                tvNoRecordsDisplay.setVisibility(View.GONE);
+            }
+        });
     }
 }

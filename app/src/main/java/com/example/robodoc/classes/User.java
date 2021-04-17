@@ -22,10 +22,6 @@ public class User {
         this.UID=UID;
     }
 
-    public void setUID(String UID) {
-        this.UID = UID;
-    }
-
     public void setEmailID(String emailID) {
         EmailID = emailID;
     }
@@ -58,28 +54,12 @@ public class User {
         isAdmin = admin;
     }
 
-    public String getUID() {
-        return UID;
-    }
-
-    public String getEmailID() {
-        return EmailID;
-    }
-
     public String getName() {
         return Name;
     }
 
     public Uri getPhotoURL() {
         return PhotoURL;
-    }
-
-    public long getDOB() {
-        return DOB;
-    }
-
-    public long getDateRegistered() {
-        return DateRegistered;
     }
 
     public Gender getGender() {

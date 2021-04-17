@@ -9,8 +9,6 @@
         android:id="@+id/menuAdmin"
         android:title="Admin Dashboard"
         android:visible="false" />
-    <item android:id="@+id/menuSetAlarm"
-        android:title="Set Reminder"/>
     <item
         android:id="@+id/menuLogout"
         android:title="Logout" />

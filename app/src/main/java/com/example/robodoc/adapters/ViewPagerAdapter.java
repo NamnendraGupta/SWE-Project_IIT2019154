@@ -5,9 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.robodoc.classes.VitalInput;
 import com.example.robodoc.enums.VitalInputType;
-import com.example.robodoc.fragments.user.VitalGraphFragment;
+import com.example.robodoc.fragments.shared.VitalGraphFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 

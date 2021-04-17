@@ -5,32 +5,21 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.robodoc.R;
-import com.google.android.material.snackbar.Snackbar;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ChooseInputMethod#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ChooseInputMethod extends Fragment {
 
     public ChooseInputMethod() {
         // Required empty public constructor
-    }
-
-    public static ChooseInputMethod newInstance() {
-        ChooseInputMethod fragment = new ChooseInputMethod();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -53,9 +42,17 @@ public class ChooseInputMethod extends Fragment {
         btnManualInput=view.findViewById(R.id.btnManualInput);
         btnRandomInput=view.findViewById(R.id.btnAutomaticGenerate);
 
-        btnManualInput.setOnClickListener(v -> ManualInput.newInstance().show(getFragmentManager(),"MANUAL INPUT"));
+        NavController navController= Navigation.findNavController(requireActivity(),R.id.navHostMain);
 
-        btnRandomInput.setOnClickListener(v -> RandomInput.newInstance().show(getFragmentManager(),"RANDOM INPUT"));
+        btnManualInput.setOnClickListener(v -> {
+            NavDirections action=ChooseInputMethodDirections.ActionInputManul();
+            navController.navigate(action);
+        });
+
+        btnRandomInput.setOnClickListener(v -> {
+            NavDirections action=ChooseInputMethodDirections.ActionInputRandom();
+            navController.navigate(action);
+        });
 
     }
 }

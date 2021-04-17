@@ -1,15 +1,12 @@
 package com.example.robodoc.utils;
 
 import com.example.robodoc.classes.VitalInput;
-import com.example.robodoc.enums.VitalSignsKey;
 
 import java.util.ArrayList;
 
 public class GetRecordAnalysis {
-    private ArrayList<VitalInput> recordList;
 
     public GetRecordAnalysis(ArrayList<VitalInput> recordList) {
-        this.recordList = recordList;
         n=recordList.size();
         for(int i=0;i<recordList.size();i++)
         {
@@ -110,8 +107,7 @@ public class GetRecordAnalysis {
             return Float.toString(AvgBT);
         }
         public String AverageBP() {
-            String s = "(" + AvgLBP + "," + AvgHBP + ")";
-            return s;
+            return "(" + AvgLBP + "," + AvgHBP + ")";
         }
         public String AverageOL()
         {
@@ -127,33 +123,27 @@ public class GetRecordAnalysis {
         }
         public String NormalBT()
         {
-            String s="97F-99F";
-            return s;
+            return "97F-99F";
         }
         public String NormalBP()
         {
-            String s="60-80,90-120 mmHg";
-            return s;
+            return "60-80,90-120 mmHg";
         }
     public String NormalOL()
     {
-        String s="75-100 mmHg";
-        return s;
+        return "75-100 mmHg";
     }
     public String NormalHR()
     {
-        String s="60-100 bpm";
-        return s;
+        return "60-100 bpm";
     }
     public String NormalGL()
     {
-        String s="70-100 mg/dL";
-        return s;
+        return "70-100 mg/dL";
     }
     public String MaxBP()
     {
-        String s="("+maxLBP+","+maxHBP+")";
-        return s;
+        return "("+maxLBP+","+maxHBP+")";
     }
     public String MaxBT()
     {
@@ -173,8 +163,7 @@ public class GetRecordAnalysis {
     }
     public String MinBP()
     {
-        String s="("+minLBP+","+minHBP+")";
-        return s;
+        return "("+minLBP+","+minHBP+")";
     }
     public String MinBT()
     {

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,27 +14,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.robodoc.R;
 import com.example.robodoc.adapters.DoctorListAdapter;
-import com.example.robodoc.adapters.UserListAdapter;
-import com.example.robodoc.classes.UserInfo;
-import com.example.robodoc.firebase.firestore.GetDoctorsList;
+import com.example.robodoc.fragments.shared.ProgressIndicatorFragment;
+import com.example.robodoc.viewModels.user.DoctorListViewModel;
 
-import java.util.ArrayList;
-
-public class DoctorListFragment extends Fragment implements GetDoctorsList.GetDoctorsListInterface {
+public class DoctorListFragment extends Fragment {
 
     public DoctorListFragment() {
         // Required empty public constructor
-    }
-
-    public static DoctorListFragment newInstance() {
-        DoctorListFragment fragment = new DoctorListFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -47,8 +38,8 @@ public class DoctorListFragment extends Fragment implements GetDoctorsList.GetDo
         return inflater.inflate(R.layout.fragment_doctor_list, container, false);
     }
 
-    RecyclerView rcvDoctors;
-    TextView tvNoUserDisplay;
+    private RecyclerView rcvDoctors;
+    private TextView tvNoUserDisplay;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -58,24 +49,29 @@ public class DoctorListFragment extends Fragment implements GetDoctorsList.GetDo
         tvNoUserDisplay=view.findViewById(R.id.tvDoctorNoUserDisplay);
         rcvDoctors.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        new GetDoctorsList(getFragmentManager(),this);
-    }
+        DoctorListViewModel viewModel=new ViewModelProvider(requireActivity()).get(DoctorListViewModel.class);
 
-    @Override
-    public void getDoctorsList(boolean result, ArrayList<UserInfo> userList) {
-        if(result){
-            if(userList.size()>0){
-                rcvDoctors.setVisibility(View.VISIBLE);
-                tvNoUserDisplay.setVisibility(View.GONE);
-                rcvDoctors.setAdapter(new DoctorListAdapter(userList,getFragmentManager()));
+        ProgressIndicatorFragment progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Syncing with Server","Loading List of Available Doctors");
+
+        viewModel.CheckDoctorListLoading().observe(getViewLifecycleOwner(),aBoolean -> {
+            if(aBoolean)
+                progressIndicatorFragment.show(getParentFragmentManager(),"LoadingDoctorsList");
+            else {
+                if(progressIndicatorFragment.isVisible())
+                    progressIndicatorFragment.dismiss();
+            }
+        });
+
+        viewModel.GetDoctorsList().observe(getViewLifecycleOwner(),userInfoArrayList -> {
+            if(userInfoArrayList.size()==0){
+                tvNoUserDisplay.setVisibility(View.VISIBLE);
+                rcvDoctors.setVisibility(View.GONE);
             }
             else {
-                rcvDoctors.setVisibility(View.GONE);
-                tvNoUserDisplay.setVisibility(View.VISIBLE);
+                tvNoUserDisplay.setVisibility(View.GONE);
+                rcvDoctors.setVisibility(View.VISIBLE);
+                rcvDoctors.setAdapter(new DoctorListAdapter(userInfoArrayList, Navigation.findNavController(view)));
             }
-        }
-        else {
-            Toast.makeText(getContext(),"Error in Fetching Doctor's List! Please Try Again",Toast.LENGTH_SHORT).show();
-        }
+        });
     }
 }

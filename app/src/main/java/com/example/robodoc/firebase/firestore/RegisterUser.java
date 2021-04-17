@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.realtimeDb.DatabaseKeys;
-import com.example.robodoc.fragments.ProgressIndicatorFragment;
+import com.example.robodoc.fragments.shared.ProgressIndicatorFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 

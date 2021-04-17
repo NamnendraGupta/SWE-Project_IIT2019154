@@ -127,45 +127,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView49" />
 
-        <FrameLayout
-            android:id="@+id/frameLayoutAssignedUser"
-            android:layout_width="0dp"
-            android:layout_height="280dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnCloseAssignedUser"
-            app:layout_constraintVertical_bias="0.0">
-
-        </FrameLayout>
-
         <Button
             android:id="@+id/btnViewAssignStats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
             android:text="View Statistics"
-            app:layout_constraintBottom_toBottomOf="@+id/btnCloseAssignedUser"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btnCloseAssignedUser"
-            app:layout_constraintTop_toTopOf="@+id/btnCloseAssignedUser" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/btnViewAssignRecords"
+            app:layout_constraintHorizontal_bias="0.545"
+            app:layout_constraintStart_toStartOf="@+id/btnViewAssignRecords"
+            app:layout_constraintTop_toBottomOf="@+id/btnViewAssignRecords"
+            app:layout_constraintVertical_bias="0.0" />
 
         <Button
-            android:id="@+id/btnCloseAssignedUser"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:id="@+id/btnViewAssignRecords"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="8dp"
-            android:text="Close"
-            app:layout_constraintEnd_toStartOf="@+id/btnViewAssignStats"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"
+            android:text="View Records"
+            app:layout_constraintEnd_toEndOf="@+id/btnViewUserInteraction"
+            app:layout_constraintStart_toStartOf="@+id/btnViewUserInteraction"
             app:layout_constraintTop_toBottomOf="@+id/btnViewUserInteraction" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

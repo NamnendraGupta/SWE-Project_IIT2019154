@@ -1,12 +1,9 @@
 package com.example.robodoc.fragments.user;
 
-import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.util.Pair;
@@ -26,22 +23,10 @@ import com.example.robodoc.utils.GetRandomGlucoseLevel;
 import com.example.robodoc.utils.GetRandomHeartRate;
 import com.example.robodoc.utils.GetRandomOxygenLevel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RandomInput#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class RandomInput extends DialogFragment implements UploadVitalInput.UploadVitalInputInterface {
+public class RandomInput extends Fragment implements UploadVitalInput.UploadVitalInputInterface {
 
     public RandomInput() {
         // Required empty public constructor
-    }
-
-    public static RandomInput newInstance() {
-        RandomInput fragment = new RandomInput();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -76,13 +61,10 @@ public class RandomInput extends DialogFragment implements UploadVitalInput.Uplo
         tvHeartRate=view.findViewById(R.id.tvHeartRate);
 
         generateRandomInput();
-        getDialog().setCanceledOnTouchOutside(false);
-
-        btnCancel.setOnClickListener(v -> getDialog().dismiss());
 
         btnReGenerate.setOnClickListener(v -> generateRandomInput());
 
-        btnSubmit.setOnClickListener(v -> new UploadVitalInput(getFragmentManager(),RandomInput.this,vitalInput.getInitialHashMap()));
+        btnSubmit.setOnClickListener(v -> new UploadVitalInput(getParentFragmentManager(),RandomInput.this,vitalInput.getInitialHashMap()));
     }
 
     private void generateRandomInput(){
@@ -110,7 +92,6 @@ public class RandomInput extends DialogFragment implements UploadVitalInput.Uplo
     public void OnUpload(boolean result) {
         if(result){
             Toast.makeText(getContext(),"Data Uploaded Successfully",Toast.LENGTH_LONG).show();
-            getDialog().dismiss();
         }
         else {
             Toast.makeText(getContext(),"Error in Uploading Data! Please Try Again",Toast.LENGTH_LONG).show();

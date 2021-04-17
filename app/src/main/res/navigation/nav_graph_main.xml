@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/placeholderMain">
+
+    <fragment
+        android:id="@+id/placeholderMain"
+        android:name="com.example.robodoc.fragments.user.UserFragmentHome"
+        android:label="User Dashboard"
+        tools:layout="@layout/fragment_user_home">
+        <action
+            android:id="@+id/actionMainToInput"
+            app:destination="@id/frgChooseInput" />
+        <action
+            android:id="@+id/ActionMainToDoctorList"
+            app:destination="@id/frgDoctorList" />
+        <action
+            android:id="@+id/ActionMainToRecords"
+            app:destination="@id/recordsFragment" />
+        <action
+            android:id="@+id/ActionMainToStats"
+            app:destination="@id/frgUserStats" />
+        <action
+            android:id="@+id/ActionMainToAlarm"
+            app:destination="@id/frgAlarmSetter" />
+    </fragment>
+    <fragment
+        android:id="@+id/frgChooseInput"
+        android:name="com.example.robodoc.fragments.user.ChooseInputMethod"
+        android:label="Choose the Type of Input"
+        tools:layout="@layout/fragment_choose_input_method">
+        <action
+            android:id="@+id/ActionInputManul"
+            app:destination="@id/manualInput" />
+        <action
+            android:id="@+id/ActionInputRandom"
+            app:destination="@id/randomInput" />
+    </fragment>
+    <fragment
+        android:id="@+id/manualInput"
+        android:name="com.example.robodoc.fragments.user.ManualInput"
+        android:label="Manual Input"
+        tools:layout="@layout/fragment_manual_input" />
+    <fragment
+        android:id="@+id/randomInput"
+        android:name="com.example.robodoc.fragments.user.RandomInput"
+        android:label="Random Input"
+        tools:layout="@layout/fragment_random_input" />
+    <fragment
+        android:id="@+id/frgDoctorList"
+        android:name="com.example.robodoc.fragments.user.DoctorListFragment"
+        android:label="Doctors List"
+        tools:layout="@layout/fragment_doctor_list">
+        <action
+            android:id="@+id/ActionDoctorInfo"
+            app:destination="@id/frgDoctorInfo" />
+    </fragment>
+    <fragment
+        android:id="@+id/frgDoctorInfo"
+        android:name="com.example.robodoc.fragments.user.DoctorInfoFragment"
+        android:label="Doctor Information"
+        tools:layout="@layout/fragment_doctor_info" >
+        <argument
+            android:name="ListPosition"
+            app:argType="integer" />
+        <action
+            android:id="@+id/ActionUserToInteraction"
+            app:destination="@id/chatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recordsFragment"
+        android:name="com.example.robodoc.fragments.shared.RecordsFragment"
+        android:label="Records List"
+        tools:layout="@layout/fragment_records">
+        <action
+            android:id="@+id/ActionRecordInfo"
+            app:destination="@id/recordDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recordDetailFragment"
+        android:name="com.example.robodoc.fragments.shared.RecordDetailFragment"
+        android:label="Record Detail"
+        tools:layout="@layout/fragment_record_detail">
+        <argument
+            android:name="InputID"
+            app:argType="string" />
+        <argument
+            android:name="TimeOfInput"
+            app:argType="long" />
+        <argument
+            android:name="HighBP"
+            app:argType="integer" />
+        <argument
+            android:name="LowBP"
+            app:argType="integer" />
+        <argument
+            android:name="GlucoseLevel"
+            app:argType="integer" />
+        <argument
+            android:name="HeartRate"
+            app:argType="integer" />
+        <argument android:name="OxygenLevel"
+            app:argType="integer" />
+        <argument
+            android:name="BodyTemperature"
+            app:argType="float" />
+        <argument
+            android:name="InputType"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/frgUserStats"
+        android:name="com.example.robodoc.fragments.shared.UserStatsFragment"
+        android:label="User Statistics"
+        tools:layout="@layout/fragment_user_stats" />
+    <fragment
+        android:id="@+id/frgAlarmSetter"
+        android:name="com.example.robodoc.fragments.user.AlarmSetterFragment"
+        android:label="Set Reminder"
+        tools:layout="@layout/fragment_alarm_setter" />
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.robodoc.fragments.shared.ChatFragment"
+        android:label="Interactions"
+        tools:layout="@layout/fragment_chat" >
+        <argument android:name="IsRoleDoctor"
+            app:argType="boolean" />
+        <argument
+            android:name="DestinationUID"
+            app:argType="string" />
+        <argument
+            android:name="DestinationUserName"
+            app:argType="string" />
+    </fragment>
+</navigation>

@@ -1,7 +1,5 @@
 package com.example.robodoc.receiver;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +9,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.robodoc.R;
-import com.example.robodoc.activities.AlarmActivity;
 
 public class AlarmReceiver extends BroadcastReceiver {
     @Override

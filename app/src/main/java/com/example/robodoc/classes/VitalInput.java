@@ -1,7 +1,5 @@
 package com.example.robodoc.classes;
 
-import android.os.Bundle;
-
 import com.example.robodoc.enums.VitalSignsKey;
 import com.google.firebase.database.DataSnapshot;
 
@@ -56,42 +54,16 @@ public class VitalInput {
         return hash;
     }
 
-    public Bundle getRecordBundle(){
-        Bundle bundle=new Bundle();
-        bundle.putString(VitalSignsKey.INPUT_ID,InputID);
-        bundle.putLong(VitalSignsKey.INPUT_TIME,TimeOfInput);
-        bundle.putInt(VitalSignsKey.BP_HIGH,HighBP);
-        bundle.putInt(VitalSignsKey.BP_LOW,LowBP);
-        bundle.putFloat(VitalSignsKey.BODY_TEMP,BodyTemperature);
-        bundle.putInt(VitalSignsKey.GLUCOSE_LEVEL,GlucoseLevel);
-        bundle.putInt(VitalSignsKey.HEART_RATE,HeartRate);
-        bundle.putInt(VitalSignsKey.OXYGEN_LEVEL,OxygenLevel);
-        bundle.putString(VitalSignsKey.INPUT_TYPE,InputType.toString());
-        return bundle;
-    }
-
     public VitalInputType getInputType() {
         return InputType;
-    }
-
-    public void setInputType(VitalInputType inputType) {
-        InputType = inputType;
     }
 
     public String getInputID() {
         return InputID;
     }
 
-    public void setInputID(String inputID) {
-        InputID = inputID;
-    }
-
     public Long getTimeOfInput() {
         return TimeOfInput;
-    }
-
-    public void setTimeOfInput(Long timeOfInput) {
-        TimeOfInput = timeOfInput;
     }
 
     public int getHighBP() {

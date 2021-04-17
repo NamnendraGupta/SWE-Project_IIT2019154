@@ -2,16 +2,12 @@ package com.example.robodoc.firebase.firestore;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.realtimeDb.DatabaseKeys;
-import com.example.robodoc.fragments.ProgressIndicatorFragment;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.robodoc.fragments.shared.ProgressIndicatorFragment;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 public class FetchCurrentUserInfo {

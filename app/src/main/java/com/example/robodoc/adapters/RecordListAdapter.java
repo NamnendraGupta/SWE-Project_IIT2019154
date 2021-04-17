@@ -1,6 +1,5 @@
 package com.example.robodoc.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,31 +7,31 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.robodoc.R;
 import com.example.robodoc.classes.VitalInput;
-import com.example.robodoc.fragments.user.RecordDetailFragment;
+import com.example.robodoc.fragments.shared.RecordsFragmentDirections;
+import com.example.robodoc.utils.DateTimeUtils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.ViewHolder> {
 
-    ArrayList<VitalInput> recordList;
-    FragmentManager manager;
+    private final ArrayList<VitalInput> recordList;
+    private final NavController navController;
 
-    public RecordListAdapter(FragmentManager manager, ArrayList<VitalInput> recordList){
-        this.manager=manager;
+    public RecordListAdapter(ArrayList<VitalInput> recordList, NavController navController){
         this.recordList=recordList;
+        this.navController=navController;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvNum, tvDate, tvTime, tvID;
-        Button btnViewDetails;
+        private final TextView tvNum, tvDate, tvTime, tvID;
+        private final Button btnViewDetails;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -55,18 +54,13 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull RecordListAdapter.ViewHolder holder, int position) {
+        String positionText= Integer.toString(position+1);
         VitalInput record=recordList.get(position);
-        holder.tvNum.setText(Integer.toString(position+1));
-        holder.tvDate.setText(getRecordDate(record.getTimeOfInput()));
-        holder.tvTime.setText(getRecordTime(record.getTimeOfInput()));
+        holder.tvNum.setText(positionText);
+        holder.tvDate.setText(DateTimeUtils.getDisplayDate(record.getTimeOfInput()));
+        holder.tvTime.setText(DateTimeUtils.getDisplayTime(record.getTimeOfInput()));
         holder.tvID.setText(record.getInputID());
-        holder.btnViewDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RecordDetailFragment recordFragment=RecordDetailFragment.newInstance(record);
-                recordFragment.show(manager,"RECORD DETAILS");
-            }
-        });
+        holder.btnViewDetails.setOnClickListener(v -> showRecordDetails(record));
     }
 
     @Override
@@ -74,53 +68,18 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
         return recordList.size();
     }
 
-    private String getRecordTime(Long time){
-        Calendar calendar=Calendar.getInstance();
-        calendar.setTime(new Date(time));
-        String stringTime="";
-
-        int hour=calendar.get(Calendar.HOUR);
-        int minute=calendar.get(Calendar.MINUTE);
-
-        if(hour==0)
-            stringTime+="12:";
-        else{
-            if(hour<10)
-                stringTime+="0";
-            stringTime+=hour+":";
-        }
-
-        if(minute<10)
-            stringTime+="0";
-        stringTime+=minute+" ";
-
-        if(calendar.get(Calendar.AM_PM)==1)
-            stringTime+="PM";
-        else
-            stringTime+="AM";
-
-        return stringTime;
-    }
-
-    private String getRecordDate(Long time){
-        Calendar calendar=Calendar.getInstance();
-        calendar.setTime(new Date(time));
-        String stringDate="";
-
-        int day=calendar.get(Calendar.DAY_OF_MONTH);
-        int month=calendar.get(Calendar.MONTH)+1;
-        int year=calendar.get(Calendar.YEAR);
-
-        if(day<10)
-            stringDate+="0";
-        stringDate+=day+"-";
-
-        if(month<10)
-            stringDate+="0";
-        stringDate+=month+"-";
-
-        stringDate+=year;
-
-        return stringDate;
+    private void showRecordDetails(VitalInput record){
+        NavDirections action= RecordsFragmentDirections.ActionRecordInfo(
+                        record.getInputID(),
+                        record.getTimeOfInput(),
+                        record.getHighBP(),
+                        record.getLowBP(),
+                        record.getGlucoseLevel(),
+                        record.getHeartRate(),
+                        record.getOxygenLevel(),
+                        record.getBodyTemperature(),
+                        record.getInputType().toString()
+                );
+        navController.navigate(action);
     }
 }

@@ -1,6 +1,10 @@
 package com.example.robodoc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,46 +19,35 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class AdminActivity extends AppCompatActivity implements SignOut.SignOutInterface {
 
-    MaterialToolbar toolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        toolbar=findViewById(R.id.adminToolbar);
+        MaterialToolbar toolbar=findViewById(R.id.adminToolbar);
 
-        updateInterface();
+        NavController navController= Navigation.findNavController(this,R.id.navHostAdmin);
+        AppBarConfiguration appBarConfiguration=new AppBarConfiguration.Builder(navController.getGraph()).build();
+        NavigationUI.setupWithNavController(toolbar,navController,appBarConfiguration);
+
+        if(Globals.isUserDoctor())
+            toolbar.getMenu().findItem(R.id.aMenuDoctor).setVisible(true);
 
         toolbar.setOnMenuItemClickListener(item -> {
             Menu menu=toolbar.getMenu();
-            if(item==menu.findItem(R.id.aMenuDoctor))
-                startDoctorActivity();
-            else if(item==menu.findItem(R.id.aMenuUser))
-                startMainActivity();
-            else if(item==menu.findItem(R.id.aMenuLogout))
-                signOut();
+            if(item==menu.findItem(R.id.aMenuDoctor)){
+                startActivity(new Intent(this,DoctorActivity.class));
+                this.finish();
+            }
+            else if(item==menu.findItem(R.id.aMenuUser)){
+                startActivity(new Intent(this, MainActivity.class));
+                this.finish();
+            }
+            else if(item==menu.findItem(R.id.aMenuLogout)){
+                new SignOut(this,this,getSupportFragmentManager());
+            }
             return false;
         });
-    }
-
-    private void updateInterface(){
-        if(Globals.isUserDoctor())
-            toolbar.getMenu().findItem(R.id.aMenuDoctor).setVisible(true);
-    }
-
-    private void startDoctorActivity(){
-        startActivity(new Intent(this,DoctorActivity.class));
-        this.finish();
-    }
-
-    private void startMainActivity(){
-        startActivity(new Intent(this, MainActivity.class));
-        this.finish();
-    }
-
-    private void signOut(){
-        new SignOut(this,this,getSupportFragmentManager());
     }
 
     @Override

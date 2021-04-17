@@ -2,14 +2,10 @@ package com.example.robodoc.firebase.realtimeDb;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.robodoc.firebase.Globals;
-import com.example.robodoc.fragments.ProgressIndicatorFragment;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabLayout;
+import com.example.robodoc.fragments.shared.ProgressIndicatorFragment;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.Date;

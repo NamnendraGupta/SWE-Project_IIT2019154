@@ -1,12 +1,14 @@
 package com.example.robodoc.fragments.doctor;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,35 +18,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.robodoc.R;
-import com.example.robodoc.activities.ChatActivity;
-import com.example.robodoc.activities.UserStatsActivity;
 import com.example.robodoc.classes.UserInfo;
-import com.example.robodoc.classes.VitalInput;
-import com.example.robodoc.firebase.realtimeDb.GetVitalRecord;
-import com.example.robodoc.fragments.user.RecordsFragment;
+import com.example.robodoc.fragments.shared.ProgressIndicatorFragment;
+import com.example.robodoc.viewModels.doctor.UserListViewModel;
+import com.example.robodoc.viewModels.user.RecordListViewModel;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-
-public class AssignedUserListInfoFragment extends Fragment implements GetVitalRecord.GetVitalRecordInterface {
+public class AssignedUserListInfoFragment extends Fragment {
 
     public AssignedUserListInfoFragment() {
         // Required empty public constructor
     }
 
-    public static AssignedUserListInfoFragment newInstance(UserInfo userInfo) {
-        AssignedUserListInfoFragment fragment = new AssignedUserListInfoFragment();
-        fragment.userInfo=userInfo;
-        return fragment;
-    }
-
-    private UserInfo userInfo;
-    public static ArrayList<VitalInput> vitalInputList;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        recordsFragment=RecordsFragment.newInstance();
     }
 
     @Override
@@ -54,80 +42,74 @@ public class AssignedUserListInfoFragment extends Fragment implements GetVitalRe
         return inflater.inflate(R.layout.fragment_assigned_user_list_info, container, false);
     }
 
-    TextView tvName, tvEmail, tvGender;
-    Button btnClose, btnViewStats, btnViewInteraction;
-    ImageView imgUser;
-
-    RecordsFragment recordsFragment;
+    private UserInfo userInfo;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        vitalInputList=new ArrayList<>();
 
-        tvName=view.findViewById(R.id.tvAssignedUserName);
-        tvEmail=view.findViewById(R.id.tvAssignedUserEmail);
-        tvGender=view.findViewById(R.id.tvAssignedUserGender);
-        btnClose=view.findViewById(R.id.btnCloseAssignedUser);
-        btnViewStats=view.findViewById(R.id.btnViewAssignStats);
-        btnViewInteraction=view.findViewById(R.id.btnViewUserInteraction);
-        imgUser=view.findViewById(R.id.imgAssignedUser);
+        UserListViewModel viewModel=new ViewModelProvider(requireActivity()).get(UserListViewModel.class);
+        userInfo=viewModel.GetUserInfo(AssignedUserListInfoFragmentArgs.fromBundle(getArguments()).getListPosition());
+
+        TextView tvName = view.findViewById(R.id.tvAssignedUserName);
+        TextView tvEmail = view.findViewById(R.id.tvAssignedUserEmail);
+        TextView tvGender = view.findViewById(R.id.tvAssignedUserGender);
+        Button btnViewStats = view.findViewById(R.id.btnViewAssignStats);
+        Button btnViewInteraction = view.findViewById(R.id.btnViewUserInteraction);
+        Button btnViewRecords = view.findViewById(R.id.btnViewAssignRecords);
+        ImageView imgUser = view.findViewById(R.id.imgAssignedUser);
 
         tvName.setText(userInfo.getName());
         tvEmail.setText(userInfo.getEmail());
         tvGender.setText(userInfo.getGender().toString());
         Picasso.get().load(userInfo.getPhotoUrl()).into(imgUser);
 
-        btnClose.setOnClickListener(v -> {
-            getFragmentManager()
-                    .beginTransaction()
-                    .hide(getFragmentManager().findFragmentByTag("Assigned User Fragment "+userInfo.getUID()))
-                    .remove(getFragmentManager().findFragmentByTag("Assigned User Fragment "+userInfo.getUID()))
-                    .show(getFragmentManager().findFragmentByTag("AssignedUserList"))
-                    .commit();
+        NavController navController= Navigation.findNavController(requireActivity(),R.id.navHostDoctor);
 
-        });
-
-        btnViewStats.setOnClickListener(v -> {
-            Intent intent=new Intent(getActivity(), UserStatsActivity.class);
-            intent.putExtra("SOURCE","DOCTOR");
-            intent.putExtra("NAME",userInfo.getName());
-            startActivity(intent);
-        });
+        btnViewStats.setOnClickListener(v -> navController.navigate(R.id.userStatsFragment));
 
         btnViewInteraction.setOnClickListener(v -> {
-            Intent intent=new Intent(getActivity(), ChatActivity.class);
-            intent.putExtra("IsDoctor",true);
-            intent.putExtra("DestinationUID",userInfo.getUID());
-            intent.putExtra("DestinationUserName",userInfo.getName());
-            startActivity(intent);
+            NavDirections action=AssignedUserListInfoFragmentDirections.ActionDoctorToInteraction(
+                    true,
+                    userInfo.getUID(),
+                    userInfo.getName()
+            );
+            navController.navigate(action);
         });
 
-        new GetVitalRecord(this,userInfo.getUID());
+        btnViewRecords.setOnClickListener(v -> {
+            NavDirections action=AssignedUserListInfoFragmentDirections.actionAssignedUserListInfoFragmentToRecordsFragment();
+            navController.navigate(action);
+        });
 
-        getChildFragmentManager().beginTransaction()
-                .add(R.id.frameLayoutAssignedUser,recordsFragment,"Records Fragment")
-                .show(recordsFragment)
-                .commit();
-    }
+        RecordListViewModel viewModel1=new ViewModelProvider(requireActivity()).get(RecordListViewModel.class);
+        viewModel1.setUserUId(userInfo.getUID());
 
-    @Override
-    public void onNewRecordObtained(boolean hasRecords, VitalInput newRecord) {
-        if(hasRecords){
-            for(int i=0;i<vitalInputList.size();i++){
-                if(vitalInputList.get(i).getInputID().equals(newRecord.getInputID()))
-                    return;
+        ProgressIndicatorFragment progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Syncing with Server","Fetching Records of "+userInfo.getName());
+
+        viewModel1.CheckIsListLoading().observe(getViewLifecycleOwner(), aBoolean -> {
+            if(aBoolean){
+                progressIndicatorFragment.show(getParentFragmentManager(),"FetchingUserRecords");
             }
-            vitalInputList.add(newRecord);
-            recordsFragment.ShowList(vitalInputList);
-            if(vitalInputList.size()<2){
+            else {
+                if(progressIndicatorFragment.isVisible())
+                    progressIndicatorFragment.dismiss();
+            }
+        });
+
+        viewModel1.GetListSize().observe(getViewLifecycleOwner(), integer -> {
+            if(integer==0){
+                btnViewRecords.setVisibility(View.GONE);
+                btnViewStats.setVisibility(View.GONE);
+            }
+            else if(integer==1){
+                btnViewRecords.setVisibility(View.VISIBLE);
                 btnViewStats.setVisibility(View.GONE);
             }
             else {
+                btnViewRecords.setVisibility(View.VISIBLE);
                 btnViewStats.setVisibility(View.VISIBLE);
             }
-        }
-        else
-            recordsFragment.HideList();
+        });
     }
 }

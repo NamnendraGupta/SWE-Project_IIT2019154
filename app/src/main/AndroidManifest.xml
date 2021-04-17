@@ -11,9 +11,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RoboDoc"
         android:windowSoftInputMode="adjustResize|adjustPan">
-        <activity android:name=".activities.AlarmActivity"></activity>
-        <activity android:name=".activities.ChatActivity" />
-        <activity android:name=".activities.UserStatsActivity" />
         <activity android:name=".activities.DoctorActivity" />
         <activity android:name=".activities.AdminActivity" />
         <activity android:name=".activities.RegisterActivity" />

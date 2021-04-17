@@ -1,14 +1,13 @@
-package com.example.robodoc.fragments.user;
+package com.example.robodoc.fragments.shared;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +15,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.robodoc.R;
-import com.example.robodoc.activities.MainActivity;
-import com.example.robodoc.activities.UserStatsActivity;
 import com.example.robodoc.classes.VitalInput;
 import com.example.robodoc.enums.VitalInputType;
 import com.example.robodoc.utils.CustomXAxisRenderer;
-import com.example.robodoc.utils.GetRandomHeartRate;
 import com.example.robodoc.utils.GetRecordAnalysis;
+import com.example.robodoc.viewModels.user.RecordListViewModel;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -67,8 +64,6 @@ public class VitalGraphFragment extends Fragment {
     TextView tvAverage, tvMaximum, tvMinimum, tvInRange, tvAboveRange, tvBelowRange, tvNormalRange;
     Button btnClose;
 
-    private GetRecordAnalysis getRecordAnalysis;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,8 +83,13 @@ public class VitalGraphFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        arrayList = ((UserStatsActivity)getActivity()).getVitalInputList();
-        getRecordAnalysis=new GetRecordAnalysis(arrayList);
+        RecordListViewModel viewModel=new ViewModelProvider(requireActivity()).get(RecordListViewModel.class);
+
+        viewModel.GetRecordList().observe(getViewLifecycleOwner(), vitalInputs -> {
+            arrayList = vitalInputs;
+            drawGraph();
+        });
+
         chart =  view.findViewById(R.id.chart);
 
         tvNormalRange=view.findViewById(R.id.tvGraphNormalRange);
@@ -100,21 +100,17 @@ public class VitalGraphFragment extends Fragment {
         tvAboveRange=view.findViewById(R.id.tvGraphAbove);
         tvBelowRange=view.findViewById(R.id.tvGraphBelow);
         btnClose=view.findViewById(R.id.btnCloseGraphActivity);
+    }
 
-        int a=5,b=6;
-        String dataStr="("+a+","+b+")";
-        tvNormalRange.setText(dataStr);
-
-        btnClose.setOnClickListener(v -> {
-            getActivity().onBackPressed();
-        });
+    private void drawGraph(){
+        GetRecordAnalysis getRecordAnalysis = new GetRecordAnalysis(arrayList);
 
         chart.setXAxisRenderer(new CustomXAxisRenderer(chart.getViewPortHandler(),chart.getXAxis(),chart.getTransformer(YAxis.AxisDependency.LEFT)));
         chart.getXAxis().setYOffset(10);
         chart.getDescription().setEnabled(false);
         chart.setExtraTopOffset(5);
 
-        List<Entry> entries = new ArrayList<Entry>();
+        List<Entry> entries = new ArrayList<>();
         final String[] quarters;
         quarters = new String[arrayList.size()];
         for(int i=0;i<arrayList.size();i++)
@@ -223,7 +219,7 @@ public class VitalGraphFragment extends Fragment {
 
 
             case BLOOD_PRESSURE:
-                List<Entry> entries1 = new ArrayList<Entry>();
+                List<Entry> entries1 = new ArrayList<>();
                 for(int i=0;i<arrayList.size();i++) {
                     int H=arrayList.get(i).getHighBP();
                     int L=arrayList.get(i).getLowBP();
@@ -237,7 +233,7 @@ public class VitalGraphFragment extends Fragment {
 
                 LineDataSet dataSet6 = new LineDataSet(entries, "High BP");
                 LineDataSet dataSet7 = new LineDataSet(entries1,"Low BP");
-                List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+                List<ILineDataSet> dataSets = new ArrayList<>();
                 dataSets.add(dataSet6);
                 dataSets.add(dataSet7);
                 LineData data = new LineData(dataSets);
@@ -291,9 +287,7 @@ public class VitalGraphFragment extends Fragment {
                 tvBelowRange.setText(getRecordAnalysis.BelowNormalBT());
 
                 break;
-
         }
-
     }
 
 }

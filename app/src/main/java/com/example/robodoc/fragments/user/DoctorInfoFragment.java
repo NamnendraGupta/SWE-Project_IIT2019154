@@ -1,15 +1,13 @@
 package com.example.robodoc.fragments.user;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,32 +18,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.robodoc.R;
-import com.example.robodoc.activities.ChatActivity;
 import com.example.robodoc.classes.UserInfo;
 import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.realtimeDb.AssignDoctorToUser;
 import com.example.robodoc.firebase.realtimeDb.CancelCurrentAppointment;
+import com.example.robodoc.viewModels.user.DoctorListViewModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Picasso;
 
-public class DoctorInfoFragment extends DialogFragment implements AssignDoctorToUser.AssignDoctorToUserInterface, CancelCurrentAppointment.CancelCurrentAppointmentInterface {
+public class DoctorInfoFragment extends Fragment implements AssignDoctorToUser.AssignDoctorToUserInterface, CancelCurrentAppointment.CancelCurrentAppointmentInterface {
 
     public DoctorInfoFragment() {
         // Required empty public constructor
     }
 
     private UserInfo doctorInfo;
-
-    public DoctorInfoFragment(UserInfo doctorInfo){
-        this.doctorInfo=doctorInfo;
-    }
-
-    public static DoctorInfoFragment newInstance() {
-        DoctorInfoFragment fragment = new DoctorInfoFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,32 +46,23 @@ public class DoctorInfoFragment extends DialogFragment implements AssignDoctorTo
         return inflater.inflate(R.layout.fragment_doctor_info, container, false);
     }
 
-    TextView tvName, tvEmail;
-    ImageView imgPhoto;
-    Button btnRequestForAppointment, btnClose, btnViewInteraction, btnCancelAppointment;
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getDialog().setCanceledOnTouchOutside(false);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        DoctorListViewModel viewModel=new ViewModelProvider(requireActivity()).get(DoctorListViewModel.class);
+        doctorInfo=viewModel.getDoctorInfo(DoctorInfoFragmentArgs.fromBundle(getArguments()).getListPosition());
 
-        tvName=view.findViewById(R.id.tvDoctorInfoName);
-        tvEmail=view.findViewById(R.id.tvDoctorInfoEmail);
-        imgPhoto=view.findViewById(R.id.imgDoctorInfo);
-        btnRequestForAppointment=view.findViewById(R.id.btnDoctorInfoRequest);
-        btnClose=view.findViewById(R.id.btnDoctorInfoCancel);
-        btnViewInteraction=view.findViewById(R.id.btnViewInteraction);
-        btnCancelAppointment=view.findViewById(R.id.btnCancelAppointment);
+        TextView tvName = view.findViewById(R.id.tvDoctorInfoName);
+        TextView tvEmail = view.findViewById(R.id.tvDoctorInfoEmail);
+        ImageView imgPhoto = view.findViewById(R.id.imgDoctorInfo);
+        Button btnRequestForAppointment = view.findViewById(R.id.btnDoctorInfoRequest);
+        Button btnViewInteraction = view.findViewById(R.id.btnViewInteraction);
+        Button btnCancelAppointment = view.findViewById(R.id.btnCancelAppointment);
 
         tvName.setText(doctorInfo.getName());
         tvEmail.setText(doctorInfo.getEmail());
         Picasso.get().load(doctorInfo.getPhotoUrl()).into(imgPhoto);
-
-        btnClose.setOnClickListener(v -> {
-            getDialog().dismiss();
-        });
 
         if(Globals.getCurrentUser().isDoctorAssigned()){
             btnRequestForAppointment.setVisibility(View.GONE);
@@ -104,50 +82,30 @@ public class DoctorInfoFragment extends DialogFragment implements AssignDoctorTo
         }
 
         btnRequestForAppointment.setOnClickListener(v -> {
-            MaterialAlertDialogBuilder alertDialogBuilder=new MaterialAlertDialogBuilder(getActivity())
+            MaterialAlertDialogBuilder alertDialogBuilder=new MaterialAlertDialogBuilder(requireActivity())
                     .setTitle("Message")
                     .setMessage("Are You Sure you want to Request for Appointment with "+doctorInfo.getName()+"?")
-                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            new AssignDoctorToUser(Globals.getCurrentUserUid(),doctorInfo.getUID(),getFragmentManager(),DoctorInfoFragment.this);
-                        }
-                    })
-                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
+                    .setPositiveButton("YES", (dialog, which) -> new AssignDoctorToUser(Globals.getCurrentUserUid(),doctorInfo.getUID(),getParentFragmentManager(),DoctorInfoFragment.this))
+                    .setNegativeButton("NO", (dialog, which) -> dialog.cancel());
             alertDialogBuilder.create().show();
         });
 
         btnCancelAppointment.setOnClickListener(v -> {
-            MaterialAlertDialogBuilder alertDialogBuilder=new MaterialAlertDialogBuilder(getActivity())
+            MaterialAlertDialogBuilder alertDialogBuilder=new MaterialAlertDialogBuilder(requireActivity())
                     .setTitle("Warning")
                     .setMessage("Are You Sure you want to Cancel your Appointment with "+doctorInfo.getName()+"?\nYour Entire Interaction will be lost!")
-                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            new CancelCurrentAppointment(getFragmentManager(),DoctorInfoFragment.this,Globals.getCurrentUserUid(),doctorInfo.getUID());
-
-                        }
-                    })
-                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
+                    .setPositiveButton("YES", (dialog, which) -> new CancelCurrentAppointment(getParentFragmentManager(),DoctorInfoFragment.this,Globals.getCurrentUserUid(),doctorInfo.getUID()))
+                    .setNegativeButton("NO", (dialog, which) -> dialog.cancel());
             alertDialogBuilder.create().show();
         });
 
         btnViewInteraction.setOnClickListener(v -> {
-            Intent intent=new Intent(getActivity(), ChatActivity.class);
-            intent.putExtra("IsDoctor",false);
-            intent.putExtra("DestinationUID",doctorInfo.getUID());
-            intent.putExtra("DestinationUserName",doctorInfo.getName());
-            startActivity(intent);
+            NavDirections action=DoctorInfoFragmentDirections.ActionUserToInteraction(
+                    false,
+                    doctorInfo.getUID(),
+                    doctorInfo.getName()
+            );
+            Navigation.findNavController(view).navigate(action);
         });
     }
 
@@ -156,7 +114,6 @@ public class DoctorInfoFragment extends DialogFragment implements AssignDoctorTo
         if(result){
             Globals.getCurrentUser().setDoctorAssigned(true);
             Globals.getCurrentUser().setAssignedDoctorUID(doctorInfo.getUID());
-            getDialog().dismiss();
             Toast.makeText(getActivity(),"Doctor Assigned Successfully",Toast.LENGTH_SHORT).show();
         }
         else {
@@ -169,7 +126,6 @@ public class DoctorInfoFragment extends DialogFragment implements AssignDoctorTo
         if(result){
             Globals.getCurrentUser().setDoctorAssigned(false);
             Globals.getCurrentUser().setAssignedDoctorUID(null);
-            getDialog().dismiss();
             Toast.makeText(getActivity(),"Appointment Canceled Successfully",Toast.LENGTH_SHORT).show();
         }
         else {

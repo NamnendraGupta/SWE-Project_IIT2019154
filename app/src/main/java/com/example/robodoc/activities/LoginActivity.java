@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.auth.SignInWithGoogle;
-import com.example.robodoc.fragments.ProgressIndicatorFragment;
+import com.example.robodoc.fragments.shared.ProgressIndicatorFragment;
 import com.example.robodoc.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;

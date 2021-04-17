@@ -1,23 +1,24 @@
-package com.example.robodoc.activities;
-
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
+package com.example.robodoc.fragments.user;
 
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.fragment.app.Fragment;
+
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -29,7 +30,9 @@ import com.google.android.material.timepicker.TimeFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AlarmActivity extends AppCompatActivity {
+import static android.content.Context.MODE_PRIVATE;
+
+public class AlarmSetterFragment extends Fragment {
 
     private TextView tvCurrentStatus;
 
@@ -40,33 +43,42 @@ public class AlarmActivity extends AppCompatActivity {
 
     public static final String CHANNEL_ID="AlarmNotificationChannelID";
 
+
+    public AlarmSetterFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alarm);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_alarm_setter, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         createNotificationChannel();
 
-        sharedPreferences=getSharedPreferences("ALARM",MODE_PRIVATE);
+        sharedPreferences=requireActivity().getSharedPreferences("ALARM",MODE_PRIVATE);
         isAlarmSet=sharedPreferences.getBoolean("IsAlarmSet",false);
         AlarmMinute=sharedPreferences.getInt("AlarmMinute",0);
         AlarmHour=sharedPreferences.getInt("AlarmHour",0);
 
-        tvCurrentStatus=findViewById(R.id.tvAlarmCurrentStatus);
-        Button btnUpdateAlarm = findViewById(R.id.btnUpdateAlarm);
-        Button btnClose = findViewById(R.id.btnClose);
+        tvCurrentStatus=view.findViewById(R.id.tvAlarmCurrentStatus);
+        Button btnUpdateAlarm = view.findViewById(R.id.btnUpdateAlarm);
 
-        Button btnCancelAlarm=findViewById(R.id.btnCancelAlarm);
+        Button btnCancelAlarm=view.findViewById(R.id.btnCancelAlarm);
 
         UpdateInterface();
 
-        btnCancelAlarm.setOnClickListener(v -> {
-            cancelAlarm();
-        });
-
-        btnClose.setOnClickListener(v -> {
-            this.finish();
-        });
+        btnCancelAlarm.setOnClickListener(v -> cancelAlarm());
 
         btnUpdateAlarm.setOnClickListener(v -> {
             MaterialTimePicker timePicker=new MaterialTimePicker.Builder()
@@ -92,7 +104,7 @@ public class AlarmActivity extends AppCompatActivity {
 
                 UpdateInterface();
             });
-            timePicker.show(getSupportFragmentManager(),"Time Picker");
+            timePicker.show(getParentFragmentManager(),"Time Picker");
         });
     }
 
@@ -137,11 +149,11 @@ public class AlarmActivity extends AppCompatActivity {
         calendar.set(Calendar.SECOND,0);
         Log.d("ALARM",calendar.getTimeInMillis()+" --- "+new Date().getTime());
 
-        AlarmManager manager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        AlarmManager manager=(AlarmManager)requireActivity().getSystemService(Context.ALARM_SERVICE);
 
-        Intent intent=new Intent(this, AlarmReceiver.class);
+        Intent intent=new Intent(requireActivity(), AlarmReceiver.class);
         intent.putExtra("NotificationChannelID",CHANNEL_ID);
-        PendingIntent pendingIntent=PendingIntent.getBroadcast(getApplicationContext(),1111,intent,0);
+        PendingIntent pendingIntent=PendingIntent.getBroadcast(requireActivity().getApplicationContext(),1111,intent,0);
 
         manager.setInexactRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
     }
@@ -153,8 +165,9 @@ public class AlarmActivity extends AppCompatActivity {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(requireActivity());
             notificationManager.createNotificationChannel(channel);
         }
     }
+
 }

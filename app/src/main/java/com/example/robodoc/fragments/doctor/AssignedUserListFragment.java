@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,27 +14,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.robodoc.R;
 import com.example.robodoc.adapters.AssignedUserListAdapter;
-import com.example.robodoc.classes.UserInfo;
-import com.example.robodoc.firebase.Globals;
-import com.example.robodoc.firebase.firestore.GetAssignedUsersList;
+import com.example.robodoc.fragments.shared.ProgressIndicatorFragment;
+import com.example.robodoc.viewModels.doctor.UserListViewModel;
 
-import java.util.ArrayList;
-
-public class AssignedUserListFragment extends Fragment implements GetAssignedUsersList.GetAssignedUsersListInterface {
+public class AssignedUserListFragment extends Fragment {
 
     public AssignedUserListFragment() {
         // Required empty public constructor
-    }
-
-    public static AssignedUserListFragment newInstance() {
-        AssignedUserListFragment fragment = new AssignedUserListFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -40,8 +31,9 @@ public class AssignedUserListFragment extends Fragment implements GetAssignedUse
         super.onCreate(savedInstanceState);
     }
 
-    TextView tvNoUserDisplay;
-    RecyclerView rcvUsersList;
+    private TextView tvNoUserDisplay;
+    private RecyclerView rcvUsersList;
+    private ProgressIndicatorFragment progressIndicatorFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,30 +46,33 @@ public class AssignedUserListFragment extends Fragment implements GetAssignedUse
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Syncing with Server","Fetching User's List");
+
         tvNoUserDisplay=view.findViewById(R.id.tvAssignedUserListNoDisplay);
         rcvUsersList=view.findViewById(R.id.rcvAssignedUsersList);
         rcvUsersList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        new GetAssignedUsersList(getChildFragmentManager(),this, Globals.getCurrentUserUid());
-    }
+        UserListViewModel viewModel=new ViewModelProvider(requireActivity()).get(UserListViewModel.class);
 
-    @Override
-    public void userListInterface(boolean result, ArrayList<UserInfo> userInfoList) {
-        if(result){
-            if(userInfoList.isEmpty()){
+        viewModel.getUsersList().observe(getViewLifecycleOwner(), userInfoArrayList -> {
+            if(userInfoArrayList.isEmpty()){
                 rcvUsersList.setVisibility(View.GONE);
                 tvNoUserDisplay.setVisibility(View.VISIBLE);
             }
             else {
                 rcvUsersList.setVisibility(View.VISIBLE);
                 tvNoUserDisplay.setVisibility(View.GONE);
-                rcvUsersList.setAdapter(new AssignedUserListAdapter(userInfoList,getFragmentManager()));
+                rcvUsersList.setAdapter(new AssignedUserListAdapter(userInfoArrayList, Navigation.findNavController(view)));
             }
-        }
-        else {
-            rcvUsersList.setVisibility(View.GONE);
-            tvNoUserDisplay.setVisibility(View.VISIBLE);
-            Toast.makeText(getActivity(),"Error in Fetching List!",Toast.LENGTH_SHORT).show();
-        }
+        });
+
+        viewModel.CheckUserListLoading().observe(getViewLifecycleOwner(), aBoolean -> {
+            if(aBoolean)
+                progressIndicatorFragment.show(getParentFragmentManager(),"Fetching Users List");
+            else{
+                if(progressIndicatorFragment.isVisible())
+                    progressIndicatorFragment.dismiss();
+            }
+        });
     }
 }

@@ -3,14 +3,10 @@ package com.example.robodoc.firebase.firestore;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.fragment.app.FragmentManager;
-
 import com.example.robodoc.classes.UserInfo;
 import com.example.robodoc.enums.Gender;
 import com.example.robodoc.enums.UserKey;
 import com.example.robodoc.firebase.Globals;
-import com.example.robodoc.firebase.realtimeDb.GetVitalRecord;
-import com.example.robodoc.fragments.ProgressIndicatorFragment;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
@@ -23,19 +19,14 @@ public class GetDoctorsList {
     }
 
     private final String TAG="Get Doctors List";
-    private final ProgressIndicatorFragment progressIndicatorFragment;
 
-    public GetDoctorsList(FragmentManager manager, GetDoctorsListInterface listInterface){
-
-        progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Syncing with Server","Getting the List of All Doctors");
-        progressIndicatorFragment.show(manager,TAG);
+    public GetDoctorsList(GetDoctorsListInterface listInterface){
 
         Globals
                 .getFirestore()
                 .collection("USERS")
                 .get()
                 .addOnCompleteListener(task -> {
-                    progressIndicatorFragment.dismiss();
                     if(task.isSuccessful()){
                         Log.d(TAG,"Doctors List fetched successfully");
                         ArrayList<UserInfo> userList=new ArrayList<>();

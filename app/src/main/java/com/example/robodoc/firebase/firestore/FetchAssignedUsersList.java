@@ -3,37 +3,26 @@ package com.example.robodoc.firebase.firestore;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-
 import com.example.robodoc.classes.UserInfo;
 import com.example.robodoc.enums.Gender;
 import com.example.robodoc.enums.UserKey;
 import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.realtimeDb.DatabaseKeys;
-import com.example.robodoc.fragments.ProgressIndicatorFragment;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class GetAssignedUsersList {
+public class FetchAssignedUsersList {
 
-    public interface GetAssignedUsersListInterface{
-        void userListInterface(boolean result, ArrayList<UserInfo> userInfoList);
+    public interface FetchInterface{
+        void onUserListFetchCallback(boolean result, ArrayList<UserInfo> userInfoList);
     }
 
-    private final String TAG="Getting Users List";
-    private final ProgressIndicatorFragment progressIndicatorFragment;
+    private final String TAG="Fetching Users List";
 
-    public GetAssignedUsersList(FragmentManager manager, GetAssignedUsersListInterface listInterface, String doctorUId){
-        progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Syncing With Server","Getting Assigned Users List");
-        progressIndicatorFragment.show(manager,TAG);
-
+    public FetchAssignedUsersList(FetchInterface fetchInterface, String doctorUId){
         ArrayList<String> uidList=new ArrayList<>();
 
         Globals
@@ -49,30 +38,26 @@ public class GetAssignedUsersList {
                             uidList.add(dataSnapshot.getKey());
                         }
                         if(uidList.size()==0){
-                            progressIndicatorFragment.dismiss();
-                            Log.d(TAG,"Fetch Successful");
-                            listInterface.userListInterface(true, new ArrayList<>());
+                            Log.d(TAG,"Fetch Successful for "+doctorUId);
+                            fetchInterface.onUserListFetchCallback(true, new ArrayList<>());
                         }
                         else {
-                            fetchFromFirestore(uidList,listInterface);
+                            fetchFromFirestore(uidList,fetchInterface);
                         }
                     }
                     else {
-                        progressIndicatorFragment.dismiss();
                         Log.d(TAG,"Error in Fetching Assigned Users List");
-                        listInterface.userListInterface(false,null);
+                        fetchInterface.onUserListFetchCallback(false,null);
                     }
                 });
     }
 
-    private void fetchFromFirestore(ArrayList<String> uidList, GetAssignedUsersListInterface listInterface){
-
+    private void fetchFromFirestore(ArrayList<String> uidList, FetchInterface listInterface){
         Globals
                 .getFirestore()
                 .collection("USERS")
                 .get()
                 .addOnCompleteListener(task -> {
-                    progressIndicatorFragment.dismiss();
                     if(task.isSuccessful()){
                         Log.d(TAG,"Fetch Successful");
                         ArrayList<UserInfo> userInfoList=new ArrayList<>();
@@ -94,14 +79,12 @@ public class GetAssignedUsersList {
                                 uidList.remove(uid);
                             }
                         }
-                        listInterface.userListInterface(true,userInfoList);
+                        listInterface.onUserListFetchCallback(true,userInfoList);
                     }
                     else {
                         Log.d(TAG,"Error in Fetching Assigned Users List");
-                        listInterface.userListInterface(false,null);
+                        listInterface.onUserListFetchCallback(false,null);
                     }
                 });
-
     }
-
 }

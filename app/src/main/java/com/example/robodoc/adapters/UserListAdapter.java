@@ -9,12 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.robodoc.R;
 import com.example.robodoc.classes.UserInfo;
 import com.example.robodoc.fragments.admin.UserInfoFragment;
+import com.example.robodoc.fragments.admin.UserListFragmentDirections;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -22,11 +24,11 @@ import java.util.ArrayList;
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> implements UserInfoFragment.UserInfoFragmentInterface {
 
     protected ArrayList<UserInfo> userList;
-    protected FragmentManager manager;
+    protected NavController navController;
 
-    public UserListAdapter(ArrayList<UserInfo> userList, FragmentManager manager){
+    public UserListAdapter(ArrayList<UserInfo> userList, NavController navController){
         this.userList=userList;
-        this.manager=manager;
+        this.navController=navController;
     }
 
     @Override
@@ -36,7 +38,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView imgUser;
         TextView tvName, tvEmail;
@@ -64,9 +66,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         holder.tvName.setText(info.getName());
         holder.tvEmail.setText(info.getEmail());
         Picasso.get().load(info.getPhotoUrl()).into(holder.imgUser);
-        holder.btnShowDetails.setOnClickListener(v -> {
-            onButtonClicked(info,position);
-        });
+        holder.btnShowDetails.setOnClickListener(v -> onButtonClicked(position));
     }
 
     @Override
@@ -75,9 +75,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         return userList.size();
     }
 
-    protected void onButtonClicked(UserInfo userInfo, int position){
-        UserInfoFragment userInfoFragment=UserInfoFragment.newInstance(userInfo);
-        userInfoFragment.setUserInterface(position,UserListAdapter.this);
-        userInfoFragment.show(manager,"USER INFO");
+    protected void onButtonClicked(int position){
+        NavDirections action= UserListFragmentDirections.ActionAdminUserInfo(position);
+        navController.navigate(action);
     }
 }

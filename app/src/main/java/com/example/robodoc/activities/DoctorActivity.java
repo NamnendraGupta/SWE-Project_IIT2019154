@@ -1,7 +1,10 @@
 package com.example.robodoc.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,61 +14,40 @@ import android.widget.Toast;
 import com.example.robodoc.R;
 import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.auth.SignOut;
-import com.example.robodoc.fragments.doctor.AssignedUserListFragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 
 public class DoctorActivity extends AppCompatActivity implements SignOut.SignOutInterface {
-
-    MaterialToolbar toolbar;
-    AssignedUserListFragment assignedUserListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor);
 
-        toolbar=findViewById(R.id.doctorToolbar);
+        MaterialToolbar toolbar=findViewById(R.id.doctorToolbar);
 
-        updateInterface();
+        NavController navController= Navigation.findNavController(this,R.id.navHostDoctor);
+        AppBarConfiguration appBarConfiguration=new AppBarConfiguration.Builder(navController.getGraph()).build();
+        NavigationUI.setupWithNavController(toolbar,navController,appBarConfiguration);
 
-        assignedUserListFragment=AssignedUserListFragment.newInstance();
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.frameLayoutDoctor,assignedUserListFragment,"AssignedUserList")
-                .show(assignedUserListFragment)
-                .commit();
+        if(Globals.isUserAdmin())
+            toolbar.getMenu().findItem(R.id.dMenuAdmin).setVisible(true);
 
         toolbar.setOnMenuItemClickListener(item -> {
             Menu menu=toolbar.getMenu();
-            if(item==menu.findItem(R.id.dMenuAdmin))
-                startAdminActivity();
-            else if(item==menu.findItem(R.id.dMenuUser))
-                startMainActivity();
-            else if(item==menu.findItem(R.id.dMenuLogout))
-                signOut();
+            if(item==menu.findItem(R.id.dMenuAdmin)){
+                startActivity(new Intent(this,AdminActivity.class));
+                this.finish();
+            }
+            else if(item==menu.findItem(R.id.dMenuUser)){
+                startActivity(new Intent(this, MainActivity.class));
+                this.finish();
+            }
+            else if(item==menu.findItem(R.id.dMenuLogout)){
+                new SignOut(this,this,getSupportFragmentManager());
+            }
             return false;
         });
-    }
-
-    private void updateInterface(){
-        if(Globals.isUserAdmin())
-            toolbar.getMenu().findItem(R.id.dMenuAdmin).setVisible(true);
-    }
-
-    private void startAdminActivity(){
-        startActivity(new Intent(this,AdminActivity.class));
-        this.finish();
-    }
-
-    private void startMainActivity(){
-        startActivity(new Intent(this, MainActivity.class));
-        this.finish();
-    }
-
-    private void signOut(){
-        new SignOut(this,this,getSupportFragmentManager());
     }
 
     @Override

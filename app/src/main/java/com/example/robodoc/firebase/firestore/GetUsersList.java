@@ -3,19 +3,11 @@ package com.example.robodoc.firebase.firestore;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-
-import com.example.robodoc.classes.User;
 import com.example.robodoc.classes.UserInfo;
 import com.example.robodoc.enums.Gender;
 import com.example.robodoc.enums.UserKey;
 import com.example.robodoc.firebase.Globals;
-import com.example.robodoc.fragments.ProgressIndicatorFragment;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,19 +19,14 @@ public class GetUsersList {
     }
     
     private final String TAG="Get Users List";
-    private final ProgressIndicatorFragment progressIndicatorFragment;
     
-    public GetUsersList(FragmentManager manager, GetUsersListInterface listInterface){
-        
-        progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Syncing with Server","Getting the List of All Users");
-        progressIndicatorFragment.show(manager,TAG);
+    public GetUsersList(GetUsersListInterface listInterface){
 
         Globals
                 .getFirestore()
                 .collection("USERS")
                 .get()
                 .addOnCompleteListener(task -> {
-                    progressIndicatorFragment.dismiss();
                     if(task.isSuccessful()){
                         Log.d(TAG,"Users List fetched successfully");
                         ArrayList<UserInfo> userList=new ArrayList<>();

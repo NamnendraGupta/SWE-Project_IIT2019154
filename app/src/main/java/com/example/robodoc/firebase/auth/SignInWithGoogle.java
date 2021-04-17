@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.firestore.CheckUserExists;
-import com.example.robodoc.fragments.ProgressIndicatorFragment;
+import com.example.robodoc.fragments.shared.ProgressIndicatorFragment;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
 

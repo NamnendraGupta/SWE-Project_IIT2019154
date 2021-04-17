@@ -1,15 +1,16 @@
-package com.example.robodoc.activities;
+package com.example.robodoc.fragments.shared;
+
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -18,59 +19,65 @@ import com.example.robodoc.adapters.MessageAdapter;
 import com.example.robodoc.classes.Message;
 import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.realtimeDb.DatabaseKeys;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import okhttp3.internal.cache.DiskLruCache;
-
-public class ChatActivity extends AppCompatActivity {
+public class ChatFragment extends Fragment {
 
     private boolean isRoleDoctor;
-    private String sourceUID;
     private String destinationUID;
     private String destinationUserName;
     private ArrayList<Message> messagesList;
 
-    private TextView tvHeading;
     private RecyclerView rcvMessages;
-    private RecyclerView.Adapter rcvAdapter;
+    private MessageAdapter rcvAdapter;
     private TextInputLayout inputLayoutSendMessage;
-    private Button btnSendMessage, btnClose;
 
     DatabaseReference dbRef;
 
+    public ChatFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+    }
 
-        tvHeading=findViewById(R.id.tvMessageListHeading);
-        rcvMessages=findViewById(R.id.rcvMessages);
-        inputLayoutSendMessage=findViewById(R.id.messageInputLayout);
-        btnSendMessage=findViewById(R.id.btnMessageSend);
-        btnClose=findViewById(R.id.btnMessageClose);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_chat, container, false);
+    }
 
-        Intent intent=getIntent();
-        isRoleDoctor=intent.getBooleanExtra("IsDoctor",false);
-        sourceUID= Globals.getCurrentUserUid();
-        destinationUID=intent.getStringExtra("DestinationUID");
-        destinationUserName=intent.getStringExtra("DestinationUserName");
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        ChatFragmentArgs args=ChatFragmentArgs.fromBundle(getArguments());
+        isRoleDoctor=args.getIsRoleDoctor();
+        destinationUID=args.getDestinationUID();
+        destinationUserName=args.getDestinationUserName();
+
+        TextView tvHeading = view.findViewById(R.id.tvMessageListHeading);
+        rcvMessages=view.findViewById(R.id.rcvMessages);
+        inputLayoutSendMessage=view.findViewById(R.id.messageInputLayout);
+        Button btnSendMessage = view.findViewById(R.id.btnMessageSend);
 
         messagesList=new ArrayList<>();
 
         btnSendMessage.setOnClickListener(v -> {
             String message=inputLayoutSendMessage.getEditText().getText().toString();
             if(message.isEmpty()){
-                Snackbar.make(getWindow().getDecorView().getRootView(),"Please Enter Some Message",3000).show();
+                Snackbar.make(requireView(),"Please Enter Some Message",3000).show();
             }
             else {
                 sendNewMessage(message);
@@ -78,9 +85,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        btnClose.setOnClickListener(v -> {
-            this.finish();
-        });
 
         String heading;
         if(isRoleDoctor)
@@ -89,11 +93,9 @@ public class ChatActivity extends AppCompatActivity {
             heading="Your Interaction with Doctor - "+destinationUserName;
         tvHeading.setText(heading);
 
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        rcvMessages.setLayoutManager(linearLayoutManager);
+        rcvMessages.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-        rcvAdapter=new MessageAdapter(messagesList,this);
+        rcvAdapter=new MessageAdapter(messagesList,requireActivity());
         rcvMessages.setAdapter(rcvAdapter);
 
         dbRef=Globals.getFirebaseDatabase().getReference();
@@ -136,7 +138,7 @@ public class ChatActivity extends AppCompatActivity {
         if(isRoleDoctor){
             dbRef.push().setValue(hash);
             Globals.getFirebaseDatabase().getReference().child(DatabaseKeys.KEY_USERS).child(destinationUID).child(DatabaseKeys.KEY_USER_MESSAGES)
-            .push().setValue(hash);
+                    .push().setValue(hash);
         }
         else {
             dbRef.push().setValue(hash);
@@ -156,5 +158,4 @@ public class ChatActivity extends AppCompatActivity {
         rcvAdapter.notifyDataSetChanged();
         rcvMessages.scrollToPosition(messagesList.size()-1);
     }
-
 }

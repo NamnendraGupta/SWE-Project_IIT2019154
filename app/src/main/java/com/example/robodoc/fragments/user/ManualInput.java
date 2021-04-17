@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -18,22 +17,10 @@ import com.example.robodoc.classes.VitalInput;
 import com.example.robodoc.firebase.realtimeDb.UploadVitalInput;
 import com.google.android.material.textfield.TextInputLayout;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ManualInput#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ManualInput extends DialogFragment implements UploadVitalInput.UploadVitalInputInterface {
+public class ManualInput extends Fragment implements UploadVitalInput.UploadVitalInputInterface {
 
     public ManualInput() {
         // Required empty public constructor
-    }
-
-    public static ManualInput newInstance() {
-        ManualInput fragment = new ManualInput();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -65,93 +52,71 @@ public class ManualInput extends DialogFragment implements UploadVitalInput.Uplo
         inputOxygenLevel=view.findViewById(R.id.inputOxygenLevel);
         inputGlucoseLevel=view.findViewById(R.id.inputSugarLevel);
 
-        inputBpSys.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    if(inputBpSys.getEditText().getText().toString().isEmpty())
-                        inputBpSys.setError("Please Enter your Systolic Blood Pressure");
-                    else
-                        inputBpSys.setError("");
-                }
+        inputBpSys.getEditText().setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                if(inputBpSys.getEditText().getText().toString().isEmpty())
+                    inputBpSys.setError("Please Enter your Systolic Blood Pressure");
                 else
                     inputBpSys.setError("");
             }
+            else
+                inputBpSys.setError("");
         });
 
-        inputBpDias.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    if(inputBpDias.getEditText().getText().toString().isEmpty())
-                        inputBpDias.setError("Please Enter your Diastolic Blood Pressure");
-                    else
-                        inputBpDias.setError("");
-                }
+        inputBpDias.getEditText().setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                if(inputBpDias.getEditText().getText().toString().isEmpty())
+                    inputBpDias.setError("Please Enter your Diastolic Blood Pressure");
                 else
                     inputBpDias.setError("");
             }
+            else
+                inputBpDias.setError("");
         });
 
-        inputBodyTemp.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    if(inputBodyTemp.getEditText().getText().toString().isEmpty())
-                        inputBodyTemp.setError("Please Enter your Body Temperature");
-                    else
-                        inputBodyTemp.setError("");
-                }
+        inputBodyTemp.getEditText().setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                if(inputBodyTemp.getEditText().getText().toString().isEmpty())
+                    inputBodyTemp.setError("Please Enter your Body Temperature");
                 else
                     inputBodyTemp.setError("");
             }
+            else
+                inputBodyTemp.setError("");
         });
 
-        inputHeartRate.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    if(inputHeartRate.getEditText().getText().toString().isEmpty())
-                        inputHeartRate.setError("Please Enter your Heart Rate");
-                    else
-                        inputHeartRate.setError("");
-                }
+        inputHeartRate.getEditText().setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                if(inputHeartRate.getEditText().getText().toString().isEmpty())
+                    inputHeartRate.setError("Please Enter your Heart Rate");
                 else
                     inputHeartRate.setError("");
             }
+            else
+                inputHeartRate.setError("");
         });
 
-        inputOxygenLevel.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    if(inputOxygenLevel.getEditText().getText().toString().isEmpty())
-                        inputOxygenLevel.setError("Please Enter your Oxygen Level");
-                    else
-                        inputOxygenLevel.setError("");
-                }
+        inputOxygenLevel.getEditText().setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                if(inputOxygenLevel.getEditText().getText().toString().isEmpty())
+                    inputOxygenLevel.setError("Please Enter your Oxygen Level");
                 else
                     inputOxygenLevel.setError("");
             }
+            else
+                inputOxygenLevel.setError("");
         });
 
-        inputGlucoseLevel.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    if(inputGlucoseLevel.getEditText().getText().toString().isEmpty())
-                        inputGlucoseLevel.setError("Please Enter your Glucose Level");
-                    else
-                        inputGlucoseLevel.setError("");
-                }
+        inputGlucoseLevel.getEditText().setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                if(inputGlucoseLevel.getEditText().getText().toString().isEmpty())
+                    inputGlucoseLevel.setError("Please Enter your Glucose Level");
                 else
                     inputGlucoseLevel.setError("");
             }
+            else
+                inputGlucoseLevel.setError("");
         });
-
-        getDialog().setCanceledOnTouchOutside(false);
-
-        btnCancel.setOnClickListener(v -> getDialog().dismiss());
 
         btnSubmit.setOnClickListener(v -> {
             if(isInputValid()){
@@ -208,7 +173,6 @@ public class ManualInput extends DialogFragment implements UploadVitalInput.Uplo
     public void OnUpload(boolean result) {
         if(result){
             Toast.makeText(getContext(),"Data Upload Successful",Toast.LENGTH_LONG).show();
-            getDialog().dismiss();
         }
         else {
             Toast.makeText(getContext(),"Error in Uploading Data! Please Try Again",Toast.LENGTH_LONG).show();

@@ -6,12 +6,11 @@
     android:id="@+id/nav_graph_doctor"
     app:startDestination="@id/assignedUserListFragment">
 
-
     <fragment
         android:id="@+id/assignedUserListFragment"
         android:name="com.example.robodoc.fragments.doctor.AssignedUserListFragment"
-        android:label="fragment_assigned_user_list"
-        tools:layout="@layout/fragment_assigned_user_list" >
+        android:label="Doctor Dashboard"
+        tools:layout="@layout/fragment_assigned_user_list">
         <action
             android:id="@+id/action_assignedUserListFragment_to_assignedUserListInfoFragment"
             app:destination="@id/assignedUserListInfoFragment" />
@@ -20,60 +19,86 @@
     <fragment
         android:id="@+id/assignedUserListInfoFragment"
         android:name="com.example.robodoc.fragments.doctor.AssignedUserListInfoFragment"
-        android:label="fragment_assigned_user_list_info"
-        tools:layout="@layout/fragment_assigned_user_list_info" >
+        android:label="User Information"
+        tools:layout="@layout/fragment_assigned_user_list_info">
         <action
             android:id="@+id/action_assignedUserListInfoFragment_to_recordsFragment"
             app:destination="@id/recordsFragment" />
         <action
-            android:id="@+id/action_assignedUserListInfoFragment_to_chatActivity"
-            app:destination="@id/chatActivity" />
+            android:id="@+id/action_assignedUserListInfoFragment_to_userStatsFragment"
+            app:destination="@id/userStatsFragment" />
+        <argument
+            android:name="ListPosition"
+            app:argType="integer" />
         <action
-            android:id="@+id/action_assignedUserListInfoFragment_to_userStatsActivity"
-            app:destination="@id/userStatsActivity" />
-        <argument
-            android:name="DisplayName"
-            app:argType="string" />
-        <argument
-            android:name="UID"
-            app:argType="string" />
-        <argument
-            android:name="Email"
-            app:argType="string" />
-        <argument
-            android:name="Gender"
-            app:argType="string" />
-        <argument
-            android:name="PhotoURL"
-            app:argType="string" />
+            android:id="@+id/ActionDoctorToInteraction"
+            app:destination="@id/chatFragment2" />
     </fragment>
 
     <fragment
         android:id="@+id/recordsFragment"
-        android:name="com.example.robodoc.fragments.user.RecordsFragment"
-        android:label="fragment_records"
-        tools:layout="@layout/fragment_records" >
+        android:name="com.example.robodoc.fragments.shared.RecordsFragment"
+        android:label="Records List"
+        tools:layout="@layout/fragment_records">
         <action
-            android:id="@+id/action_recordsFragment_to_recordDetailFragment"
+            android:id="@+id/ActionRecordInfo"
             app:destination="@id/recordDetailFragment" />
     </fragment>
 
-    <dialog
+    <fragment
         android:id="@+id/recordDetailFragment"
-        android:name="com.example.robodoc.fragments.user.RecordDetailFragment"
-        android:label="fragment_record_detail"
-        tools:layout="@layout/fragment_record_detail" />
+        android:name="com.example.robodoc.fragments.shared.RecordDetailFragment"
+        android:label="Record Information"
+        tools:layout="@layout/fragment_record_detail">
+        <argument
+            android:name="InputID"
+            app:argType="string" />
+        <argument
+            android:name="TimeOfInput"
+            app:argType="long" />
+        <argument
+            android:name="HighBP"
+            app:argType="integer" />
+        <argument
+            android:name="LowBP"
+            app:argType="integer" />
+        <argument
+            android:name="GlucoseLevel"
+            app:argType="integer" />
+        <argument
+            android:name="HeartRate"
+            app:argType="integer" />
+        <argument
+            android:name="OxygenLevel"
+            app:argType="integer" />
+        <argument
+            android:name="BodyTemperature"
+            app:argType="float" />
+        <argument
+            android:name="InputType"
+            app:argType="string" />
+    </fragment>
 
-    <activity
-        android:id="@+id/chatActivity"
-        android:name="com.example.robodoc.activities.ChatActivity"
-        android:label="activity_chat"
-        tools:layout="@layout/activity_chat" />
+    <fragment
+        android:id="@+id/userStatsFragment"
+        android:name="com.example.robodoc.fragments.shared.UserStatsFragment"
+        android:label="User Statistics"
+        tools:layout="@layout/fragment_user_stats" />
+    <fragment
+        android:id="@+id/chatFragment2"
+        android:name="com.example.robodoc.fragments.shared.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat">
 
-    <activity
-        android:id="@+id/userStatsActivity"
-        android:name="com.example.robodoc.activities.UserStatsActivity"
-        android:label="activity_user_stats"
-        tools:layout="@layout/activity_user_stats" />
+        <argument android:name="IsRoleDoctor"
+            app:argType="boolean" />
+        <argument
+            android:name="DestinationUID"
+            app:argType="string" />
+        <argument
+            android:name="DestinationUserName"
+            app:argType="string" />
+
+    </fragment>
 
 </navigation>

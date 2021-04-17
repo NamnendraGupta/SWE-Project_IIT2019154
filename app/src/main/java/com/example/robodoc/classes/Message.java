@@ -10,11 +10,11 @@ import java.util.HashMap;
 public class Message {
 
     private String ID;
-    private String source;
-    private String destination;
+    private final String source;
+    private final String destination;
     private String sourceUserName;
-    private Long time;
-    private String messageData;
+    private final Long time;
+    private final String messageData;
 
     public Message(String messageData, String destination){
         this.messageData=messageData;
@@ -40,28 +40,8 @@ public class Message {
         return hashMap;
     }
 
-    public String getID() {
-        return ID;
-    }
-
-    public void setID(String ID) {
-        this.ID = ID;
-    }
-
     public String getSource() {
         return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
     }
 
     public String getSourceUserName() {
@@ -76,15 +56,8 @@ public class Message {
         return time;
     }
 
-    public void setTime(Long time) {
-        this.time = time;
-    }
-
     public String getMessageData() {
         return messageData;
     }
 
-    public void setMessageData(String messageData) {
-        this.messageData = messageData;
-    }
 }

@@ -26,29 +26,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+
+        <fragment
+            android:id="@+id/navHostAdmin"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:text="Hello Admin"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="24dp"/>
-
-            <fragment
-                android:id="@+id/fragment"
-                android:name="com.example.robodoc.fragments.admin.UserListFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                tools:layout="@layout/fragment_user_list" />
-
-        </LinearLayout>
-
+            android:layout_height="wrap_content"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_graph_admin" />
     </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

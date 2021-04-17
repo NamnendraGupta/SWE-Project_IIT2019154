@@ -5,10 +5,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,25 +17,16 @@ import android.widget.TextView;
 
 import com.example.robodoc.R;
 import com.example.robodoc.adapters.UserListAdapter;
-import com.example.robodoc.classes.UserInfo;
-import com.example.robodoc.firebase.Globals;
-import com.example.robodoc.firebase.firestore.GetUsersList;
+import com.example.robodoc.fragments.shared.ProgressIndicatorFragment;
+import com.example.robodoc.viewModels.admin.UserListViewModel;
 
-import java.util.ArrayList;
+public class UserListFragment extends Fragment {
 
-public class UserListFragment extends Fragment implements GetUsersList.GetUsersListInterface {
-
-    RecyclerView rcvUsers;
-    RecyclerView.Adapter adapter;
-    TextView tvNoUserDisplay;
-    ArrayList<UserInfo> userList;
+    private RecyclerView rcvUsers;
+    private TextView tvNoUserDisplay;
 
     public UserListFragment() {
         // Required empty public constructor
-    }
-
-    public static UserListFragment newInstance(String param1, String param2) {
-        return new UserListFragment();
     }
 
     @Override
@@ -51,33 +43,33 @@ public class UserListFragment extends Fragment implements GetUsersList.GetUsersL
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rcvUsers=view.findViewById(R.id.rcvUsers);
         tvNoUserDisplay=view.findViewById(R.id.tvNoUserDisplay);
-        tvNoUserDisplay.setVisibility(View.GONE);
-
+        rcvUsers=view.findViewById(R.id.rcvUsers);
         rcvUsers.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        userList=new ArrayList<>();
-        adapter=new UserListAdapter(userList,getFragmentManager());
-        rcvUsers.setAdapter(adapter);
+        UserListViewModel viewModel=new ViewModelProvider(requireActivity()).get(UserListViewModel.class);
 
-        new GetUsersList(getFragmentManager(),UserListFragment.this);
-    }
+        ProgressIndicatorFragment progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Syncing with Server","Loading List of Users");
 
-    @Override
-    public void getUsersList(boolean result, ArrayList<UserInfo> UserList) {
-        if(result){
-            Log.d("USERS LIST FRAGMENT","List Size is "+UserList.size());
-            if(UserList.size()>0){
-                userList=UserList;
-                adapter=new UserListAdapter(userList,getFragmentManager());
-                rcvUsers.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-            }
+        viewModel.CheckUserListLoading().observe(getViewLifecycleOwner(),aBoolean -> {
+            if(aBoolean)
+                progressIndicatorFragment.show(getParentFragmentManager(),"LoadingUsersList");
             else {
+                if(progressIndicatorFragment.isVisible())
+                    progressIndicatorFragment.dismiss();
+            }
+        });
+
+        viewModel.getUsersList().observe(getViewLifecycleOwner(),userInfoArrayList -> {
+            if(userInfoArrayList.size()==0){
                 tvNoUserDisplay.setVisibility(View.VISIBLE);
                 rcvUsers.setVisibility(View.GONE);
             }
-        }
+            else {
+                tvNoUserDisplay.setVisibility(View.GONE);
+                rcvUsers.setVisibility(View.VISIBLE);
+                rcvUsers.setAdapter(new UserListAdapter(userInfoArrayList, Navigation.findNavController(view)));
+            }
+        });
     }
 }
