@@ -62,7 +62,6 @@ public class VitalGraphFragment extends Fragment {
     LineChart chart;
 
     TextView tvAverage, tvMaximum, tvMinimum, tvInRange, tvAboveRange, tvBelowRange, tvNormalRange;
-    Button btnClose;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,7 +98,6 @@ public class VitalGraphFragment extends Fragment {
         tvInRange=view.findViewById(R.id.tvGraphNormal);
         tvAboveRange=view.findViewById(R.id.tvGraphAbove);
         tvBelowRange=view.findViewById(R.id.tvGraphBelow);
-        btnClose=view.findViewById(R.id.btnCloseGraphActivity);
     }
 
     private void drawGraph(){

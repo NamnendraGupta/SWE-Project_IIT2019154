@@ -6,6 +6,7 @@ public class DatabaseKeys {
 
     public static final String KEY_DOCTORS_ASSIGNED_TIME="ASSIGNED_TIME";
     public static final String KEY_DOCTORS_ASSIGNED_LIST="ASSIGNED_LIST";
+    public static final String KEY_DOCTORS_IS_ACTIVE="IS_ACTIVE";
 
     public static final String KEY_USER_VITAL_SIGNS_NUM="HAS_VITAL_SIGNS";
     public static final String KEY_USER_VITAL_SIGNS_LIST="RECORD_LIST";

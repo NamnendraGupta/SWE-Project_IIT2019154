@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLight"
     tools:context=".activities.DoctorActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -15,26 +15,29 @@
             android:id="@+id/doctorToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorAccentDark"
+            android:theme="@style/ToolbarMenuItem"
             app:menu="@menu/doctor_menu"
             app:navigationIconTint="@color/white"
             app:titleTextColor="@color/white" />
 
+        <fragment
+            android:id="@+id/fragmentAppBarDisplay"
+            android:name="com.example.robodoc.fragments.doctor.AssignedUserAppBarDisplayFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            tools:layout="@layout/fragment_assigned_user_app_bar_display" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nsvDoctorActivity"
+    <fragment
+        android:id="@+id/navHostDoctor"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
-        <fragment
-            android:id="@+id/navHostDoctor"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/nav_graph_doctor" />
-
-    </androidx.core.widget.NestedScrollView>
+        app:defaultNavHost="true"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        app:navGraph="@navigation/nav_graph_doctor" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

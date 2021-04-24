@@ -5,11 +5,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.robodoc.firebase.Globals;
-import com.example.robodoc.fragments.shared.ProgressIndicatorFragment;
+import com.example.robodoc.fragments.utils.ProgressIndicatorFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class CancelCurrentAppointment {
 
@@ -24,7 +24,7 @@ public class CancelCurrentAppointment {
         progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Syncing with Server","Canceling Current Doctor Appointment");
         progressIndicatorFragment.show(manager,TAG);
 
-        DatabaseReference dbRef= Globals.getFirebaseDatabase().getReference();
+        DatabaseReference dbRef= FirebaseDatabase.getInstance().getReference();
         dbRef
                 .child(DatabaseKeys.KEY_USERS)
                 .child(Uid)

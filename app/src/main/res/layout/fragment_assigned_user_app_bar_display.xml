@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="#13aaff"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="6dp"
+    tools:context=".fragments.doctor.AssignedUserAppBarDisplayFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvAssignedUserAppBarName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="4dp"
+            android:text="Name"
+            android:textColor="@color/colorAccentDark"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tvAssignedUserAppBarEmail"
+            app:layout_constraintEnd_toStartOf="@+id/imgAssignedUserAppBar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imgAssignedUserAppBar" />
+
+        <TextView
+            android:id="@+id/tvAssignedUserAppBarEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="4dp"
+            android:text="Email ID"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgAssignedUserAppBar"
+            app:layout_constraintEnd_toStartOf="@+id/imgAssignedUserAppBar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvAssignedUserAppBarName" />
+
+        <ImageView
+            android:id="@+id/imgAssignedUserAppBar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/user_account"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -16,8 +16,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.robodoc.R;
-import com.example.robodoc.adapters.UserListAdapter;
-import com.example.robodoc.fragments.shared.ProgressIndicatorFragment;
+import com.example.robodoc.adapters.AdminUserListAdapter;
+import com.example.robodoc.fragments.utils.ProgressIndicatorFragment;
 import com.example.robodoc.viewModels.admin.UserListViewModel;
 
 public class UserListFragment extends Fragment {
@@ -68,7 +68,7 @@ public class UserListFragment extends Fragment {
             else {
                 tvNoUserDisplay.setVisibility(View.GONE);
                 rcvUsers.setVisibility(View.VISIBLE);
-                rcvUsers.setAdapter(new UserListAdapter(userInfoArrayList, Navigation.findNavController(view)));
+                rcvUsers.setAdapter(new AdminUserListAdapter(userInfoArrayList, Navigation.findNavController(view)));
             }
         });
     }

@@ -17,8 +17,9 @@ import android.widget.TextView;
 
 import com.example.robodoc.R;
 import com.example.robodoc.adapters.DoctorListAdapter;
-import com.example.robodoc.fragments.shared.ProgressIndicatorFragment;
+import com.example.robodoc.fragments.utils.ProgressIndicatorFragment;
 import com.example.robodoc.viewModels.user.DoctorListViewModel;
+import com.google.android.material.card.MaterialCardView;
 
 public class DoctorListFragment extends Fragment {
 
@@ -40,6 +41,7 @@ public class DoctorListFragment extends Fragment {
 
     private RecyclerView rcvDoctors;
     private TextView tvNoUserDisplay;
+    private MaterialCardView mcvDoctors;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -47,6 +49,8 @@ public class DoctorListFragment extends Fragment {
 
         rcvDoctors=view.findViewById(R.id.rcvDoctorsList);
         tvNoUserDisplay=view.findViewById(R.id.tvDoctorNoUserDisplay);
+        mcvDoctors=view.findViewById(R.id.mcvDoctorsList);
+
         rcvDoctors.setLayoutManager(new LinearLayoutManager(getContext()));
 
         DoctorListViewModel viewModel=new ViewModelProvider(requireActivity()).get(DoctorListViewModel.class);
@@ -66,10 +70,12 @@ public class DoctorListFragment extends Fragment {
             if(userInfoArrayList.size()==0){
                 tvNoUserDisplay.setVisibility(View.VISIBLE);
                 rcvDoctors.setVisibility(View.GONE);
+                mcvDoctors.setVisibility(View.GONE);
             }
             else {
                 tvNoUserDisplay.setVisibility(View.GONE);
                 rcvDoctors.setVisibility(View.VISIBLE);
+                mcvDoctors.setVisibility(View.VISIBLE);
                 rcvDoctors.setAdapter(new DoctorListAdapter(userInfoArrayList, Navigation.findNavController(view)));
             }
         });

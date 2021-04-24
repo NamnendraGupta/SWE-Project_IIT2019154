@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLight"
     tools:context=".activities.AdminActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -13,27 +13,23 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/adminToolbar"
-            app:title="Admin Dashboard"
-            app:titleTextColor="@color/white"
-            app:menu="@menu/admin_menu"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccentDark"
+            android:theme="@style/ToolbarMenuItem"
+            app:menu="@menu/admin_menu"
+            app:title="Admin Dashboard"
+            app:titleTextColor="@color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+    <fragment
+        android:id="@+id/navHostAdmin"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <fragment
-            android:id="@+id/navHostAdmin"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/nav_graph_admin" />
-    </androidx.core.widget.NestedScrollView>
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        app:navGraph="@navigation/nav_graph_admin" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

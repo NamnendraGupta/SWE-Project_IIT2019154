@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,17 +31,15 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView tvNum, tvDate, tvTime, tvID;
-        private final Button btnViewDetails;
+        private final TextView tvNum, tvDate, tvTime;
+        private ImageButton btnViewDetails;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNum=itemView.findViewById(R.id.tvRecordNum);
             tvDate=itemView.findViewById(R.id.tvRecordDate);
             tvTime=itemView.findViewById(R.id.tvRecordTime);
-            tvID=itemView.findViewById(R.id.tvRecordID);
-
-            btnViewDetails=itemView.findViewById(R.id.btnViewRecordDetails);
+            btnViewDetails=itemView.findViewById(R.id.imgBtnViewRecordDetails);
         }
 
     }
@@ -59,8 +58,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
         holder.tvNum.setText(positionText);
         holder.tvDate.setText(DateTimeUtils.getDisplayDate(record.getTimeOfInput()));
         holder.tvTime.setText(DateTimeUtils.getDisplayTime(record.getTimeOfInput()));
-        holder.tvID.setText(record.getInputID());
-        holder.btnViewDetails.setOnClickListener(v -> showRecordDetails(record));
+        holder.btnViewDetails.setOnClickListener(v -> showRecordDetails(position));
     }
 
     @Override
@@ -68,18 +66,8 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Vi
         return recordList.size();
     }
 
-    private void showRecordDetails(VitalInput record){
-        NavDirections action= RecordsFragmentDirections.ActionRecordInfo(
-                        record.getInputID(),
-                        record.getTimeOfInput(),
-                        record.getHighBP(),
-                        record.getLowBP(),
-                        record.getGlucoseLevel(),
-                        record.getHeartRate(),
-                        record.getOxygenLevel(),
-                        record.getBodyTemperature(),
-                        record.getInputType().toString()
-                );
+    private void showRecordDetails(int position){
+        NavDirections action= RecordsFragmentDirections.ActionRecordInfo(position);
         navController.navigate(action);
     }
 }

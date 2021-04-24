@@ -14,8 +14,13 @@
             android:id="@+id/tabLayoutFragmentUserStats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            app:tabContentStart="24dp"
+            app:tabIndicatorColor="@color/colorButton"
             app:tabMode="scrollable"
-            app:tabContentStart="24dp"/>
+            app:tabRippleColor="@color/colorAccentLight"
+            app:tabSelectedTextColor="@color/colorButton"
+            app:tabTextColor="@color/colorPrimaryLight"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 

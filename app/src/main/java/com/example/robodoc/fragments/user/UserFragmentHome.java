@@ -16,9 +16,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.robodoc.R;
-import com.example.robodoc.firebase.Globals;
-import com.example.robodoc.fragments.shared.ProgressIndicatorFragment;
 import com.example.robodoc.viewModels.user.RecordListViewModel;
+import com.google.android.material.card.MaterialCardView;
 
 public class UserFragmentHome extends Fragment {
 
@@ -28,8 +27,8 @@ public class UserFragmentHome extends Fragment {
         return inflater.inflate(R.layout.fragment_user_home, container, false);
     }
 
-    private Button btnViewStats;
-    private Button btnViewRecords;
+    private Button btnViewStats, btnViewRecords;
+    private MaterialCardView cvViewStats, cvViewRecords;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -40,6 +39,9 @@ public class UserFragmentHome extends Fragment {
         btnViewStats=view.findViewById(R.id.btnViewStats);
         btnViewRecords=view.findViewById(R.id.btnViewRecords);
         Button btnSetReminder = view.findViewById(R.id.btnSetAlarm);
+
+        cvViewStats=view.findViewById(R.id.cvbViewStats);
+        cvViewRecords=view.findViewById(R.id.cvbViewRecords);
 
         NavController navController= Navigation.findNavController(view);
 
@@ -68,33 +70,26 @@ public class UserFragmentHome extends Fragment {
             navController.navigate(action);
         });
 
-        ProgressIndicatorFragment progressIndicatorFragment= ProgressIndicatorFragment.newInstance("Syncing with Server","Loading Records");
-
         RecordListViewModel viewModel=new ViewModelProvider(requireActivity()).get(RecordListViewModel.class);
-        viewModel.setUserUId(Globals.getCurrentUserUid());
-
-        viewModel.CheckIsListLoading().observe(getViewLifecycleOwner(),aBoolean -> {
-            if(aBoolean){
-                progressIndicatorFragment.show(getParentFragmentManager(),"LoadingRecords");
-            }
-            else {
-                if(progressIndicatorFragment.isVisible())
-                    progressIndicatorFragment.dismiss();
-            }
-        });
 
         viewModel.GetListSize().observe(getViewLifecycleOwner(), integer -> {
             if(integer==0){
                 btnViewRecords.setVisibility(View.GONE);
+                cvViewRecords.setVisibility(View.GONE);
                 btnViewStats.setVisibility(View.GONE);
+                cvViewStats.setVisibility(View.GONE);
             }
             else if(integer==1){
                 btnViewRecords.setVisibility(View.VISIBLE);
+                cvViewRecords.setVisibility(View.VISIBLE);
                 btnViewStats.setVisibility(View.GONE);
+                cvViewStats.setVisibility(View.GONE);
             }
             else {
                 btnViewRecords.setVisibility(View.VISIBLE);
+                cvViewRecords.setVisibility(View.VISIBLE);
                 btnViewStats.setVisibility(View.VISIBLE);
+                cvViewStats.setVisibility(View.VISIBLE);
             }
         });
 

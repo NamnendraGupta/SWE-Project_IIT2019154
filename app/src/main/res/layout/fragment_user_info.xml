@@ -1,223 +1,292 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="6dp"
+    android:background="@color/colorPrimaryLight"
     tools:context=".fragments.admin.UserInfoFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tvAdminUserInfoHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="USER INFORMATION"
+        android:textColor="@color/black"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/imgUserInfo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imgUserInfo"
-            android:layout_width="135dp"
-            android:layout_height="135dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_launcher_foreground"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView22" />
+    <ImageView
+        android:id="@+id/imgUserInfo"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvAdminUserInfoNameLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAdminUserInfoHeading"
+        app:srcCompat="@drawable/user_account" />
+
+    <TextView
+        android:id="@+id/tvAdminUserInfoNameLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:text="NAME"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccentDark"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvAdminUserInfoEmailLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvUserInfoName"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgUserInfo" />
+
+    <TextView
+        android:id="@+id/tvUserInfoName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="Name"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvAdminUserInfoNameLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toEndOf="@+id/tvAdminUserInfoNameLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvAdminUserInfoNameLabel" />
+
+    <TextView
+        android:id="@+id/tvAdminUserInfoEmailLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:text="EMAIL"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccentDark"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvAdminUserInfoUIDLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvUserInfoEmail"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAdminUserInfoNameLabel" />
+
+    <TextView
+        android:id="@+id/tvUserInfoEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="Email"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvAdminUserInfoEmailLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toEndOf="@+id/tvAdminUserInfoEmailLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvAdminUserInfoEmailLabel" />
+
+    <TextView
+        android:id="@+id/tvAdminUserInfoUIDLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:text="UID"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccentDark"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvUserInfoDateRegisteredLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvUserInfoUID"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAdminUserInfoEmailLabel" />
+
+    <TextView
+        android:id="@+id/tvUserInfoUID"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="UId"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvAdminUserInfoUIDLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toEndOf="@+id/tvAdminUserInfoUIDLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvAdminUserInfoUIDLabel" />
+
+    <TextView
+        android:id="@+id/tvUserInfoDateRegisteredLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:text="DATE REGISTERED"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccentDark"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvAdminUserInfoGenderLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvUserInfoDateRegistered"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAdminUserInfoUIDLabel" />
+
+    <TextView
+        android:id="@+id/tvUserInfoDateRegistered"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="Date Registered"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvUserInfoDateRegisteredLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toEndOf="@+id/tvUserInfoDateRegisteredLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvUserInfoDateRegisteredLabel" />
+
+    <TextView
+        android:id="@+id/tvAdminUserInfoGenderLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:text="GENDER"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccentDark"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/switchUserInfoAdmin"
+        app:layout_constraintEnd_toStartOf="@+id/tvUserInfoGender"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvUserInfoDateRegisteredLabel" />
+
+    <TextView
+        android:id="@+id/tvUserInfoGender"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="Gender"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvAdminUserInfoGenderLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toEndOf="@+id/tvAdminUserInfoGenderLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvAdminUserInfoGenderLabel" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchUserInfoAdmin"
+        style="@style/SwitchTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="4dp"
+        android:text="Is Admin"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccentDark"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/switchUserInfoDoctor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAdminUserInfoGenderLabel"
+        app:useMaterialThemeColors="false" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchUserInfoDoctor"
+        style="@style/SwitchTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="Is Doctor"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccentDark"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/mcvUpdateUserRole"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchUserInfoAdmin"
+        app:useMaterialThemeColors="false" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mcvUpdateUserRole"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="@color/colorButton"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchUserInfoDoctor">
 
         <Button
             android:id="@+id/btnUserInfoSubmit"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="24dp"
-            android:enabled="false"
-            android:text="Submit"
-            app:layout_constraintBottom_toBottomOf="@+id/btnUserInfoCancel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btnUserInfoCancel"
-            app:layout_constraintTop_toTopOf="@+id/btnUserInfoCancel" />
-
-        <Button
-            android:id="@+id/btnUserInfoCancel"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="24dp"
-            android:text="Cancel"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnUserInfoSubmit"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switchUserInfoAdmin" />
-
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:text="EMAIL"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView11" />
-
-        <TextView
-            android:id="@+id/tvUserInfoEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="24dp"
-            android:text="Email"
-            app:layout_constraintBottom_toBottomOf="@+id/textView13"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/textView13"
-            app:layout_constraintTop_toTopOf="@+id/textView13" />
-
-        <TextView
-            android:id="@+id/textView16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:text="GENDER"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView15" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/switchUserInfoAdmin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="4dp"
-            android:text="Is Admin"
-            app:layout_constraintEnd_toStartOf="@+id/switchUserInfoDoctor"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/switchUserInfoDoctor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="24dp"
-            android:text="Is Doctor"
-            app:layout_constraintBottom_toBottomOf="@+id/switchUserInfoAdmin"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/switchUserInfoAdmin"
-            app:layout_constraintTop_toTopOf="@+id/switchUserInfoAdmin" />
-
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:text="DATE REGISTERED"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView14" />
-
-        <TextView
-            android:id="@+id/tvUserInfoDateRegistered"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="24dp"
-            android:text="Date Registered"
-            app:layout_constraintBottom_toBottomOf="@+id/textView15"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/textView15"
-            app:layout_constraintTop_toTopOf="@+id/textView15" />
-
-        <TextView
-            android:id="@+id/tvUserInfoGender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="24dp"
-            android:text="Gender"
-            app:layout_constraintBottom_toBottomOf="@+id/textView16"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/textView16"
-            app:layout_constraintTop_toTopOf="@+id/textView16" />
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:text="NAME"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgUserInfo" />
-
-        <TextView
-            android:id="@+id/tvUserInfoName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="24dp"
-            android:text="Name"
-            app:layout_constraintBottom_toBottomOf="@+id/textView11"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/textView11"
-            app:layout_constraintTop_toTopOf="@+id/textView11" />
-
-        <TextView
-            android:id="@+id/textView22"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            android:text="USER INFORMATION"
-            android:textColor="@color/black"
-            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Update User Role"
+            android:textColor="@color/colorAccentDark"
+            android:textSize="17sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:rippleColor="@color/colorButtonRipple"
+            app:strokeWidth="0dp" />
 
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:text="UID"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+    </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/tvUserInfoUID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="24dp"
-            android:text="UId"
-            app:layout_constraintBottom_toBottomOf="@+id/textView14"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/textView14"
-            app:layout_constraintTop_toTopOf="@+id/textView14" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

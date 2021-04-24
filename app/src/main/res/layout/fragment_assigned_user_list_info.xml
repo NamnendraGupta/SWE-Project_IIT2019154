@@ -1,156 +1,304 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="4dp"
-    app:cardCornerRadius="6dp"
-    app:cardElevation="8dp"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryLight"
     tools:context=".fragments.doctor.AssignedUserListInfoFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tvAssignedUserInfoHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Assigned User Information"
+        android:textColor="@color/black"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/imgAssignedUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView46"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            android:text="USER INFO"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/imgAssignedUser"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvAssignedUserNameLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAssignedUserInfoHeading"
+        app:srcCompat="@drawable/user_account" />
 
-        <ImageView
-            android:id="@+id/imgAssignedUser"
-            android:layout_width="135dp"
-            android:layout_height="135dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            android:src="@drawable/ic_launcher_foreground"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView46" />
+    <TextView
+        android:id="@+id/tvAssignedUserNameLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:text="NAME"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccentDark"
+        android:textSize="16.5sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvAssignedUserEmailLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvAssignedUserName"
+        app:layout_constraintHorizontal_weight="2.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgAssignedUser" />
 
-        <TextView
-            android:id="@+id/textView47"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:text="NAME"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgAssignedUser" />
+    <TextView
+        android:id="@+id/tvAssignedUserName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvAssignedUserNameLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="3"
+        app:layout_constraintStart_toEndOf="@+id/tvAssignedUserNameLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvAssignedUserNameLabel" />
 
-        <TextView
-            android:id="@+id/textView48"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:text="EMAIL"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView47" />
+    <TextView
+        android:id="@+id/tvAssignedUserEmailLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:text="EMAIL"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccentDark"
+        android:textSize="16.5sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvAssignedUserGenderLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvAssignedUserEmail"
+        app:layout_constraintHorizontal_weight="2.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAssignedUserNameLabel" />
 
-        <TextView
-            android:id="@+id/textView49"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:text="GENDER"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView48" />
+    <TextView
+        android:id="@+id/tvAssignedUserEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvAssignedUserEmailLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="3"
+        app:layout_constraintStart_toEndOf="@+id/tvAssignedUserEmailLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvAssignedUserEmailLabel" />
 
-        <TextView
-            android:id="@+id/tvAssignedUserName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="24dp"
-            android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="@+id/textView47"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/textView47"
-            app:layout_constraintTop_toTopOf="@+id/textView47" />
+    <TextView
+        android:id="@+id/tvAssignedUserGenderLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:text="GENDER"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccentDark"
+        android:textSize="16.5sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvAssignedUserNumRecordsLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvAssignedUserGender"
+        app:layout_constraintHorizontal_weight="2.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAssignedUserEmailLabel" />
 
-        <TextView
-            android:id="@+id/tvAssignedUserEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="24dp"
-            android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="@+id/textView48"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/textView48"
-            app:layout_constraintTop_toTopOf="@+id/textView48" />
+    <TextView
+        android:id="@+id/tvAssignedUserGender"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvAssignedUserGenderLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="3"
+        app:layout_constraintStart_toEndOf="@+id/tvAssignedUserGenderLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvAssignedUserGenderLabel" />
 
-        <TextView
-            android:id="@+id/tvAssignedUserGender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="24dp"
-            android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="@+id/textView49"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/textView49"
-            app:layout_constraintTop_toTopOf="@+id/textView49" />
+    <TextView
+        android:id="@+id/tvAssignedUserNumRecordsLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:text="TOTAL RECORDS"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccentDark"
+        android:textSize="16.5sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvAssignedUserLastRecordedLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvAssignedUserNumOfRecords"
+        app:layout_constraintHorizontal_weight="2.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAssignedUserGenderLabel" />
+
+    <TextView
+        android:id="@+id/tvAssignedUserNumOfRecords"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvAssignedUserNumRecordsLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="3"
+        app:layout_constraintStart_toEndOf="@+id/tvAssignedUserNumRecordsLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvAssignedUserNumRecordsLabel" />
+
+    <TextView
+        android:id="@+id/tvAssignedUserLastRecordedLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="16dp"
+        android:text="LAST RECORDED"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccentDark"
+        android:textSize="16.5sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/mcvBtnAssignedUserViewInteraction"
+        app:layout_constraintEnd_toStartOf="@+id/tvAssignedUserLastRecordedTime"
+        app:layout_constraintHorizontal_weight="2.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAssignedUserNumRecordsLabel" />
+
+    <TextView
+        android:id="@+id/tvAssignedUserLastRecordedTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvAssignedUserLastRecordedLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="3"
+        app:layout_constraintStart_toEndOf="@+id/tvAssignedUserLastRecordedLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvAssignedUserLastRecordedLabel" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mcvBtnAssignedUserViewInteraction"
+        android:layout_width="230dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="@color/colorButton"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/mcvBtnAssignedUserViewStatistics"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAssignedUserLastRecordedLabel">
 
         <Button
             android:id="@+id/btnViewUserInteraction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="View Interaction"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView49" />
+            android:textColor="@color/colorAccentDark"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:rippleColor="@color/colorButtonRipple"
+            app:strokeWidth="0dp" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mcvBtnAssignedUserViewStatistics"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="24dp"
+        app:cardBackgroundColor="@color/colorButton"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/mcvBtnAssignedUserViewRecords"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mcvBtnAssignedUserViewInteraction">
 
         <Button
             android:id="@+id/btnViewAssignStats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="View Statistics"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/btnViewAssignRecords"
-            app:layout_constraintHorizontal_bias="0.545"
-            app:layout_constraintStart_toStartOf="@+id/btnViewAssignRecords"
-            app:layout_constraintTop_toBottomOf="@+id/btnViewAssignRecords"
-            app:layout_constraintVertical_bias="0.0" />
+            android:textColor="@color/colorAccentDark"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:rippleColor="@color/colorButtonRipple"
+            app:strokeWidth="0dp" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mcvBtnAssignedUserViewRecords"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp"
+        app:cardBackgroundColor="@color/colorButton"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="6dp"
+        app:layout_constraintBottom_toBottomOf="@+id/mcvBtnAssignedUserViewStatistics"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mcvBtnAssignedUserViewStatistics"
+        app:layout_constraintTop_toTopOf="@+id/mcvBtnAssignedUserViewStatistics">
 
         <Button
             android:id="@+id/btnViewAssignRecords"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="View Records"
-            app:layout_constraintEnd_toEndOf="@+id/btnViewUserInteraction"
-            app:layout_constraintStart_toStartOf="@+id/btnViewUserInteraction"
-            app:layout_constraintTop_toBottomOf="@+id/btnViewUserInteraction" />
+            android:textColor="@color/colorAccentDark"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:rippleColor="@color/colorButtonRipple"
+            app:strokeWidth="0dp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-</com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

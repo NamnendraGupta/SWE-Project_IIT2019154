@@ -1,10 +1,9 @@
 package com.example.robodoc.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,11 +16,12 @@ import com.example.robodoc.R;
 import com.example.robodoc.classes.UserInfo;
 import com.example.robodoc.fragments.admin.UserInfoFragment;
 import com.example.robodoc.fragments.admin.UserListFragmentDirections;
+import com.google.android.material.card.MaterialCardView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> implements UserInfoFragment.UserInfoFragmentInterface {
+public abstract class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
 
     protected ArrayList<UserInfo> userList;
     protected NavController navController;
@@ -31,25 +31,20 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         this.navController=navController;
     }
 
-    @Override
-    public void onUserUpdated(int position, boolean isAdmin, boolean isDoctor) {
-        userList.get(position).setAdmin(isAdmin);
-        userList.get(position).setDoctor(isDoctor);
-        notifyDataSetChanged();
-    }
-
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView imgUser;
         TextView tvName, tvEmail;
-        Button btnShowDetails;
+        ImageButton btnShowDetails;
+        MaterialCardView mcvHolder;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgUser=itemView.findViewById(R.id.imgUserList);
             tvName=itemView.findViewById(R.id.tvUserListName);
             tvEmail=itemView.findViewById(R.id.tvUserListEmail);
-            btnShowDetails=itemView.findViewById(R.id.btnShowDetails);
+            btnShowDetails=itemView.findViewById(R.id.imgBtnViewProfile);
+            mcvHolder=itemView.findViewById(R.id.mcvUserListItem);
         }
     }
 
@@ -71,7 +66,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        Log.d("LIST SIZE","Size is "+userList.size());
         return userList.size();
     }
 

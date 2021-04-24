@@ -12,9 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.robodoc.R;
 import com.example.robodoc.classes.Message;
-import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.utils.DateTimeUtils;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -59,13 +59,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         holder.tvSourceUserName.setText(message.getSourceUserName());
         holder.tvMessage.setText(message.getMessageData());
 
-        if(message.getSource().equals(Globals.getCurrentUserUid())){
-            holder.cardHolder.setCardBackgroundColor(context.getResources().getColor(R.color.messageBackgroundSource));
+        if(message.getSource().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+            holder.cardHolder.setCardBackgroundColor(context.getResources().getColor(R.color.colorButtonSecondary));
             holder.tvSourceUserName.setGravity(Gravity.END);
             holder.tvMessage.setGravity(Gravity.END);
+            String sourceName="You";
+            holder.tvSourceUserName.setText(sourceName);
         }
         else {
-            holder.cardHolder.setCardBackgroundColor(context.getResources().getColor(R.color.messageBackgroundDestination));
+            holder.cardHolder.setCardBackgroundColor(context.getResources().getColor(R.color.colorButtonRipple));
             holder.tvSourceUserName.setGravity(Gravity.START);
             holder.tvMessage.setGravity(Gravity.START);
         }

@@ -15,8 +15,9 @@ public class User {
     private Gender gender;
     private boolean isDoctor;
     private boolean isAdmin;
-    private String AssignedDoctorUID;
     private boolean isDoctorAssigned;
+    private String AssignedDoctorUID;
+    private String AssignedDoctorName;
 
     public User(String UID){
         this.UID=UID;
@@ -82,11 +83,39 @@ public class User {
         AssignedDoctorUID = assignedDoctorUID;
     }
 
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+    }
+
+    public String getEmailID() {
+        return EmailID;
+    }
+
+    public long getDOB() {
+        return DOB;
+    }
+
+    public long getDateRegistered() {
+        return DateRegistered;
+    }
+
     public boolean isDoctorAssigned() {
         return isDoctorAssigned;
     }
 
     public void setDoctorAssigned(boolean doctorAssigned) {
         isDoctorAssigned = doctorAssigned;
+    }
+
+    public String getAssignedDoctorName() {
+        return AssignedDoctorName;
+    }
+
+    public void setAssignedDoctorName(String assignedDoctorName) {
+        AssignedDoctorName = assignedDoctorName;
     }
 }

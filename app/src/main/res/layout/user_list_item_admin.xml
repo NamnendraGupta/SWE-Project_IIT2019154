@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardBackgroundColor="#63aaff"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="6dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="2dp">
+
+
+        <ImageView
+            android:id="@+id/imgAdminUserList"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvAdminUserListIsAdminLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/user_account" />
+
+        <TextView
+            android:id="@+id/tvAdminUserListName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            android:text="Name"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tvAdminUserListEmail"
+            app:layout_constraintEnd_toStartOf="@+id/imgBtnAdminUserList"
+            app:layout_constraintStart_toEndOf="@+id/imgAdminUserList"
+            app:layout_constraintTop_toTopOf="@+id/imgAdminUserList" />
+
+        <TextView
+            android:id="@+id/tvAdminUserListEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="4dp"
+            android:text="Email ID"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgAdminUserList"
+            app:layout_constraintEnd_toStartOf="@+id/imgBtnAdminUserList"
+            app:layout_constraintStart_toEndOf="@+id/imgAdminUserList"
+            app:layout_constraintTop_toBottomOf="@+id/tvAdminUserListName" />
+
+        <ImageButton
+            android:id="@+id/imgBtnAdminUserList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="@+id/imgAdminUserList"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imgAdminUserList"
+            app:srcCompat="@drawable/ic_account" />
+
+        <TextView
+            android:id="@+id/tvAdminUserListIsAdminLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            android:text="Is Admin"
+            android:textColor="@color/colorAccentDark"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvAdminUserListIsDoctorLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgAdminUserList" />
+
+        <TextView
+            android:id="@+id/tvAdminUserListIsDoctorLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Is Doctor"
+            android:textColor="@color/colorAccentDark"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/tvAdminUserListIsAdminLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvAdminUserListIsAdminLabel"
+            app:layout_constraintTop_toTopOf="@+id/tvAdminUserListIsAdminLabel" />
+
+        <ImageView
+            android:id="@+id/imgAdminUserListIsAdmin"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvAdminUserListIsAdminLabel"
+            app:layout_constraintEnd_toStartOf="@+id/tvAdminUserListIsDoctorLabel"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/tvAdminUserListIsAdminLabel"
+            app:layout_constraintTop_toTopOf="@+id/tvAdminUserListIsAdminLabel"
+            app:srcCompat="@drawable/ic_error" />
+
+        <ImageView
+            android:id="@+id/imgAdminUserListIsDoctor"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvAdminUserListIsDoctorLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/tvAdminUserListIsDoctorLabel"
+            app:layout_constraintTop_toTopOf="@+id/tvAdminUserListIsDoctorLabel"
+            app:srcCompat="@drawable/ic_error" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

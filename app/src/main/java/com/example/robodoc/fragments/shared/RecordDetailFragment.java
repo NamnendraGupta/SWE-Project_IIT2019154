@@ -5,16 +5,17 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.robodoc.R;
 import com.example.robodoc.classes.VitalInput;
 import com.example.robodoc.utils.DateTimeUtils;
+import com.example.robodoc.viewModels.user.RecordListViewModel;
 
 public class RecordDetailFragment extends Fragment {
 
@@ -49,26 +50,18 @@ public class RecordDetailFragment extends Fragment {
         TextView tvBodyTemp = view.findViewById(R.id.tvRecordDetailTemp);
         TextView tvInputType = view.findViewById(R.id.tvRecordDetailType);
 
-        RecordDetailFragmentArgs args=RecordDetailFragmentArgs.fromBundle(getArguments());
-        String inputID = args.getInputID();
-        Long timeOfInput = args.getTimeOfInput();
-        int highBP = args.getHighBP();
-        int lowBP = args.getLowBP();
-        int glucoseLevel = args.getGlucoseLevel();
-        int heartRate = args.getHeartRate();
-        int oxygenLevel = args.getOxygenLevel();
-        float bodyTemp = args.getBodyTemperature();
-        VitalInput.VitalInputType inputType = VitalInput.VitalInputType.valueOf(args.getInputType());
+        RecordListViewModel viewModel=new ViewModelProvider(requireActivity()).get(RecordListViewModel.class);
+        VitalInput vitalInput=viewModel.GetRecordInfo(RecordDetailFragmentArgs.fromBundle(getArguments()).getListPosition());
 
-        tvID.setText(inputID);
-        tvDate.setText(DateTimeUtils.getDisplayDate(timeOfInput));
-        tvTime.setText(DateTimeUtils.getDisplayTime(timeOfInput));
-        tvHighBP.setText(Integer.toString(highBP));
-        tvLowBP.setText(Integer.toString(lowBP));
-        tvGlucose.setText(Integer.toString(glucoseLevel));
-        tvHeartRate.setText(Integer.toString(heartRate));
-        tvOxygen.setText(Integer.toString(oxygenLevel));
-        tvBodyTemp.setText(String.format("%.02f", bodyTemp));
-        tvInputType.setText(inputType.toString());
+        tvID.setText(vitalInput.getInputID());
+        tvDate.setText(DateTimeUtils.getDisplayDate(vitalInput.getTimeOfInput()));
+        tvTime.setText(DateTimeUtils.getDisplayTime(vitalInput.getTimeOfInput()));
+        tvHighBP.setText(Integer.toString(vitalInput.getHighBP()));
+        tvLowBP.setText(Integer.toString(vitalInput.getLowBP()));
+        tvGlucose.setText(Integer.toString(vitalInput.getGlucoseLevel()));
+        tvHeartRate.setText(Integer.toString(vitalInput.getHeartRate()));
+        tvOxygen.setText(Integer.toString(vitalInput.getOxygenLevel()));
+        tvBodyTemp.setText(String.format("%.02f", vitalInput.getBodyTemperature()));
+        tvInputType.setText(vitalInput.getInputType().toString());
     }
 }

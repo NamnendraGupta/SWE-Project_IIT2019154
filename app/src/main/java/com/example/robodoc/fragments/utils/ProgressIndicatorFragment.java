@@ -1,4 +1,4 @@
-package com.example.robodoc.fragments.shared;
+package com.example.robodoc.fragments.utils;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;

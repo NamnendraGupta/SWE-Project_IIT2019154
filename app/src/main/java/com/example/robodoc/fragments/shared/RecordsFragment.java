@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.robodoc.R;
 import com.example.robodoc.adapters.RecordListAdapter;
 import com.example.robodoc.viewModels.user.RecordListViewModel;
+import com.google.android.material.card.MaterialCardView;
 
 public class RecordsFragment extends Fragment {
 
@@ -40,6 +41,7 @@ public class RecordsFragment extends Fragment {
     private RecyclerView rcvRecords;
     private RecordListAdapter recordListAdapter;
     private TextView tvNoRecordsDisplay;
+    private MaterialCardView mcvRecords;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class RecordsFragment extends Fragment {
 
         rcvRecords=view.findViewById(R.id.rcvRecords);
         tvNoRecordsDisplay=view.findViewById(R.id.tvNoRecordDisplay);
+        mcvRecords=view.findViewById(R.id.mcvRecordList);
 
         rcvRecords.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
@@ -61,10 +64,12 @@ public class RecordsFragment extends Fragment {
         viewModel.GetListSize().observe(getViewLifecycleOwner(), integer -> {
             if(integer==0){
                 rcvRecords.setVisibility(View.GONE);
+                mcvRecords.setVisibility(View.GONE);
                 tvNoRecordsDisplay.setVisibility(View.VISIBLE);
             }
             else {
                 rcvRecords.setVisibility(View.VISIBLE);
+                mcvRecords.setVisibility(View.VISIBLE);
                 tvNoRecordsDisplay.setVisibility(View.GONE);
             }
         });

@@ -1,88 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLight"
     tools:context=".fragments.user.AlarmSetterFragment">
-
-    <TextView
-        android:id="@+id/textView50"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:text="Set Reminder for Taking Input"
-        android:textColor="@color/black"
-        android:textSize="19sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView51"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="4dp"
         android:text="Current Status"
+        android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/tvAlarmCurrentStatus"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView50" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvAlarmCurrentStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="24dp"
         android:text="TextView"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/colorAccent"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView51"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView51" />
+        app:layout_constraintStart_toEndOf="@+id/textView51"
+        app:layout_constraintTop_toTopOf="@+id/textView51" />
 
-    <Button
-        android:id="@+id/btnUpdateAlarm"
+    <com.arbelkilani.clock.Clock
+        android:id="@+id/clockAlarmAnalog"
+        android:layout_width="wrap_content"
+        android:layout_height="160dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
+        app:border_color="@color/black"
+        app:show_seconds_needle="true"
+        app:seconds_needle_color="@color/colorButtonRipple"
+        app:center_inner_color="@color/colorButton"
+        app:center_outer_color="@color/colorAccentDark"
+        app:clock_type="analogical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView51"
+        app:show_border="true"
+        app:show_center="true" />
+
+    <TextView
+        android:id="@+id/tvAlarmTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="TextView"
+        android:textAlignment="textStart"
+        android:textColor="@color/colorAccentDark"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/clockAlarmAnalog"
+        app:layout_constraintStart_toStartOf="@+id/clockAlarmAnalog"
+        app:layout_constraintTop_toBottomOf="@+id/clockAlarmAnalog" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mcvSetAlarm"
+        android:layout_width="240dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        app:cardBackgroundColor="@color/colorButton"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clockAlarmAnalog"
+        app:layout_constraintVertical_bias="0.0">
+
+        <Button
+            android:id="@+id/btnUpdateAlarm"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Set/Update Alarm"
+            android:textColor="@color/colorAccentDark"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:rippleColor="@color/colorButtonRipple"
+            app:strokeWidth="0dp"/>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mcvCancelAlarm"
+        android:layout_width="240dp"
+        android:layout_height="100dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
-        android:text="Set/Update Alarm"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAlarmCurrentStatus" />
-
-    <Button
-        android:id="@+id/btnClose"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="Close"
+        android:layout_marginBottom="24dp"
+        app:cardBackgroundColor="@color/colorButton"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/btnUpdateAlarm"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="@+id/btnUpdateAlarm"
-        app:layout_constraintTop_toBottomOf="@+id/btnCancelAlarm"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mcvSetAlarm"
+        app:layout_constraintVertical_bias="0.0">
 
-    <Button
-        android:id="@+id/btnCancelAlarm"
+        <Button
+            android:id="@+id/btnCancelAlarm"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Cancel Alarm"
+            android:textColor="@color/colorAccentDark"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:rippleColor="@color/colorButtonRipple"
+            app:strokeWidth="0dp"/>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <ImageView
+        android:id="@+id/imgAlarmStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Cancel Alarm"
-        app:layout_constraintEnd_toEndOf="@+id/btnUpdateAlarm"
-        app:layout_constraintStart_toStartOf="@+id/btnUpdateAlarm"
-        app:layout_constraintTop_toBottomOf="@+id/btnUpdateAlarm" />
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/ic_success"
+        app:layout_constraintBottom_toBottomOf="@+id/tvAlarmCurrentStatus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvAlarmCurrentStatus"
+        app:layout_constraintTop_toTopOf="@+id/tvAlarmCurrentStatus" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

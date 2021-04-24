@@ -2,8 +2,9 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:cardBackgroundColor="#13aaff"
     app:cardCornerRadius="4dp"
     app:cardElevation="4dp"
     tools:context=".fragments.user.UserDetailsFragment">
@@ -15,30 +16,200 @@
 
         <TextView
             android:id="@+id/tvUserDetailsName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            android:text="TextView"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="3dp"
+            android:text="Display Name"
             android:textColor="@color/black"
-            android:textSize="21sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tvUserDetailsUIDLabel"
+            app:layout_constraintEnd_toStartOf="@+id/imgUserDetails"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/tvUserDetailsEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="3dp"
+            android:text="Email ID"
+            android:textColor="@color/colorAccentDark"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/tvUserDetailsNumRecordsLabel"
+            app:layout_constraintEnd_toStartOf="@+id/imgUserDetails"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvUserDetailsUID" />
+
+        <TextView
+            android:id="@+id/tvUserDetailsUID"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="3dp"
+            android:text="UID"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/tvUserDetailsEmail"
+            app:layout_constraintEnd_toStartOf="@+id/imgUserDetails"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvUserDetailsUIDLabel" />
 
         <ImageView
             android:id="@+id/imgUserDetails"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="24dp"
-            android:src="@drawable/ic_launcher_foreground"
+            android:layout_width="100dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="6dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvUserDetailsEmail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvUserDetailsName"
+            app:srcCompat="@drawable/user_account" />
+
+        <TextView
+            android:id="@+id/tvUserDetailsUIDLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="6dp"
+            android:text="User Unique ID"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tvUserDetailsUID"
+            app:layout_constraintEnd_toStartOf="@+id/imgUserDetails"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvUserDetailsName" />
+
+        <TextView
+            android:id="@+id/tvUserDetailsAssignedDoctorLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="6dp"
+            android:text="Assigned Doctor"
+            android:textColor="@color/colorAccentDark"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/tvUserDetailsName"
-            app:layout_constraintStart_toStartOf="@+id/tvUserDetailsName"
-            app:layout_constraintTop_toBottomOf="@+id/tvUserDetailsName"
+            app:layout_constraintEnd_toStartOf="@+id/tvUserDetailsAssignedDoctorName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvUserDetailsIsDoctorAssignedLabel" />
+
+        <TextView
+            android:id="@+id/tvUserDetailsAssignedDoctorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="6dp"
+            android:text="Assigned Doctor Name"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvUserDetailsAssignedDoctorLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvUserDetailsAssignedDoctorLabel"
+            app:layout_constraintTop_toTopOf="@+id/tvUserDetailsAssignedDoctorLabel" />
+
+        <TextView
+            android:id="@+id/tvUserDetailsNumRecords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="3dp"
+            android:text="NumRecords"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toTopOf="@+id/tvUserDetailsIsDoctorAssignedLabel"
+            app:layout_constraintEnd_toEndOf="@+id/tvUserDetailsNumRecordsLabel"
+            app:layout_constraintStart_toStartOf="@+id/tvUserDetailsNumRecordsLabel"
+            app:layout_constraintTop_toBottomOf="@+id/tvUserDetailsNumRecordsLabel" />
+
+        <TextView
+            android:id="@+id/tvUserDetailsLastRecordTimeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="6dp"
+            android:text="Last Recorded Time"
+            android:textColor="@color/colorAccentDark"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/tvUserDetailsNumRecordsLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvUserDetailsNumRecordsLabel"
+            app:layout_constraintTop_toTopOf="@+id/tvUserDetailsNumRecordsLabel" />
+
+        <TextView
+            android:id="@+id/tvUserDetailsLastRecordTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LastTime"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvUserDetailsNumRecords"
+            app:layout_constraintEnd_toEndOf="@+id/tvUserDetailsLastRecordTimeLabel"
+            app:layout_constraintStart_toStartOf="@+id/tvUserDetailsLastRecordTimeLabel"
+            app:layout_constraintTop_toTopOf="@+id/tvUserDetailsNumRecords"
             app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/imgUserDetailsAssignedDoctorCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="6dp"
+            android:src="@drawable/ic_error"
+            app:layout_constraintBottom_toBottomOf="@+id/tvUserDetailsIsDoctorAssignedLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/tvUserDetailsIsDoctorAssignedLabel"
+            app:layout_constraintTop_toTopOf="@+id/tvUserDetailsIsDoctorAssignedLabel" />
+
+        <TextView
+            android:id="@+id/tvUserDetailsNumRecordsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="1dp"
+            android:text="Number of Records"
+            android:textColor="@color/colorAccentDark"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tvUserDetailsNumRecords"
+            app:layout_constraintEnd_toStartOf="@+id/tvUserDetailsLastRecordTimeLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvUserDetailsEmail" />
+
+        <TextView
+            android:id="@+id/tvUserDetailsIsDoctorAssignedLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="3dp"
+            android:text="Doctor Assigned"
+            android:textColor="@color/colorAccentDark"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tvUserDetailsAssignedDoctorLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvUserDetailsNumRecords" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

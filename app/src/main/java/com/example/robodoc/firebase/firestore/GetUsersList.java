@@ -6,8 +6,8 @@ import android.util.Log;
 import com.example.robodoc.classes.UserInfo;
 import com.example.robodoc.enums.Gender;
 import com.example.robodoc.enums.UserKey;
-import com.example.robodoc.firebase.Globals;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,11 +19,11 @@ public class GetUsersList {
     }
     
     private final String TAG="Get Users List";
-    
-    public GetUsersList(GetUsersListInterface listInterface){
 
-        Globals
-                .getFirestore()
+    public GetUsersList(String UserUID, GetUsersListInterface listInterface){
+
+        FirebaseFirestore
+                .getInstance()
                 .collection("USERS")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -32,7 +32,7 @@ public class GetUsersList {
                         ArrayList<UserInfo> userList=new ArrayList<>();
                         for(DocumentSnapshot snapshot:task.getResult()){
                             String  uid=snapshot.getId();
-                            if(!uid.equals(Globals.getCurrentUserUid())){
+                            if(!uid.equals(UserUID)){
                                 UserInfo info=new UserInfo(uid);
                                 info.setName(snapshot.getString(UserKey.NAME.toString()));
                                 info.setEmail(snapshot.getString(UserKey.EMAIL.toString()));
@@ -54,7 +54,7 @@ public class GetUsersList {
                         listInterface.getUsersList(false,null);
                     }
                 });
-        
+
     }
-    
+
 }

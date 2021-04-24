@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/colorAccentDark"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/imgAlertDialogLogo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/tvAlertDialogTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="Title"
+            android:textColor="@color/colorPrimary"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/imgAlertDialogLogo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imgAlertDialogLogo"
+            app:layout_constraintTop_toTopOf="@+id/imgAlertDialogLogo" />
+
+        <TextView
+            android:id="@+id/tvAlertDialogMessage"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="Message"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgAlertDialogLogo" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            app:cardBackgroundColor="@color/colorButtonSecondary"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="6dp"
+            app:layout_constraintBottom_toBottomOf="@+id/materialCardView6"
+            app:layout_constraintEnd_toStartOf="@+id/materialCardView6"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/materialCardView6">
+
+            <Button
+                android:id="@+id/btnAlertDialogNegative"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="No"
+                android:textColor="@color/colorAccentDark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:rippleColor="@color/colorButtonRipple"
+                app:strokeWidth="0dp" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardView6"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/colorButtonDark"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvAlertDialogMessage"
+            app:layout_constraintVertical_bias="0.0">
+
+            <Button
+                android:id="@+id/btnAlertDialogPositive"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Yes"
+                android:textColor="@color/colorAccentDark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:rippleColor="@color/colorButtonRipple"
+                app:strokeWidth="0dp" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

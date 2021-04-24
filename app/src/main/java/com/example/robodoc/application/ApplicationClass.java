@@ -1,12 +1,11 @@
 package com.example.robodoc.application;
 
-import com.example.robodoc.firebase.Globals;
+import android.app.Application;
 
-public class ApplicationClass extends android.app.Application {
+public class ApplicationClass extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Globals.initializeGlobals();
     }
 }

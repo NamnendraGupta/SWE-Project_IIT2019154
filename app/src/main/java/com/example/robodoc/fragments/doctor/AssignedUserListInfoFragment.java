@@ -19,9 +19,11 @@ import android.widget.TextView;
 
 import com.example.robodoc.R;
 import com.example.robodoc.classes.UserInfo;
-import com.example.robodoc.fragments.shared.ProgressIndicatorFragment;
+import com.example.robodoc.fragments.utils.ProgressIndicatorFragment;
+import com.example.robodoc.utils.DateTimeUtils;
 import com.example.robodoc.viewModels.doctor.UserListViewModel;
 import com.example.robodoc.viewModels.user.RecordListViewModel;
+import com.google.android.material.card.MaterialCardView;
 import com.squareup.picasso.Picasso;
 
 public class AssignedUserListInfoFragment extends Fragment {
@@ -49,14 +51,22 @@ public class AssignedUserListInfoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         UserListViewModel viewModel=new ViewModelProvider(requireActivity()).get(UserListViewModel.class);
-        userInfo=viewModel.GetUserInfo(AssignedUserListInfoFragmentArgs.fromBundle(getArguments()).getListPosition());
+        int Position=AssignedUserListInfoFragmentArgs.fromBundle(getArguments()).getListPosition();
+        userInfo=viewModel.GetUserInfo(Position);
+
+        AssignedUserAppBarDisplayFragment displayFragment = (AssignedUserAppBarDisplayFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragmentAppBarDisplay);
+        displayFragment.SetUserInfo(userInfo);
 
         TextView tvName = view.findViewById(R.id.tvAssignedUserName);
         TextView tvEmail = view.findViewById(R.id.tvAssignedUserEmail);
         TextView tvGender = view.findViewById(R.id.tvAssignedUserGender);
+        TextView tvNumOfRecords = view.findViewById(R.id.tvAssignedUserNumOfRecords);
+        TextView tvLastRecordedTime = view.findViewById(R.id.tvAssignedUserLastRecordedTime);
         Button btnViewStats = view.findViewById(R.id.btnViewAssignStats);
         Button btnViewInteraction = view.findViewById(R.id.btnViewUserInteraction);
         Button btnViewRecords = view.findViewById(R.id.btnViewAssignRecords);
+        MaterialCardView mcvViewStats = view.findViewById(R.id.mcvBtnAssignedUserViewStatistics);
+        MaterialCardView mcvViewRecords = view.findViewById(R.id.mcvBtnAssignedUserViewRecords);
         ImageView imgUser = view.findViewById(R.id.imgAssignedUser);
 
         tvName.setText(userInfo.getName());
@@ -98,17 +108,32 @@ public class AssignedUserListInfoFragment extends Fragment {
         });
 
         viewModel1.GetListSize().observe(getViewLifecycleOwner(), integer -> {
+            tvNumOfRecords.setText(Integer.toString(integer));
             if(integer==0){
                 btnViewRecords.setVisibility(View.GONE);
+                mcvViewRecords.setVisibility(View.GONE);
                 btnViewStats.setVisibility(View.GONE);
+                mcvViewStats.setVisibility(View.GONE);
             }
             else if(integer==1){
                 btnViewRecords.setVisibility(View.VISIBLE);
+                mcvViewRecords.setVisibility(View.VISIBLE);
                 btnViewStats.setVisibility(View.GONE);
+                mcvViewStats.setVisibility(View.GONE);
             }
             else {
                 btnViewRecords.setVisibility(View.VISIBLE);
+                mcvViewRecords.setVisibility(View.VISIBLE);
                 btnViewStats.setVisibility(View.VISIBLE);
+                mcvViewStats.setVisibility(View.VISIBLE);
+            }
+        });
+
+        viewModel1.GetRecordList().observe(getViewLifecycleOwner(),vitalInputs -> {
+            if(vitalInputs.size()>0){
+                long timeOfInput=vitalInputs.get(vitalInputs.size()-1).getTimeOfInput();
+                String displayTime= DateTimeUtils.getDisplayTime(timeOfInput)+", "+DateTimeUtils.getDisplayDate(timeOfInput);
+                tvLastRecordedTime.setText(displayTime);
             }
         });
     }

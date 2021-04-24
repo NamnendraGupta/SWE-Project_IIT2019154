@@ -4,26 +4,37 @@ import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationManagerCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.AlarmManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.arbelkilani.clock.Clock;
 import com.example.robodoc.R;
 import com.example.robodoc.receiver.AlarmReceiver;
+import com.example.robodoc.utils.DateTimeUtils;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
@@ -33,16 +44,6 @@ import java.util.Date;
 import static android.content.Context.MODE_PRIVATE;
 
 public class AlarmSetterFragment extends Fragment {
-
-    private TextView tvCurrentStatus;
-
-    private Boolean isAlarmSet;
-    private int AlarmMinute;
-    private int AlarmHour;
-    SharedPreferences sharedPreferences;
-
-    public static final String CHANNEL_ID="AlarmNotificationChannelID";
-
 
     public AlarmSetterFragment() {
         // Required empty public constructor
@@ -60,112 +61,141 @@ public class AlarmSetterFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_alarm_setter, container, false);
     }
 
+    private TextView tvCurrentStatus, tvAlarmTime;
+    private ImageView imgAlarmStatus;
+    private Button btnUpdateAlarm, btnCancelAlarm;
+    private MaterialCardView mcvCancel;
+
+    private SharedPreferences sharedPreferences;
+    private long timeOfReminder;
+    private boolean isAlarmSet;
+
+    private final String NOTIFICATION_CHANNEL_ID="RobodocAlarmChannel";
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        tvCurrentStatus=view.findViewById(R.id.tvAlarmCurrentStatus);
+        tvAlarmTime=view.findViewById(R.id.tvAlarmTime);
+        imgAlarmStatus=view.findViewById(R.id.imgAlarmStatus);
+        btnUpdateAlarm = view.findViewById(R.id.btnUpdateAlarm);
+        btnCancelAlarm=view.findViewById(R.id.btnCancelAlarm);
+        mcvCancel=view.findViewById(R.id.mcvCancelAlarm);
+        Clock analogClock = view.findViewById(R.id.clockAlarmAnalog);
+        analogClock.setShowHoursValues(true);
+
         createNotificationChannel();
 
-        sharedPreferences=requireActivity().getSharedPreferences("ALARM",MODE_PRIVATE);
+        sharedPreferences=requireActivity().getSharedPreferences("AlarmData",MODE_PRIVATE);
         isAlarmSet=sharedPreferences.getBoolean("IsAlarmSet",false);
-        AlarmMinute=sharedPreferences.getInt("AlarmMinute",0);
-        AlarmHour=sharedPreferences.getInt("AlarmHour",0);
+        timeOfReminder=sharedPreferences.getLong("AlarmTime",new Date().getTime());
 
-        tvCurrentStatus=view.findViewById(R.id.tvAlarmCurrentStatus);
-        Button btnUpdateAlarm = view.findViewById(R.id.btnUpdateAlarm);
-
-        Button btnCancelAlarm=view.findViewById(R.id.btnCancelAlarm);
-
-        UpdateInterface();
-
-        btnCancelAlarm.setOnClickListener(v -> cancelAlarm());
+        updateUserInterface();
 
         btnUpdateAlarm.setOnClickListener(v -> {
+            Calendar calendar=Calendar.getInstance();
+            calendar.setTimeInMillis(timeOfReminder);
             MaterialTimePicker timePicker=new MaterialTimePicker.Builder()
                     .setTimeFormat(TimeFormat.CLOCK_12H)
-                    .setHour(AlarmHour)
-                    .setMinute(AlarmMinute)
+                    .setHour(calendar.get(Calendar.HOUR_OF_DAY))
+                    .setMinute(calendar.get(Calendar.MINUTE))
                     .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
                     .setTitleText("Choose your Reminder Time")
                     .build();
 
-            timePicker.addOnPositiveButtonClickListener(v1 -> {
-                AlarmHour=timePicker.getHour();
-                AlarmMinute=timePicker.getMinute();
-                isAlarmSet=true;
-                sharedPreferences
-                        .edit()
-                        .putBoolean("IsAlarmSet",true)
-                        .putInt("AlarmMinute",AlarmMinute)
-                        .putInt("AlarmHour",AlarmHour)
-                        .apply();
-
-                setAlarm();
-
-                UpdateInterface();
-            });
+            timePicker.addOnPositiveButtonClickListener(v1 -> SetAlarm(timePicker.getHour(),timePicker.getMinute()));
             timePicker.show(getParentFragmentManager(),"Time Picker");
+        });
+
+        btnCancelAlarm.setOnClickListener(v -> {
+            AlertDialog alertDialog=new MaterialAlertDialogBuilder(requireActivity())
+                    .setTitle("RoboDoc Warning")
+                    .setMessage("Are You Sure you want to Cancel the Alarm!")
+                    .setPositiveButton("YES", (dialog, which) -> CancelAlarm())
+                    .setNegativeButton("NO", (dialog, which) -> dialog.dismiss()).create();
+            alertDialog.show();
         });
     }
 
-    private void cancelAlarm(){
-        AlarmMinute=0;
-        AlarmHour=0;
-        isAlarmSet=false;
+    private void SetAlarm(int hour, int minute){
+        Calendar calendar=Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,hour);
+        calendar.set(Calendar.MINUTE,minute);
+        calendar.set(Calendar.SECOND,0);
+
+        isAlarmSet=true;
+        timeOfReminder=calendar.getTimeInMillis();
+
         sharedPreferences
                 .edit()
-                .putBoolean("IsAlarmSet",false)
-                .putInt("AlarmMinute",AlarmMinute)
-                .putInt("AlarmMinute",AlarmHour)
+                .putBoolean("IsAlarmSet",isAlarmSet)
+                .putLong("AlarmTime",timeOfReminder)
                 .apply();
-        UpdateInterface();
+
+        Intent intent=new Intent(requireContext(),AlarmReceiver.class);
+        IntentFilter filter=new IntentFilter();
+        filter.addAction("");
+        intent.setAction("");
+        intent.addFlags(0);
+
+        ComponentName receiver=new ComponentName(requireContext(),AlarmReceiver.class);
+        PackageManager pm=requireContext().getPackageManager();
+
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+
+        PendingIntent pendingIntent=PendingIntent.getBroadcast(requireActivity().getApplicationContext(),32451,intent,0);
+        AlarmManager alarmManager=(AlarmManager)requireActivity().getSystemService(Context.ALARM_SERVICE);
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,timeOfReminder,AlarmManager.INTERVAL_DAY,pendingIntent);
+
+        Snackbar.make(requireActivity().getWindow().getDecorView().getRootView(),"Alarm Set Successfully", 2500).show();
+
+        updateUserInterface();
     }
 
-    private void UpdateInterface(){
+    private void CancelAlarm(){
+        isAlarmSet=false;
+        timeOfReminder=new Date().getTime();
+
+        sharedPreferences
+                .edit()
+                .putBoolean("IsAlarmSet",isAlarmSet)
+                .remove("AlarmTime")
+                .apply();
+
+        updateUserInterface();
+    }
+
+    private void updateUserInterface(){
         if(isAlarmSet){
-            String getDisplayTime=getTime(AlarmHour,AlarmMinute);
-            tvCurrentStatus.setText("Reminder is currently set at "+getDisplayTime);
+            tvCurrentStatus.setText("Alarm Set");
+            imgAlarmStatus.setImageDrawable(ContextCompat.getDrawable(requireActivity(),R.drawable.ic_success));
+            tvAlarmTime.setVisibility(View.VISIBLE);
+            String alarmDisplay="Alarm Set at "+DateTimeUtils.getDisplayTime(timeOfReminder);
+            tvAlarmTime.setText(alarmDisplay);
+            btnUpdateAlarm.setText("Update Alarm");
+            btnCancelAlarm.setVisibility(View.VISIBLE);
+            mcvCancel.setVisibility(View.VISIBLE);
         }
         else {
-            tvCurrentStatus.setText("Reminder is not set Currently");
+            tvCurrentStatus.setText("Alarm Not Set");
+            imgAlarmStatus.setImageDrawable(ContextCompat.getDrawable(requireActivity(),R.drawable.ic_error));
+            tvAlarmTime.setVisibility(View.GONE);
+            btnUpdateAlarm.setText("Set Alarm");
+            btnCancelAlarm.setVisibility(View.GONE);
+            mcvCancel.setVisibility(View.GONE);
         }
     }
 
-    private String getTime(int hours, int minute){
-        String time="";
-        if(hours<10)
-            time+="0";
-        time+=hours+":";
-        if(minute<10)
-            time+="0";
-        time+=minute;
-        return time;
-    }
-
-    private void setAlarm(){
-        Calendar calendar=Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,AlarmHour);
-        calendar.set(Calendar.MINUTE,AlarmMinute);
-        calendar.set(Calendar.SECOND,0);
-        Log.d("ALARM",calendar.getTimeInMillis()+" --- "+new Date().getTime());
-
-        AlarmManager manager=(AlarmManager)requireActivity().getSystemService(Context.ALARM_SERVICE);
-
-        Intent intent=new Intent(requireActivity(), AlarmReceiver.class);
-        intent.putExtra("NotificationChannelID",CHANNEL_ID);
-        PendingIntent pendingIntent=PendingIntent.getBroadcast(requireActivity().getApplicationContext(),1111,intent,0);
-
-        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
-    }
-
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String name="RobodocAlarmNotificationChannel";
-            String description = "Notification channel for displaying Notification of reminder to take the input";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(requireActivity());
+    private void createNotificationChannel(){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            int importance= NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel=new NotificationChannel(NOTIFICATION_CHANNEL_ID,"RobodocNotificationChannel",importance);
+            channel.setDescription("Notification Channel for information related to RoboDoc");
+            NotificationManager notificationManager=requireActivity().getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
     }

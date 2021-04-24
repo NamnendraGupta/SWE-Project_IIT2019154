@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLight"
     tools:context=".activities.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -14,42 +14,31 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
-            app:title="User Dashboard"
-            app:titleTextColor="@color/white"
-            app:menu="@menu/main_menu"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccentDark"
+            android:theme="@style/ToolbarMenuItem"
+            app:menu="@menu/main_menu"
+            app:title="User Dashboard"
+            app:titleTextColor="@color/white" />
+
+        <fragment
+            android:id="@+id/fragmentUserDetails"
+            android:name="com.example.robodoc.fragments.user.UserDetailsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            tools:layout="@layout/fragment_user_details" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
+    <fragment
+        android:id="@+id/navHostMain"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <fragment
-                android:id="@+id/fragmentUserDetails"
-                android:name="com.example.robodoc.fragments.user.UserDetailsFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                tools:layout="@layout/fragment_user_details" />
-
-            <fragment
-                android:id="@+id/navHostMain"
-                android:name="androidx.navigation.fragment.NavHostFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:defaultNavHost="true"
-                app:navGraph="@navigation/nav_graph_main" />
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph_main" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

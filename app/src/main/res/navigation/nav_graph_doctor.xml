@@ -51,32 +51,8 @@
         android:label="Record Information"
         tools:layout="@layout/fragment_record_detail">
         <argument
-            android:name="InputID"
-            app:argType="string" />
-        <argument
-            android:name="TimeOfInput"
-            app:argType="long" />
-        <argument
-            android:name="HighBP"
+            android:name="ListPosition"
             app:argType="integer" />
-        <argument
-            android:name="LowBP"
-            app:argType="integer" />
-        <argument
-            android:name="GlucoseLevel"
-            app:argType="integer" />
-        <argument
-            android:name="HeartRate"
-            app:argType="integer" />
-        <argument
-            android:name="OxygenLevel"
-            app:argType="integer" />
-        <argument
-            android:name="BodyTemperature"
-            app:argType="float" />
-        <argument
-            android:name="InputType"
-            app:argType="string" />
     </fragment>
 
     <fragment
@@ -87,10 +63,11 @@
     <fragment
         android:id="@+id/chatFragment2"
         android:name="com.example.robodoc.fragments.shared.ChatFragment"
-        android:label="fragment_chat"
+        android:label="Interactions"
         tools:layout="@layout/fragment_chat">
 
-        <argument android:name="IsRoleDoctor"
+        <argument
+            android:name="IsRoleDoctor"
             app:argType="boolean" />
         <argument
             android:name="DestinationUID"

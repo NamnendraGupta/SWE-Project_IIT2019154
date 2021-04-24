@@ -6,92 +6,88 @@
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     android:theme="@style/Widget.MaterialComponents.CardView"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="4dp">
+    app:cardBackgroundColor="@color/colorButtonSecondary"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="12dp">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/tvRecordNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:text="S. No."
-            android:textColor="@color/black"
+            android:textColor="@color/colorAccentLight"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/textView2"
+            app:layout_constraintEnd_toStartOf="@+id/imgBtnViewRecordDetails"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/textView2"
+            app:layout_constraintTop_toTopOf="@+id/textView2" />
 
         <TextView
             android:id="@+id/tvRecordDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="16dp"
             android:text="Date"
-            android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/imgBtnViewRecordDetails"
+            app:layout_constraintEnd_toStartOf="@+id/tvRecordTime"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvRecordNum"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <TextView
             android:id="@+id/tvRecordTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
             android:text="Time"
-            android:textColor="@color/black"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/tvRecordDate"
-            app:layout_constraintStart_toEndOf="@+id/tvRecordDate"
-            app:layout_constraintTop_toTopOf="@+id/tvRecordDate"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <TextView
-            android:id="@+id/tvRecordID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="24dp"
-            android:text="ID"
-            app:layout_constraintBottom_toBottomOf="@+id/textView25"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imgBtnViewRecordDetails"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/textView25"
-            app:layout_constraintTop_toTopOf="@+id/textView25" />
+            app:layout_constraintStart_toEndOf="@+id/tvRecordDate"
+            app:layout_constraintTop_toTopOf="@+id/tvRecordDate" />
+
+        <ImageButton
+            android:id="@+id/imgBtnViewRecordDetails"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/colorButtonSecondary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_preview" />
 
         <TextView
-            android:id="@+id/textView25"
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="4dp"
-            android:text="Input ID:"
+            android:layout_marginBottom="2dp"
+            android:text="Record Number"
             android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="@+id/tvRecordNum"
-            app:layout_constraintEnd_toStartOf="@+id/tvRecordID"
-            app:layout_constraintStart_toEndOf="@+id/tvRecordNum"
-            app:layout_constraintTop_toTopOf="@+id/tvRecordNum" />
-
-        <Button
-            android:id="@+id/btnViewRecordDetails"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:text="View Record"
-            android:textSize="13sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tvRecordTime"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/tvRecordTime"
-            app:layout_constraintTop_toTopOf="@+id/tvRecordTime" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tvRecordDate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imgBtnViewRecordDetails" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

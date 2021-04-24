@@ -5,18 +5,19 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.robodoc.classes.UserInfo;
-import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.firestore.FetchAssignedUsersList;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
 public class UserListViewModel extends ViewModel implements FetchAssignedUsersList.FetchInterface {
 
-    private final String DoctorUID;
+    private String DoctorUID;
+    private String DoctorName;
 
-    public UserListViewModel() {
-        super();
-        DoctorUID= Globals.getCurrentUserUid();
+    public void setDoctorDetails(String doctorUID, String doctorName) {
+        DoctorUID=doctorUID;
+        DoctorName=doctorName;
         fetchUsersList();
     }
 
@@ -55,5 +56,13 @@ public class UserListViewModel extends ViewModel implements FetchAssignedUsersLi
 
     public UserInfo GetUserInfo(int position){
         return userList.getValue().get(position);
+    }
+
+    public String getDoctorName() {
+        return DoctorName;
+    }
+
+    public String getDoctorUID(){
+        return DoctorUID;
     }
 }

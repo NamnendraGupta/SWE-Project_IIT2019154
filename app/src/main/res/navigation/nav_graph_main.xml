@@ -12,19 +12,28 @@
         tools:layout="@layout/fragment_user_home">
         <action
             android:id="@+id/actionMainToInput"
-            app:destination="@id/frgChooseInput" />
+            app:destination="@id/frgChooseInput"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit" />
         <action
             android:id="@+id/ActionMainToDoctorList"
             app:destination="@id/frgDoctorList" />
         <action
             android:id="@+id/ActionMainToRecords"
-            app:destination="@id/recordsFragment" />
+            app:destination="@id/recordsFragment"
+            app:enterAnim="@anim/fragment_close_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
         <action
             android:id="@+id/ActionMainToStats"
-            app:destination="@id/frgUserStats" />
+            app:destination="@id/frgUserStats"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit" />
         <action
             android:id="@+id/ActionMainToAlarm"
             app:destination="@id/frgAlarmSetter" />
+        <action
+            android:id="@+id/ActionMainToRecordDetail"
+            app:destination="@id/recordDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/frgChooseInput"
@@ -76,7 +85,9 @@
         tools:layout="@layout/fragment_records">
         <action
             android:id="@+id/ActionRecordInfo"
-            app:destination="@id/recordDetailFragment" />
+            app:destination="@id/recordDetailFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit" />
     </fragment>
     <fragment
         android:id="@+id/recordDetailFragment"
@@ -84,31 +95,8 @@
         android:label="Record Detail"
         tools:layout="@layout/fragment_record_detail">
         <argument
-            android:name="InputID"
-            app:argType="string" />
-        <argument
-            android:name="TimeOfInput"
-            app:argType="long" />
-        <argument
-            android:name="HighBP"
+            android:name="ListPosition"
             app:argType="integer" />
-        <argument
-            android:name="LowBP"
-            app:argType="integer" />
-        <argument
-            android:name="GlucoseLevel"
-            app:argType="integer" />
-        <argument
-            android:name="HeartRate"
-            app:argType="integer" />
-        <argument android:name="OxygenLevel"
-            app:argType="integer" />
-        <argument
-            android:name="BodyTemperature"
-            app:argType="float" />
-        <argument
-            android:name="InputType"
-            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/frgUserStats"

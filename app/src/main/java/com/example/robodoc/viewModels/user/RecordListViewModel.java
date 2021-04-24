@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.robodoc.classes.VitalInput;
 import com.example.robodoc.firebase.realtimeDb.GetVitalRecord;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -40,6 +41,8 @@ public class RecordListViewModel extends ViewModel implements GetVitalRecord.Get
     }
 
     private void Initialize(){
+        if(UserUId==null)
+            UserUId= FirebaseAuth.getInstance().getCurrentUser().getUid();
         if(VitalInputList==null){
             IsListLoading=new MutableLiveData<>();
             VitalInputList=new MutableLiveData<>();
@@ -69,5 +72,13 @@ public class RecordListViewModel extends ViewModel implements GetVitalRecord.Get
             VitalInputList.setValue(recordList);
             ListSize.setValue(VitalInputList.getValue().size());
         }
+    }
+
+    public VitalInput GetRecordInfo(int position){
+        return VitalInputList.getValue().get(position);
+    }
+
+    public int GetSize(){
+        return ListSize.getValue();
     }
 }

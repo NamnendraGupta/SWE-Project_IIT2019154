@@ -5,6 +5,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,9 @@ import android.widget.Toast;
 import com.example.robodoc.R;
 import com.example.robodoc.classes.VitalInput;
 import com.example.robodoc.firebase.realtimeDb.UploadVitalInput;
+import com.example.robodoc.fragments.utils.ProgressIndicatorFragment;
+import com.example.robodoc.viewModels.user.UserInfoViewModel;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class ManualInput extends Fragment implements UploadVitalInput.UploadVitalInputInterface {
@@ -35,15 +41,14 @@ public class ManualInput extends Fragment implements UploadVitalInput.UploadVita
         return inflater.inflate(R.layout.fragment_manual_input, container, false);
     }
 
-    Button btnCancel, btnSubmit;
-    TextInputLayout inputBpSys, inputBpDias, inputBodyTemp, inputHeartRate, inputOxygenLevel, inputGlucoseLevel;
+    private TextInputLayout inputBpSys, inputBpDias, inputBodyTemp, inputHeartRate, inputOxygenLevel, inputGlucoseLevel;
+    private ProgressIndicatorFragment progressIndicatorFragment;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        btnCancel=view.findViewById(R.id.btnManualCancel);
-        btnSubmit=view.findViewById(R.id.btnManualSubmitInput);
+        Button btnSubmit = view.findViewById(R.id.btnManualSubmitInput);
 
         inputBpSys=view.findViewById(R.id.inputBpSys);
         inputBpDias=view.findViewById(R.id.inputBpDias);
@@ -120,6 +125,7 @@ public class ManualInput extends Fragment implements UploadVitalInput.UploadVita
 
         btnSubmit.setOnClickListener(v -> {
             if(isInputValid()){
+                UserInfoViewModel viewModel=new ViewModelProvider(requireActivity()).get(UserInfoViewModel.class);
                 VitalInput vitalInput=new VitalInput(VitalInput.VitalInputType.MANUAL);
                 vitalInput.setHighBP(Integer.parseInt(inputBpSys.getEditText().getText().toString()));
                 vitalInput.setLowBP(Integer.parseInt(inputBpDias.getEditText().getText().toString()));
@@ -127,7 +133,10 @@ public class ManualInput extends Fragment implements UploadVitalInput.UploadVita
                 vitalInput.setHeartRate(Integer.parseInt(inputHeartRate.getEditText().getText().toString()));
                 vitalInput.setGlucoseLevel(Integer.parseInt(inputGlucoseLevel.getEditText().getText().toString()));
                 vitalInput.setOxygenLevel(Integer.parseInt(inputOxygenLevel.getEditText().getText().toString()));
-                new UploadVitalInput(getFragmentManager(),ManualInput.this,vitalInput.getInitialHashMap());
+
+                progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Syncing With Server","Uploading Vital Data");
+                progressIndicatorFragment.show(getParentFragmentManager(),"UploadData");
+                new UploadVitalInput(ManualInput.this,viewModel.getUId(),vitalInput.getInitialHashMap());
             }
         });
     }
@@ -171,11 +180,21 @@ public class ManualInput extends Fragment implements UploadVitalInput.UploadVita
 
     @Override
     public void OnUpload(boolean result) {
+        progressIndicatorFragment.dismiss();
         if(result){
-            Toast.makeText(getContext(),"Data Upload Successful",Toast.LENGTH_LONG).show();
+            NavController navController=Navigation.findNavController(requireActivity(),R.id.navHostMain);
+            navController.popBackStack(R.id.placeholderMain,false);
+            ShowSnackbar();
         }
         else {
             Toast.makeText(getContext(),"Error in Uploading Data! Please Try Again",Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void ShowSnackbar(){
+        Snackbar snackbar=Snackbar.make(requireActivity().getWindow().getDecorView().getRootView(),"New Record Added",4000);
+        snackbar.setActionTextColor(requireContext().getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.setBackgroundTint(requireContext().getResources().getColor(R.color.colorAccentDark));
+        snackbar.show();
     }
 }

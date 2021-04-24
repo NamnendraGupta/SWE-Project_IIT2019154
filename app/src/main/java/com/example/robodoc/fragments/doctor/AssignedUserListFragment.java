@@ -17,8 +17,9 @@ import android.widget.TextView;
 
 import com.example.robodoc.R;
 import com.example.robodoc.adapters.AssignedUserListAdapter;
-import com.example.robodoc.fragments.shared.ProgressIndicatorFragment;
+import com.example.robodoc.fragments.utils.ProgressIndicatorFragment;
 import com.example.robodoc.viewModels.doctor.UserListViewModel;
+import com.google.android.material.card.MaterialCardView;
 
 public class AssignedUserListFragment extends Fragment {
 
@@ -33,6 +34,7 @@ public class AssignedUserListFragment extends Fragment {
 
     private TextView tvNoUserDisplay;
     private RecyclerView rcvUsersList;
+    private MaterialCardView mcvUsersList;
     private ProgressIndicatorFragment progressIndicatorFragment;
 
     @Override
@@ -50,6 +52,7 @@ public class AssignedUserListFragment extends Fragment {
 
         tvNoUserDisplay=view.findViewById(R.id.tvAssignedUserListNoDisplay);
         rcvUsersList=view.findViewById(R.id.rcvAssignedUsersList);
+        mcvUsersList=view.findViewById(R.id.mcvAssignedUsersList);
         rcvUsersList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         UserListViewModel viewModel=new ViewModelProvider(requireActivity()).get(UserListViewModel.class);
@@ -57,10 +60,12 @@ public class AssignedUserListFragment extends Fragment {
         viewModel.getUsersList().observe(getViewLifecycleOwner(), userInfoArrayList -> {
             if(userInfoArrayList.isEmpty()){
                 rcvUsersList.setVisibility(View.GONE);
+                mcvUsersList.setVisibility(View.GONE);
                 tvNoUserDisplay.setVisibility(View.VISIBLE);
             }
             else {
                 rcvUsersList.setVisibility(View.VISIBLE);
+                mcvUsersList.setVisibility(View.VISIBLE);
                 tvNoUserDisplay.setVisibility(View.GONE);
                 rcvUsersList.setAdapter(new AssignedUserListAdapter(userInfoArrayList, Navigation.findNavController(view)));
             }

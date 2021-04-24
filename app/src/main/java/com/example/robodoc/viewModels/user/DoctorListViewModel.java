@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.robodoc.classes.UserInfo;
 import com.example.robodoc.firebase.firestore.GetDoctorsList;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -13,9 +14,11 @@ public class DoctorListViewModel extends ViewModel implements GetDoctorsList.Get
 
     public DoctorListViewModel() {
         super();
+        UserUID= FirebaseAuth.getInstance().getCurrentUser().getUid();
         fetchDoctorsList();
     }
 
+    private final String UserUID;
     private MutableLiveData<Boolean> IsDoctorListLoading;
     private MutableLiveData<ArrayList<UserInfo>> DoctorList;
 
@@ -38,7 +41,7 @@ public class DoctorListViewModel extends ViewModel implements GetDoctorsList.Get
         IsDoctorListLoading.setValue(true);
         DoctorList.setValue(new ArrayList<>());
 
-        new GetDoctorsList(this);
+        new GetDoctorsList(UserUID,this);
     }
 
     @Override

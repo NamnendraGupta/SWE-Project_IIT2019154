@@ -6,10 +6,11 @@ import android.util.Log;
 import com.example.robodoc.classes.UserInfo;
 import com.example.robodoc.enums.Gender;
 import com.example.robodoc.enums.UserKey;
-import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.realtimeDb.DatabaseKeys;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,8 +26,8 @@ public class FetchAssignedUsersList {
     public FetchAssignedUsersList(FetchInterface fetchInterface, String doctorUId){
         ArrayList<String> uidList=new ArrayList<>();
 
-        Globals
-                .getFirebaseDatabase()
+        FirebaseDatabase
+                .getInstance()
                 .getReference()
                 .child(DatabaseKeys.KEY_DOCTORS)
                 .child(doctorUId)
@@ -53,8 +54,8 @@ public class FetchAssignedUsersList {
     }
 
     private void fetchFromFirestore(ArrayList<String> uidList, FetchInterface listInterface){
-        Globals
-                .getFirestore()
+        FirebaseFirestore
+                .getInstance()
                 .collection("USERS")
                 .get()
                 .addOnCompleteListener(task -> {

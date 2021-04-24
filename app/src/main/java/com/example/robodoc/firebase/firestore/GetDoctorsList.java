@@ -6,8 +6,8 @@ import android.util.Log;
 import com.example.robodoc.classes.UserInfo;
 import com.example.robodoc.enums.Gender;
 import com.example.robodoc.enums.UserKey;
-import com.example.robodoc.firebase.Globals;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,10 +20,9 @@ public class GetDoctorsList {
 
     private final String TAG="Get Doctors List";
 
-    public GetDoctorsList(GetDoctorsListInterface listInterface){
-
-        Globals
-                .getFirestore()
+    public GetDoctorsList(String UserUID, GetDoctorsListInterface listInterface){
+        FirebaseFirestore
+                .getInstance()
                 .collection("USERS")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -32,7 +31,7 @@ public class GetDoctorsList {
                         ArrayList<UserInfo> userList=new ArrayList<>();
                         for(DocumentSnapshot snapshot:task.getResult()){
                             String  uid=snapshot.getId();
-                            if(!uid.equals(Globals.getCurrentUserUid()) && snapshot.getBoolean(UserKey.IS_DOCTOR.toString())){
+                            if(!uid.equals(UserUID) && snapshot.getBoolean(UserKey.IS_DOCTOR.toString())){
                                 UserInfo info=new UserInfo(uid);
                                 info.setName(snapshot.getString(UserKey.NAME.toString()));
                                 info.setEmail(snapshot.getString(UserKey.EMAIL.toString()));
@@ -54,7 +53,6 @@ public class GetDoctorsList {
                         listInterface.getDoctorsList(false,null);
                     }
                 });
-
     }
 
 }

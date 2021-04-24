@@ -4,9 +4,9 @@ import android.util.Log;
 
 import androidx.fragment.app.FragmentManager;
 
-import com.example.robodoc.firebase.Globals;
-import com.example.robodoc.fragments.shared.ProgressIndicatorFragment;
+import com.example.robodoc.fragments.utils.ProgressIndicatorFragment;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Date;
 
@@ -23,7 +23,7 @@ public class AssignDoctorToUser {
         progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Syncing Data with Server","Assigning Doctor to the User");
         progressIndicatorFragment.show(manager,TAG);
 
-        DatabaseReference dbRef=Globals.getFirebaseDatabase().getReference();
+        DatabaseReference dbRef= FirebaseDatabase.getInstance().getReference();
 
         dbRef
                 .child(DatabaseKeys.KEY_USERS)

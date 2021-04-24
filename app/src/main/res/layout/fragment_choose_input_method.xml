@@ -1,47 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLight"
     tools:context=".fragments.user.ChooseInputMethod">
 
 
-    <Button
-        android:id="@+id/btnManualInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="32dp"
-        android:text="Manually Input vital signs"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView2"
+        android:layout_width="240dp"
+        android:layout_height="150dp"
+        android:layout_margin="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
+        app:cardBackgroundColor="@color/colorButton"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/materialCardView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.73">
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="OR"
-        app:layout_constraintEnd_toEndOf="@+id/btnManualInput"
-        app:layout_constraintStart_toStartOf="@+id/btnManualInput"
-        app:layout_constraintTop_toBottomOf="@+id/btnManualInput" />
+        <Button
+            android:id="@+id/btnManualInput"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Manually Input vital signs"
+            android:textColor="@color/colorAccentDark"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:rippleColor="@color/colorButtonRipple"
+            app:strokeWidth="0dp" />
+    </com.google.android.material.card.MaterialCardView>
 
-    <Button
-        android:id="@+id/btnAutomaticGenerate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="40dp"
-        android:text="Automatic Generate VITAL SIGNS"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView3"
+        android:layout_width="240dp"
+        android:layout_height="150dp"
+        android:layout_margin="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="@color/colorButton"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView2">
+
+        <Button
+            android:id="@+id/btnAutomaticGenerate"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Automatic Generate VITAL SIGNS"
+            android:textColor="@color/colorAccentDark"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:rippleColor="@color/colorButtonRipple"
+            app:strokeWidth="0dp" />
+    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

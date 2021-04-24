@@ -1,7 +1,7 @@
 package com.example.robodoc.classes;
 
-import com.example.robodoc.firebase.Globals;
 import com.example.robodoc.firebase.realtimeDb.DatabaseKeys;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.Date;
@@ -19,7 +19,7 @@ public class Message {
     public Message(String messageData, String destination){
         this.messageData=messageData;
         this.destination=destination;
-        this.source= Globals.getCurrentUserUid();
+        this.source= FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.time=new Date().getTime();
     }
 

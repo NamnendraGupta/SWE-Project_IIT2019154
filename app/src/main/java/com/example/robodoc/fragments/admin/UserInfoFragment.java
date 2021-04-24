@@ -13,27 +13,25 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.robodoc.R;
 import com.example.robodoc.classes.UserInfo;
-import com.example.robodoc.firebase.firestore.UpdateUserRole;
+import com.example.robodoc.fragments.utils.ProgressIndicatorFragment;
 import com.example.robodoc.utils.DateTimeUtils;
 import com.example.robodoc.viewModels.admin.UserListViewModel;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.squareup.picasso.Picasso;
 
-public class UserInfoFragment extends Fragment implements UpdateUserRole.UpdateUserRoleInterface {
-
-    public interface UserInfoFragmentInterface{
-        void onUserUpdated(int position, boolean isAdmin, boolean isDoctor);
-    }
+public class UserInfoFragment extends Fragment {
 
     private UserInfo userInfo;
-    private UserInfoFragmentInterface userInterface;
     private int position;
-    private Button btnUpdate;
+
     private boolean isAdmin, isDoctor;
+    private TextView tvName,tvEmail,tvUID,tvDateRegistered,tvGender;
+    private ImageView imgUser;
+    private SwitchMaterial switchAdmin,switchDoctor;
 
     public UserInfoFragment() {
         // Required empty public constructor
@@ -42,11 +40,6 @@ public class UserInfoFragment extends Fragment implements UpdateUserRole.UpdateU
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    public void setUserInterface(int position, UserInfoFragmentInterface userInterface){
-        this.position=position;
-        this.userInterface=userInterface;
     }
 
     @Override
@@ -58,20 +51,65 @@ public class UserInfoFragment extends Fragment implements UpdateUserRole.UpdateU
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         UserListViewModel viewModel=new ViewModelProvider(requireActivity()).get(UserListViewModel.class);
-        userInfo=viewModel.GetUserInfo(UserInfoFragmentArgs.fromBundle(getArguments()).getListPosition());
+        position=UserInfoFragmentArgs.fromBundle(getArguments()).getListPosition();
 
-        TextView tvName = view.findViewById(R.id.tvUserInfoName);
-        TextView tvEmail = view.findViewById(R.id.tvUserInfoEmail);
-        TextView tvUID = view.findViewById(R.id.tvUserInfoUID);
-        TextView tvDateRegistered = view.findViewById(R.id.tvUserInfoDateRegistered);
-        TextView tvGender = view.findViewById(R.id.tvUserInfoGender);
-        ImageView imgUser = view.findViewById(R.id.imgUserInfo);
-        SwitchMaterial switchAdmin = view.findViewById(R.id.switchUserInfoAdmin);
-        SwitchMaterial switchDoctor = view.findViewById(R.id.switchUserInfoDoctor);
-        btnUpdate=view.findViewById(R.id.btnUserInfoSubmit);
+        viewModel.getUsersList().observe(getViewLifecycleOwner(),userInfoArrayList -> {
+            if(userInfoArrayList.size()>0){
+                userInfo=userInfoArrayList.get(position);
+                UpdateInterface();
+            }
+        });
 
+        tvName = view.findViewById(R.id.tvUserInfoName);
+        tvEmail = view.findViewById(R.id.tvUserInfoEmail);
+        tvUID = view.findViewById(R.id.tvUserInfoUID);
+        tvDateRegistered = view.findViewById(R.id.tvUserInfoDateRegistered);
+        tvGender = view.findViewById(R.id.tvUserInfoGender);
+        imgUser = view.findViewById(R.id.imgUserInfo);
+        switchAdmin = view.findViewById(R.id.switchUserInfoAdmin);
+        switchDoctor = view.findViewById(R.id.switchUserInfoDoctor);
+        Button btnUpdate = view.findViewById(R.id.btnUserInfoSubmit);
+
+        switchAdmin.setOnCheckedChangeListener((buttonView, isChecked) -> isAdmin=isChecked);
+
+        switchDoctor.setOnCheckedChangeListener((buttonView, isChecked) -> isDoctor=isChecked);
+
+        btnUpdate.setOnClickListener(v -> {
+            if(isStateChanged())
+                viewModel.UpdateUserRoles(position,isDoctor,isAdmin);
+            else
+                Snackbar.make(requireActivity().getWindow().getDecorView().getRootView(),"Please Change the User Role",3000).show();
+        });
+
+        ProgressIndicatorFragment progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Syncing With Server","Updating User Role");
+
+        viewModel.CheckIsUserRoleUpdating().observe(getViewLifecycleOwner(),aBoolean -> {
+            if(aBoolean){
+                progressIndicatorFragment.show(getParentFragmentManager(),"UpdateUserRole");
+            }
+            else {
+                if(progressIndicatorFragment.isVisible()){
+                    progressIndicatorFragment.dismiss();
+                    boolean result=viewModel.GetUpdateResult();
+                    String displayResult;
+                    if(result)
+                        displayResult="User Role Updated Successfully";
+                    else
+                        displayResult="Error in Updating Role";
+                    Snackbar.make(requireActivity().getWindow().getDecorView().getRootView(),displayResult,3000).show();
+                }
+            }
+        });
+    }
+
+    private boolean isStateChanged(){
+        return (isAdmin!=userInfo.isAdmin() || isDoctor!=userInfo.isDoctor());
+    }
+
+    private void UpdateInterface(){
         isAdmin=userInfo.isAdmin();
         isDoctor=userInfo.isDoctor();
 
@@ -85,34 +123,5 @@ public class UserInfoFragment extends Fragment implements UpdateUserRole.UpdateU
         switchAdmin.setChecked(isAdmin);
         switchDoctor.setUseMaterialThemeColors(true);
         switchDoctor.setChecked(isDoctor);
-
-        switchAdmin.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            isAdmin=isChecked;
-            btnUpdate.setEnabled(isStateChanged());
-        });
-
-        switchDoctor.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            isDoctor=isChecked;
-            btnUpdate.setEnabled(isStateChanged());
-        });
-
-        btnUpdate.setOnClickListener(v -> new UpdateUserRole(getParentFragmentManager(),UserInfoFragment.this,userInfo.getUID(),isAdmin,isDoctor));
-
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    private boolean isStateChanged(){
-        return (isAdmin!=userInfo.isAdmin() || isDoctor!=userInfo.isDoctor());
-    }
-
-    @Override
-    public void UpdateResult(boolean result) {
-        if(result){
-            Toast.makeText(getContext(),"User Roles Updated",Toast.LENGTH_LONG).show();
-            userInterface.onUserUpdated(position,isAdmin,isDoctor);
-        }
-        else {
-            Toast.makeText(getContext(),"Error in Updating User Role",Toast.LENGTH_LONG).show();
-        }
     }
 }

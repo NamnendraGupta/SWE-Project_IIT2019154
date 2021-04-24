@@ -6,11 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.robodoc.classes.VitalInput;
-import com.example.robodoc.firebase.Globals;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class GetVitalRecord {
 
@@ -22,8 +22,8 @@ public class GetVitalRecord {
 
     public  GetVitalRecord(GetVitalRecordInterface vitalRecordInterface, String uid){
 
-        DatabaseReference dbRef=Globals
-                .getFirebaseDatabase()
+        DatabaseReference dbRef= FirebaseDatabase
+                .getInstance()
                 .getReference()
                 .child(DatabaseKeys.KEY_USERS)
                 .child(uid);
