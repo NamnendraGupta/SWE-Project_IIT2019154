@@ -133,11 +133,14 @@ public class AlarmSetterFragment extends Fragment {
                 .putLong("AlarmTime",timeOfReminder)
                 .apply();
 
-        Intent intent=new Intent(requireContext(),AlarmReceiver.class);
         IntentFilter filter=new IntentFilter();
-        filter.addAction("");
-        intent.setAction("");
-        intent.addFlags(0);
+        filter.addAction(requireActivity().getPackageName()+".ALARM_TRIGGERED");
+
+        AlarmReceiver alarmReceiver=new AlarmReceiver();
+        requireActivity().registerReceiver(alarmReceiver,filter);
+
+        Intent intent=new Intent();
+        intent.setAction(requireActivity().getPackageName()+".ALARM_TRIGGERED");
 
         ComponentName receiver=new ComponentName(requireContext(),AlarmReceiver.class);
         PackageManager pm=requireContext().getPackageManager();
@@ -149,7 +152,7 @@ public class AlarmSetterFragment extends Fragment {
         PendingIntent pendingIntent=PendingIntent.getBroadcast(requireActivity().getApplicationContext(),32451,intent,0);
         AlarmManager alarmManager=(AlarmManager)requireActivity().getSystemService(Context.ALARM_SERVICE);
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,timeOfReminder,AlarmManager.INTERVAL_DAY,pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,timeOfReminder,(1000*60),pendingIntent);
 
         Snackbar.make(requireActivity().getWindow().getDecorView().getRootView(),"Alarm Set Successfully", 2500).show();
 

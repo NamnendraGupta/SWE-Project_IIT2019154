@@ -8,11 +8,13 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 
 import com.example.robodoc.R;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class StartupActivity extends AppCompatActivity {
 
@@ -34,11 +36,19 @@ public class StartupActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(toolbar,navController,appBarConfiguration);
 
         if(AfterLogout){
-            navController.navigate(R.id.loginFragment);
+            navController.navigate(R.id.ActionStartLogin);
             Snackbar.make(getWindow().getDecorView().getRootView(),"Sign Out Successful",2500).show();
         }
         else {
-            navController.navigate(R.id.splashScreenFragment);
+            new Handler().postDelayed(() -> {
+                if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+                    startActivity(new Intent(this,MainActivity.class));
+                    this.finish();
+                }
+                else {
+                    navController.navigate(R.id.ActionStartLogin);
+                }
+            },1500);
         }
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
@@ -47,13 +57,5 @@ public class StartupActivity extends AppCompatActivity {
             else
                 toolbar.setVisibility(View.GONE);
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-        if(navController.getCurrentDestination().getId()==R.id.loginFragment)
-            this.finish();
-        else
-            super.onBackPressed();
     }
 }

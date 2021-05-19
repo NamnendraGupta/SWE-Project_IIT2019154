@@ -32,10 +32,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginFragment extends Fragment implements CheckIfUserExists.UserExistsInterface {
 
-    public LoginFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,7 +118,7 @@ public class LoginFragment extends Fragment implements CheckIfUserExists.UserExi
                 requireActivity().finish();
             }
             else {
-                navController.navigate(R.id.registerFragment);
+                navController.navigate(R.id.ActionStartRegister);
             }
         }
         else {
