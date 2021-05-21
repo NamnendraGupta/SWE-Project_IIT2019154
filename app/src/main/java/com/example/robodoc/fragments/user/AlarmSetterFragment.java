@@ -116,7 +116,16 @@ public class AlarmSetterFragment extends Fragment {
                     .setNegativeButton("NO", (dialog, which) -> dialog.dismiss()).create();
             alertDialog.show();
         });
+
+        Intent intent=new Intent();
+        intent.setAction(requireActivity().getPackageName()+".ALARM_TRIGGERED");
+
+        pendingIntent=PendingIntent.getBroadcast(requireActivity().getApplicationContext(),32451,intent,0);
+        alarmManager=(AlarmManager)requireActivity().getSystemService(Context.ALARM_SERVICE);
     }
+
+    PendingIntent pendingIntent;
+    AlarmManager alarmManager;
 
     private void SetAlarm(int hour, int minute){
         Calendar calendar=Calendar.getInstance();
@@ -139,9 +148,6 @@ public class AlarmSetterFragment extends Fragment {
         AlarmReceiver alarmReceiver=new AlarmReceiver();
         requireActivity().registerReceiver(alarmReceiver,filter);
 
-        Intent intent=new Intent();
-        intent.setAction(requireActivity().getPackageName()+".ALARM_TRIGGERED");
-
         ComponentName receiver=new ComponentName(requireContext(),AlarmReceiver.class);
         PackageManager pm=requireContext().getPackageManager();
 
@@ -149,10 +155,7 @@ public class AlarmSetterFragment extends Fragment {
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                 PackageManager.DONT_KILL_APP);
 
-        PendingIntent pendingIntent=PendingIntent.getBroadcast(requireActivity().getApplicationContext(),32451,intent,0);
-        AlarmManager alarmManager=(AlarmManager)requireActivity().getSystemService(Context.ALARM_SERVICE);
-
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,timeOfReminder,(1000*60),pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,timeOfReminder,AlarmManager.INTERVAL_DAY,pendingIntent);
 
         Snackbar.make(requireActivity().getWindow().getDecorView().getRootView(),"Alarm Set Successfully", 2500).show();
 
@@ -168,6 +171,9 @@ public class AlarmSetterFragment extends Fragment {
                 .putBoolean("IsAlarmSet",isAlarmSet)
                 .remove("AlarmTime")
                 .apply();
+
+        if(alarmManager!=null)
+            alarmManager.cancel(pendingIntent);
 
         updateUserInterface();
     }
