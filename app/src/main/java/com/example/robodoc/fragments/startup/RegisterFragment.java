@@ -15,11 +15,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.robodoc.R;
 import com.example.robodoc.activities.MainActivity;
 import com.example.robodoc.enums.Gender;
 import com.example.robodoc.enums.UserKey;
+import com.example.robodoc.firebase.firestore.GetNumberOfUsers;
 import com.example.robodoc.firebase.firestore.RegisterNewUser;
 import com.example.robodoc.fragments.utils.ProgressIndicatorFragment;
 import com.example.robodoc.utils.DateTimeUtils;
@@ -32,7 +34,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Date;
 import java.util.HashMap;
 
-public class RegisterFragment extends Fragment implements RegisterNewUser.NewUserInterface {
+public class RegisterFragment extends Fragment implements RegisterNewUser.NewUserInterface, GetNumberOfUsers.CallbackInterface {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,8 @@ public class RegisterFragment extends Fragment implements RegisterNewUser.NewUse
     private MaterialDatePicker datePicker;
 
     private ProgressIndicatorFragment progressIndicatorFragment;
+    private HashMap<String,Object> userData;
+    private String UID;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -101,7 +105,7 @@ public class RegisterFragment extends Fragment implements RegisterNewUser.NewUse
 
             FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
 
-            HashMap<String,Object> userData= new HashMap<>();
+            userData=new HashMap<>();
             userData.put(UserKey.UID.toString(),user.getUid());
             userData.put(UserKey.EMAIL.toString(),user.getEmail());
             userData.put(UserKey.PHOTO_URL.toString(),user.getPhotoUrl().toString().replace("s96-c","s320-c"));
@@ -111,10 +115,12 @@ public class RegisterFragment extends Fragment implements RegisterNewUser.NewUse
             userData.put(UserKey.GENDER.toString(),gender);
             userData.put(UserKey.IS_ADMIN.toString(),false);
             userData.put(UserKey.IS_DOCTOR.toString(),false);
+            UID=user.getUid();
 
             progressIndicatorFragment=ProgressIndicatorFragment.newInstance("Syncing with Server","Registering User");
             progressIndicatorFragment.show(getParentFragmentManager(),"RegisterUserProgress");
-            new RegisterNewUser(this, user.getUid(),userData);
+            new GetNumberOfUsers(this);
+
         });
 
     }
@@ -129,6 +135,19 @@ public class RegisterFragment extends Fragment implements RegisterNewUser.NewUse
         else {
             FirebaseAuth.getInstance().signOut();
             Navigation.findNavController(requireActivity(),R.id.navHostStartup).navigate(R.id.loginFragment);
+        }
+    }
+
+    @Override
+    public void OnResultCallback(boolean result, int num) {
+        if(result){
+            if(num==0)
+                userData.put(UserKey.IS_ADMIN.toString(),true);
+            new RegisterNewUser(this,UID,userData);
+        }
+        else {
+            progressIndicatorFragment.dismiss();
+            Toast.makeText(requireActivity(), "Error in Registering User! Please Try Again", Toast.LENGTH_SHORT).show();
         }
     }
 }
