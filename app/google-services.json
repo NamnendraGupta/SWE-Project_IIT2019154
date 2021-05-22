@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "866049601770",
+    "project_id": "robodoc-563a4",
+    "storage_bucket": "robodoc-563a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:866049601770:android:e823e52e680aca2cc52793",
+        "android_client_info": {
+          "package_name": "com.example.robodoc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "866049601770-5gc1camgktsnhgfdbtimj5hvgepdovco.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtZxcEvDX-UTcJr8LcwNrVrPs5P0X1BXk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "866049601770-5gc1camgktsnhgfdbtimj5hvgepdovco.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
